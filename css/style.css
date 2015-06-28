@@ -1,25 +1,77 @@
 /* Empty. Add your own CSS if you like */
+body{
+	background: #f3f3f3;
+}
 .tlj-header{
 	height: 60px;
 }
+.tlj-header .myspace{
+	text-align: center;
+}
+.tlj-header .myspace i{
+	font-size: 18px;
+	font-weight: bold;
+}
+.mainmenu{
+	text-align: center;
+	margin-bottom: 15px;
+}
+.mainmenu .circle{
+	margin: 0 auto;
+	border-radius: 50%;
+	background: #ccc;
+	width: 65px;
+	height: 65px;
+}
+.mainmenu .circle1{
+	background: #84cd5c;
+}
+.mainmenu .circle2{
+	background: #44ba95;
+}
+.mainmenu .circle3{
+	background: #0ab8f0;
+}
+.mainmenu .circle4{
+	background: #f36362;
+}
 
-
-.tlj-about{
+.row.tlj-about{
 	height: 100px;
 	text-align: center;
 	line-height: 90px;
 	color: #fff;
-	margin-top: 25px;
+	margin-top: 10px;
 }
-.tlj-about .about1{
+.row.tlj-about .about1{
 	background: #f46838;
+	width: 48%;
 }
-.tlj-about .about2{
+.row.tlj-about .about2{
 	background: #44ba95;
+	width: 48%;
+	margin-left: 4%;
 }
-.tlj-about .about3{
+.row.tlj-about .about3{
 	background: #0ab8f0;
+	width: 48%;
 }
-.tlj-about .about4{
+.row.tlj-about .about4{
 	background: #f36362;
+	margin-left: 4%;
+}
+.tlj-list{
+	margin-bottom: 10px;
+}
+.tlj-liaojie{
+	color: #f96a39;
+}
+.tlj-liaojie i{
+	font-weight: bold;
+	font-size: 22px;
+}
+.row.tlj-copyright{
+	font-size: 10px;
+	margin-top: 20px;
+	text-align: center;
 }

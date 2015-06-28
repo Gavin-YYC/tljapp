@@ -26,8 +26,8 @@
 	<ion-header-bar align-title="center" class="bar-assertive tlj-header">
 		<div class="row">
 			<div class="col col-50">logo</div>
-			<div class="col col-25"><i class="icon ion-person"></i><br>wode</div>
-			<div class="col col-25"><i class="icon ion-android-checkbox-outline"></i><br>fabuxinxi</div>
+			<div class="col col-25 myspace"><i class="icon ion-person"></i><br>我的</div>
+			<div class="col col-25 myspace"><i class="icon ion-android-checkbox-outline"></i><br>发布信息</div>
 		</div>
 	</ion-header-bar>
 
@@ -39,69 +39,59 @@
 		    <input type="text" placeholder="搜索你最想要的 例：家教">
 		  </label>
 		</div>
-		<div class="row">
-			<div class="col">校园兼职</div>
-			<div class="col">校园二手</div>
-			<div class="col">求职简历</div>
-			<div class="col">发布信息</div>
+		<div class="row mainmenu">
+			<div class="col">
+				<div class="circle circle1"></div>
+				<br>校园兼职
+			</div>
+			<div class="col">
+				<div class="circle circle2"></div>
+				<br>校园二手
+			</div>
+			<div class="col">
+				<div class="circle circle3"></div>
+				<br>求职简历
+			</div>
+			<div class="col">
+				<div class="circle circle4"></div>
+				<br>发布信息
+			</div>
 		</div>
-		<div class="list">
-			<a class="item item-thumbnail-left" href="#">
-		      	<img src="cover.jpg">
+		<div class="list tlj-list">
+			<a class="item item-avatar" href="#">
+		      	<img src="/img/bg.jpg">
 		      	<h2>热门兼职</h2>
 		      	<p>桃李街，靠谱，干着舒心的兼职</p>
 		    </a>
-
 		</div>
 		<div class="list">
-			<a class="item item-thumbnail-left" href="#">
-		      	<img src="cover.jpg">
-		      	<h2>热门二手</h2>
+			<a class="item item-avatar" href="#">
+		      	<img src="/img/bg.jpg">
+		      	<h2>热门兼职</h2>
 		      	<p>桃李街，靠谱，干着舒心的兼职</p>
 		    </a>
 		</div>
 		<div class="list">
-			<a class="item item-thumbnail-left" href="#">
-		      	<img src="cover.jpg">
-		      	<h2>校园焦点</h2>
+			<a class="item item-avatar" href="#">
+		      	<img src="/img/bg.jpg">
+		      	<h2>热门兼职</h2>
 		      	<p>桃李街，靠谱，干着舒心的兼职</p>
 		    </a>
 		</div>
-		<div class="row">
-			<i class="icon ion-ios-people"></i>了解我们
+		<div class="row tlj-liaojie">
+			<i class="icon ion-ios-people"></i>&nbsp;了解我们
 		</div>
 		<div class="row tlj-about">
-			<div class="col col-50 about1">使用指南</div>
-			<div class="col col-50 about2">关于我们</div>
+			<div class="col about1" ng-click="">使用指南</div>
+			<div class="col about2" ng-click="">关于我们</div>
 		</div>
 		<div class="row tlj-about">
-			<div class="col col-50 about3">联系我们</div>
-			<div class="col col-50 about4">加入我们</div>
+			<div class="col about3" ng-click="">联系我们</div>
+			<div class="col about4" ng-click="">加入我们</div>
 		</div>
-		<div class="button button-assertive button-block" ng-click="takeAction()">
-		    Take Action!
-		</div>
-		<div class="card" ng-show="messages.length">
-		    <div class="item item-divider">
-		    User Log
-		    </div>
-		  	<div class="item item-text-wrap">
-		        <div ng-repeat="message in messages">
-		        	{{message.text}}
-		     	</div>
-		    </div>
+		<div class="row tlj-copyright">
+			<div class="col">Copyright@2015——山东理工大学桃李街版权所属</div>
 		</div>
     </ion-content>
-
-	<!--footer-->
-    <ion-footer-bar align-title="center" class="bar-assertive">
-		<div class="buttons">
-			<button class="button">left button</button>
-		</div>
-		<h1 class="title">footer</h1>
-		<div class="buttons">
-			<button class="button">right button</button>
-		</div>
-    </ion-footer-bar>
   </body>
 </html>

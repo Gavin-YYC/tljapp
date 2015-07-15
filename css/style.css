@@ -104,3 +104,9 @@ body{
 .no-boder{
 	border: none;
 }
+.tlj-left{
+	text-align: left;
+}
+.tlj-right{
+	text-align: right;
+}

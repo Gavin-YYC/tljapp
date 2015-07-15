@@ -10,6 +10,11 @@ angular.module('route',[])
                 templateUrl:'templates/list.html',
                 controller:'ListController'
             })
+            .state('detail',{
+                url:'/detail/:id',
+                templateUrl:'templates/detail.html',
+                controller:'DetailController'
+            })
 
         $urlRouterProvider.otherwise('/');
     })

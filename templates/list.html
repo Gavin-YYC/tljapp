@@ -6,17 +6,17 @@
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
 		<ion-list>
 			<ion-item ng-repeat="item in items">
-				<a class="item item-avatar no-boder" href="#">
+				<a class="item item-avatar no-boder" href="#/detail/{{item.id}}">
 					<img ng-src="{{item.type}}">
 					<h2 class="row">
 						<div class="col col-75">{{item.title}}</div>
-						<div class="col col-25">{{item.gongzi}}</div>
+						<div class="col col-25 tlj-right">{{item.gongzi}}</div>
 					</h2>
-					<div class="row">
-						<div class="col col-33">{{item.location}}</div>
-						<div class="col col-33">{{item.date}}</div>
-						<div class="col col-33">{{item.gztype}}</div>
-					</div>
+					<h4 class="row">
+						<div class="col col-30 tlj-left">{{item.location}}</div>
+						<div class="col col-50 tlj-left">{{item.date}}</div>
+						<div class="col col-20 tlj-right">{{item.gztype}}</div>
+					</h4>
 				</a>
 			</ion-item>
 		</ion-list>

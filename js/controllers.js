@@ -1,14 +1,15 @@
 angular.module('starter.controllers',[])
 .controller('ListController',function($scope,$http){
         $scope.items = [
-            {type:1,title:"¼æÖ°¼æÖ°¼æÖ°¼æÖ°¼æÖ°",gongzi:'2000/Ìì',location:"ÕÅµê",date:'2015-1-28:18:00',gztype:"Ìâ½âÈÕ½á"},
-            {type:1,title:"´ò»÷µ¹Èø·¢¶ø·ÃÎÊ¹ıÈô¸É",gongzi:'2000/Ìì',location:"ÕÅµê",date:'2015-1-28:18:00',gztype:"Ìâ½âÈÕ½á"},
-            {type:1,title:"sfdfdsfsdfsd",gongzi:'2000/Ìì',location:"ÕÅµê",date:'2015-1-28:18:00',gztype:"Ìâ½âÈÕ½á"}
+            {type:1,title:"ä½ å¥½å€’è¨è¿™æ—¶æµ‹è¯•Ö°",gongzi:'20/å¤©',location:"å¼ åº—",date:'2015-1-28:18:00',gztype:"æ—¥ç»“"},
+            {type:1,title:"ä½ å¥½å€’è¨è¿™æ—¶æµ‹è¯•",gongzi:'200/å¤©',location:"å¼ åº—",date:'2015-1-28:18:00',gztype:"æ—¥ç»“"},
+            {type:1,title:"sfdfdsfsdfsd",gongzi:'2000/å¤©',location:"å¼ åº—",date:'2015-1-28:18:00',gztype:"æ—¥ç»“"}
         ];
-        var base = 1;
         $scope.doRefresh = function() {
-            for(var i = 0;i<10;i++,base++){
-                $scope.items.unshift(["item",base].join(""));
+            for(var i = 0;i<10;i++,base.type++){
+                var base = {type:base,id:Math.ceil(Math.random(100,999)*100),title:"sfdfdsfsdfsd"+i,gongzi:'2000/å¤©',location:"å¼ åº—",date:'2015-1-28:18:00',gztype:"æ—¥ç»“"};
+                $scope.items.unshift(base);
+                console.log(base);
                 $scope.$broadcast('scroll.refreshComplete');
             }
             /*
@@ -17,9 +18,11 @@ angular.module('starter.controllers',[])
                     $scope.items = newItems;
                 })
                 .finally(function() {
-                    // Í£Ö¹¹ã²¥ion-refresher
                     $scope.$broadcast('scroll.refreshComplete');
                 });
             */
         };
 })
+.controller('DetailController',function($scope,$http){
+    $scope.nihao = "nihao";
+ })

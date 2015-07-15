@@ -1,0 +1,24 @@
+<ion-view title="校园兼职">
+	<ion-nav-bar>
+		<ion-nav-back-button>返回</ion-nav-back-button>
+	</ion-nav-bar>
+	<ion-content ng-controller="ListController">
+		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
+		<ion-list>
+			<ion-item ng-repeat="item in items">
+				<a class="item item-avatar no-boder" href="#">
+					<img ng-src="{{item.type}}">
+					<h2 class="row">
+						<div class="col col-75">{{item.title}}</div>
+						<div class="col col-25">{{item.gongzi}}</div>
+					</h2>
+					<div class="row">
+						<div class="col col-33">{{item.location}}</div>
+						<div class="col col-33">{{item.date}}</div>
+						<div class="col col-33">{{item.gztype}}</div>
+					</div>
+				</a>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>

@@ -97,4 +97,10 @@ body{
 .tlj-slide .pink{
 	background: pink;
 }
-
+.has-header{
+	top: 60px;
+	padding-bottom: 10px;
+}
+.no-boder{
+	border: none;
+}

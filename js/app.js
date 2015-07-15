@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-angular.module('tljApp', ['ionic','starter.controllers'])
+angular.module('tljApp', ['ionic','starter.controllers','route'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -17,14 +17,4 @@ angular.module('tljApp', ['ionic','starter.controllers'])
       StatusBar.styleDefault();
     }
   });
-})
-.config(function($stateProvider,$urlRouterProvider){
-  $stateProvider
-    .state('/',{
-      url:'/',
-      templateUrl:'templates/index.html'
-    })
-
-
-    $urlRouterProvider.otherwise('/');
 })

@@ -1,8 +1,13 @@
 <ion-view title="校园兼职">
-	<ion-nav-bar>
+	<ion-nav-bar class="padding0">
 		<ion-nav-back-button>返回</ion-nav-back-button>
 	</ion-nav-bar>
 	<ion-content ng-controller="ListController">
+		<div class="button-bar bar-assertive padding0">
+		  	<a class="button icon-right ion-chevron-up">分类</a>
+		  	<a class="button icon-right ion-chevron-down">结算</a>
+		  	<a class="button icon-right ion-chevron-down">区域</a>
+		</div>
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
 		<ion-list>
 			<ion-item ng-repeat="item in items">
@@ -10,12 +15,12 @@
 					<img ng-src="{{item.type}}">
 					<h2 class="row">
 						<div class="col col-75">{{item.title}}</div>
-						<div class="col col-25 tlj-right">{{item.gongzi}}</div>
+						<div class="col col-25 tlj-right">{{item.wage}}</div>
 					</h2>
 					<h4 class="row">
-						<div class="col col-30 tlj-left">{{item.location}}</div>
-						<div class="col col-50 tlj-left">{{item.date}}</div>
-						<div class="col col-20 tlj-right">{{item.gztype}}</div>
+						<div class="col col-30 tlj-left">{{item.workRegion}}</div>
+						<div class="col col-50 tlj-left">{{item.postTime | date:'yyyy-MM-dd'}}</div>
+						<div class="col col-20 tlj-right">{{item.timeToPay}}</div>
 					</h4>
 				</a>
 			</ion-item>

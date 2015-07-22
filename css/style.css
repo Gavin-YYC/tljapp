@@ -2,6 +2,10 @@
 body{
 	background: #f3f3f3;
 }
+a{
+	text-decoration: none;
+	color: #000;
+}
 .tlj-header{
 	height: 60px;
 }
@@ -83,23 +87,14 @@ body{
 	padding: 0;
 }
 .tlj-slide{
+	margin-top: 10px;
 	margin-bottom: 15px;
 }
 .tlj-slide .box{
 	height: 150px;
 }
-.tlj-slide .blue{
-	background: blue;
-}
-.tlj-slide .yellow{
-	background: yellow;
-}
-.tlj-slide .pink{
-	background: pink;
-}
-.has-header{
-	top: 60px;
-	padding-bottom: 10px;
+.tlj-slide .box img{
+	width: 100%;
 }
 .no-boder{
 	border: none;
@@ -109,4 +104,7 @@ body{
 }
 .tlj-right{
 	text-align: right;
+}
+.searchTop{
+	top: 60px;
 }

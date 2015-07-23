@@ -108,3 +108,38 @@ a{
 .searchTop{
 	top: 60px;
 }
+
+/* 兼职列表页 */
+.list-type{
+	background-color: #fff;
+    border: 2px solid #eebc5b;
+  	width: 50px;
+  	height: 50px;
+  	border-radius: 50px;
+  	margin: 0;
+  	text-align: center;
+  	padding: 0;
+}
+.list-info{
+	float: left;
+}
+.list-type-pic{
+	background: #fff;
+	border: 1px solid #ccc;
+}
+.list-center{
+	margin: 0 auto;
+	display: block;
+}
+.list-type span{
+	line-height: 50px;
+	font-size: 12px;
+}
+
+
+/* 兼职详情页 */
+.redline{
+	width: 100%;
+	height: 5px;
+	background: #FA693A;
+}

@@ -1,8 +1,76 @@
-<ion-view title="详情页">
-    <ion-nav-bar>
+<ion-view title="兼职详情">
+    <ion-nav-bar align-title="center">
         <ion-nav-back-button>返回</ion-nav-back-button>
     </ion-nav-bar>
     <ion-content ng-controller="DetailController">
-        {{id}}
+    	<div class="redline"></div>
+		<div class="list card">
+			<div class="item">
+			    <h2>{{item.title}}</h2>
+			    <div class="row">
+			    	<div class="col col-33">
+			    		<i class="icon ion-ios-location-outline"></i> {{item.workRegion}}
+			    	</div>
+			    	<div class="col col-67">
+			    		<i class="icon ion-android-time"></i> {{item.postTime | date:'yyyy-MM-dd mm:ss'}}
+			    	</div>
+			   	</div>
+			</div>
+
+			<div class="item item-divider">
+			    基本信息
+			</div>
+
+			<div class="item item-body">
+			    <h2>{{item.wage}}/{{item.salaryUnit}} {{item.timeToPay}}</h2>
+			    <p>截止日期：{{item.expiredTime | date:'yyyy-MM-dd mm:ss'}}</p>
+			    <p>工作时间：{{item.workTime}}</p>
+			    <p>工作地点：{{item.workPlace}}</p>
+			</div>
+
+			<div class="item item-divider">
+			    工作内容
+			</div>
+
+			<div class="item">
+				<p>工作内容</p>
+				<p>{{item.jobDetail}}</p>
+				<p>工作要求</p>
+				<p>{{item.jobDescription}}</p>
+			</div>
+
+			<div class="item item-divider">
+			    联系方式
+			</div>
+
+			<div class="item">
+				<p>联系人：{{item.contact}}</p>
+				<p>联系电话：{{item.contactPhone}}</p>
+				<p>联系我时，请说明在桃李街上看到的，谢谢。</p>
+			</div>
+
+			<div class="item item-divider">
+			    用户评价
+			</div>
+
+			<div class="item tabs tabs-secondary tabs-icon-left">
+			    <a class="tab-item" href="#">
+				    <i class="icon ion-thumbsup"></i> {{item.likes}}
+			    </a>
+			    <a class="tab-item" href="#">
+				    <i class="icon ion-thumbsdown"></i> {{item.dislikes}}
+			    </a>
+			    <a class="tab-item" href="#">
+				    <i class="icon ion-chatbox"></i>
+			    </a>
+			    <a class="tab-item" href="#">
+			      	<i class="icon ion-share"></i>
+			    </a>
+			</div>
+
+			<div class="item">
+
+			</div>
+		</div>
     </ion-content>
 </ion-view>

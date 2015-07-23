@@ -6,7 +6,7 @@ angular.module('route',[])
                 templateUrl:'templates/index.html'
             })
             .state('list', {
-                url:'/list',
+                url:'/list/:id',
                 templateUrl:'templates/list.html',
                 controller:'ListController'
             })

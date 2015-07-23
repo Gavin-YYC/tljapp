@@ -44,7 +44,7 @@
 		<ion-modal-view>
 		    <ion-header-bar class="bar-assertive">
 		        <h1 class="title">选择分类</h1>
-		        <button class="button button-clear button-primary" ng-click="modal.hide()">关闭</button>
+		        <button class="button button-clear button-primary" ng-click="modal.hide()">确定</button>
 		    </ion-header-bar>
 		    <ion-content ng-controller="getCategoriesCotroller">
 		    	<a href="#/list/{{category.id}}" class="list-type list-type-pic list-center" style="color:{{category.themeColor}};border-color:{{category.themeColor}}" ng-repeat="category in categories" ng-click="goList(category.id)">

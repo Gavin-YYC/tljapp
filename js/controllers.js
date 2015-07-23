@@ -20,7 +20,9 @@ angular.module('starter.controllers',[])
         $http.get(listApi)
             .success(function(newItems) {
                 if (newItems.ok == true) {
+                    console.log(newItems);
                     $scope.items = newItems.data;
+                    console.log($scope.items);
                 }else{
                     //else code
                 };
@@ -123,7 +125,7 @@ angular.module('starter.controllers',[])
     $scope.id = $stateParams.id;
     var jobApi = "http://120.24.218.56/api/job/";
 
-    $http.get("http://localhost:8100/js/detail.json")
+    $http.get(jobApi+$scope.id)
         .success(function(jobDetail){
             if (jobDetail.ok == true) {
                 $scope.item = jobDetail.data;
@@ -142,7 +144,7 @@ angular.module('starter.controllers',[])
  * test api : http://localhost:8100/js/category.json
  *
 */
-.controller('getCategoriesCotroller',function($scope,$http){
+.controller('getCategoriesCotroller',function($scope,$http,$state){
 
     var categoryApi = "http://120.24.218.56/api/job/cate/list";
 
@@ -160,6 +162,6 @@ angular.module('starter.controllers',[])
         });
 
     $scope.goList = function(id){
-        console.log(id);
+        console.log(id)
     }
 })

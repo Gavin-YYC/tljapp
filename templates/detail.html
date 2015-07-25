@@ -69,7 +69,13 @@
 			</div>
 
 			<div class="item">
-
+				<div class="list">
+					<a class="item item-avatar" href="#"  ng-repeat="comment in comments">
+				      	<img src="http://120.24.218.56/static/images/users/{{comment.member.profilePhotoId}}">
+				      	<h2>{{comment.member.username}}</h2>
+				      	<p>{{comment.content}}</p>
+				    </a>
+				</div>
 			</div>
 		</div>
     </ion-content>

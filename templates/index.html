@@ -3,7 +3,7 @@
 	<ion-header-bar align-title="center" class="bar-assertive tlj-header">
 		<div class="row padding0">
 			<div class="col col-50"><img src="./img/logo.png" alt=""></div>
-			<div class="col col-25 myspace"><i class="icon ion-person"></i><br>我的</div>
+			<div class="col col-25 myspace" ui-sref="my" ng-click="goToMy()"><i class="icon ion-person"></i><br>我的</div>
 			<div class="col col-25 myspace"><i class="icon ion-android-checkbox-outline"></i><br>发布信息</div>
 		</div>
 	</ion-header-bar>
@@ -79,11 +79,66 @@
 			<div class="col about2" ng-click="">关于我们</div>
 		</div>
 		<div class="row tlj-about">
-			<div class="col about3" ng-click="">联系我们</div>
-			<div class="col about4" ng-click="">加入我们</div>
+			<div class="col about3" ng-click="LoginModal.show()">联系我们</div>
+			<div class="col about4" ng-click="RegisterModal.show()">加入我们</div>
 		</div>
 		<div class="row tlj-copyright">
 			<div class="col">Copyright@2015——山东理工大学桃李街版权所属</div>
 		</div>
 	</ion-content>
+
+	<!--登录modal-->
+	<script id="modal-login.html" type="text/ng-template">
+		<ion-modal-view>
+		    <ion-header-bar class="bar-assertive">
+		    	<button class="button button-clear button-primary" ng-click="LoginModal.hide()"><i class="ion-arrow-left-c"></i> 后退</button>
+		        <h1 class="title">登录</h1>
+		    </ion-header-bar>
+		    <ion-content ng-controller="LoginController" class="has-header padding">
+				<ion-list>
+			        <div>{{message}}</div>
+				    <label class="item item-input">
+					    <span class="input-label">邮箱</span>
+					    <input type="text" ng-model="user.username" placeholder="请输入邮箱">
+				    </label>
+				    <label class="item item-input">
+					    <span class="input-label">密码</span>
+					    <input type="password" ng-model="user.password" placeholder="请输入密码">
+				    </label>
+					<div class="item">
+						<button class="button button-block button-positive" ng-click="login()">
+							登录
+						</button>	
+					</div>
+				</ion-list>
+		    </ion-content>
+		</ion-modal-view>
+	</script>
+
+	<!--注册modal-->
+	<script id="modal-register.html" type="text/ng-template">
+		<ion-modal-view>
+		    <ion-header-bar class="bar-assertive">
+		    	<button class="button button-clear button-primary" ng-click="RegisterModal.hide()"><i class="ion-arrow-left-c"></i> 后退</button>
+		        <h1 class="title">注册</h1>
+		    </ion-header-bar>
+		    <ion-content>
+				<ion-list>
+				    <label class="item item-input">
+					    <span class="input-label">邮箱</span>
+					    <input type="text">
+				    </label>
+				    <label class="item item-input">
+					    <span class="input-label">密码</span>
+					    <input type="password">
+				    </label>
+					<div class="item">
+						<button class="button button-block button-positive">
+							注册
+						</button>	
+					</div>
+				</ion-list>
+		    </ion-content>
+		</ion-modal-view>
+	</script>
 </ion-view>

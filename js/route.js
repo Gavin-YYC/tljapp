@@ -3,7 +3,8 @@ angular.module('route',[])
         $stateProvider
             .state('/',{
                 url:'/',
-                templateUrl:'templates/index.html'
+                templateUrl:'templates/index.html',
+                controller:'IndexController'
             })
             .state('list', {
                 url:'/list/:id',
@@ -14,6 +15,16 @@ angular.module('route',[])
                 url:'/detail/:id',
                 templateUrl:'templates/detail.html',
                 controller:'DetailController'
+            })
+            .state('search',{
+                url:'/search',
+                templateUrl:'templates/search.html',
+                controller:'SearchController'
+            })
+            .state('my',{
+                url:'/my',
+                templateUrl:'templates/my.html',
+                controller:'MyController'
             })
 
         $urlRouterProvider.otherwise('/');

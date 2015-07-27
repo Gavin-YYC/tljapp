@@ -1,0 +1,33 @@
+<ion-view title="简历详情" ng-controller="ShDetailController">
+    <ion-header-bar align-title="center">
+        <button class="button button-clear icon-left ion-ios-arrow-left" ng-click="myGoBack()">返回</button>
+        <h1 class="title">简历详情</h1>
+        <button class="button button-clear icon-left ion-heart">收藏</button>
+    </ion-header-bar>
+    <ion-content>
+    	<div class="redline"></div>
+		<div class="list card">
+
+			<div class="row">
+				<div class="col col-33 margin0">
+					<div class="list-type list-type-pic list-type-pic-big">
+						<img src="http://120.24.218.56/static/images/users/{{item.picturePath}}">
+					</div>
+				</div>
+				<div class="col col-75">
+					{{item.title}}
+				</div>
+			</div>
+
+			<div class="item">
+				<div class="list">
+					<a class="item item-avatar" href="#"  ng-repeat="comment in comments">
+				      	<img src="http://120.24.218.56/static/images/users/{{comment.member.profilePhotoId}}">
+				      	<h2>{{comment.member.username}}</h2>
+				      	<p>{{comment.content}}</p>
+				    </a>
+				</div>
+			</div>
+		</div>
+    </ion-content>
+</ion-view>

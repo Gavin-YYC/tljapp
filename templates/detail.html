@@ -9,7 +9,7 @@
 			    <h2>{{item.title}}</h2>
 			    <div class="row">
 			    	<div class="col col-33">
-			    		<i class="icon ion-ios-location-outline"></i> {{item.workRegion}}
+			    		<i class="icon ion-ios-location-outline"></i> {{item.region.substring(7)}}
 			    	</div>
 			    	<div class="col col-67">
 			    		<i class="icon ion-android-time"></i> {{item.postTime | date:'yyyy-MM-dd mm:ss'}}

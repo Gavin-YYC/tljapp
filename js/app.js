@@ -4,7 +4,15 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-angular.module('tljApp', ['ionic','starter.controllers','route'])
+angular.module('tljApp', [
+  'ionic',
+  'route',
+  'user.service',
+  'getlist.service',
+  'starter.controllers',
+  'resume.controllers',
+  'sh.controllers'
+  ])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

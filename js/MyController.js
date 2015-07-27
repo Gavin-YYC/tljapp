@@ -25,15 +25,20 @@ angular.module('my.controllers',[])
 })
 
 //login controller
-.controller('LoginController',function ($scope,$http){
+.controller('LoginController',function ($scope,$rootScope,AuthService){
     $scope.message = "";
     $scope.user = {
         username:null,
         password:null
     }
+    $scope.user.rememberMe = true;
     
     $scope.login = function(){
-        console.log("login success")
+        console.log($scope.user);
+        AuthService.login($scope.user)
+            .then(function (user){
+                console.log(user);
+            })
     }
     
 })

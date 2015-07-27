@@ -31,9 +31,6 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
                     //else code
                 };
             })
-            .finally(function() {
-                $scope.$broadcast('scroll.refreshComplete');
-            });
     }else{
         $http.get(cateListApi)
             .success(function(newItems) {
@@ -43,9 +40,6 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
                     //else code
                 };
             })
-            .finally(function() {
-                $scope.$broadcast('scroll.refreshComplete');
-            });
     };
     
 
@@ -155,9 +149,6 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
                 $scope.item = jobDetail.data;
             };
         })
-        .finally(function() {
-            $scope.$broadcast('scroll.refreshComplete');
-        });
 
     //查询指定ID下的评论
     //注意，这里在生成app的时候，改下get中的参数，"commentApi+$scope.id"
@@ -168,9 +159,6 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
                 console.log($scope.comments);
             };
         })
-        .finally(function() {
-            $scope.$broadcast('scroll.refreshComplete');
-        });
 
  })
 
@@ -181,23 +169,12 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
  * test api : http://localhost:8100/js/category.json
  *
 */
-.controller('getCategoriesCotroller',function($scope,$http,$location){
-
+.controller('getCategoriesCotroller',function($scope,$http,$location,GetListService){
     var categoryApi = "http://120.24.218.56/api/job/cate/list";
-
-    $http.get(categoryApi)
-        .success(function(newItems) {
-            if (newItems.ok == true) {
-                $scope.categories = newItems.data;
-                console.log($scope.categories);
-            }else{
-                //else code
-            };
+    GetListService.getList(categoryApi)
+        .success(function (data,status){
+            $scope.categories = data.data;
         })
-        .finally(function() {
-            $scope.$broadcast('scroll.refreshComplete');
-        });
-
     $scope.goList = function(id){
         $location.url("list/"+id); 
     }
@@ -226,9 +203,6 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
                     //else code
                 };
             })
-            .finally(function() {
-                $scope.$broadcast('scroll.refreshComplete');
-            });
     }
     $scope.getLocationList = function(location){
         var key = "?region="+location;
@@ -244,8 +218,5 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
                     //else code
                 };
             })
-            .finally(function() {
-                $scope.$broadcast('scroll.refreshComplete');
-            });
     }
 })

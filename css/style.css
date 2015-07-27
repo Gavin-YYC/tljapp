@@ -1,4 +1,46 @@
 /* Empty. Add your own CSS if you like */
+
+/* 自定义字体文件 */
+@font-face {font-family: 'iconfont';
+    src: url('iconfont.eot'); /* IE9*/
+    src: url('iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('iconfont.woff') format('woff'), /* chrome、firefox */
+    url('iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+.icon-diy-index{
+	color: #fff;
+	font-size: 50px;
+	display: block;
+	padding-top: 20px;
+}
+.icon-508jianlikuguanli{
+	font-size: 40px;
+}
+.icon-fabu{
+	font-size: 45px;
+}
+.icon-zixingche:before { content: "\e600"; }
+.icon-qq:before { content: "\e601"; }
+.icon-dianhua:before { content: "\e602"; }
+.icon-target:before { content: "\e60a"; }
+.icon-shoucang:before { content: "\e603"; }
+.icon-jianzhi:before { content: "\e604"; }
+.icon-jiaodian:before { content: "\e605"; }
+.icon-wechat:before { content: "\e606"; }
+.icon-xinfeng:before { content: "\e607"; }
+.icon-508jianlikuguanli:before { content: "\e608"; }
+.icon-fabu:before { content: "\e609"; }
+/* 自定义字体文件结束 */
+
+
 body{
 	background: #f3f3f3;
 }
@@ -71,6 +113,50 @@ a{
 .tlj-list{
 	margin-bottom: 10px;
 }
+
+/* 首页图标定义 */
+.tlj-list .circle .icon-jianzhi{
+	color: #84cd5c;
+	padding-top: 8px;
+}
+.arrow-left{
+	font-size: 50px;
+	text-align: right;
+	color: #84cd5c;
+}
+.arrow-left-zixingche{
+	color: #43BA94;
+}
+.arrow-left-target{
+	color: #F36362;
+}
+.tlj-list p{
+	color: #888;
+}
+.title-target{
+	color: #F36362;
+	font-family: "Microsoft YaHei";
+}
+.title-jianzhi{
+	color: #84cd5c;
+	font-family: "Microsoft YaHei";
+}
+.title-zixingche{
+	color: #43BA94;
+	font-family: "Microsoft YaHei";
+}
+.tlj-list .circle .icon-zixingche{
+	color: #43BA94;
+	padding-top: 8px;
+}
+.tlj-list .circle .icon-target{
+	color: #F36362;
+	padding-top: 8px;
+}
+/* 首页图标定义结束 */
+.paddingBottom0{
+	padding-bottom: 0px;
+}
 .tlj-liaojie{
 	color: #f96a39;
 }
@@ -141,4 +227,37 @@ a{
 	width: 100%;
 	height: 5px;
 	background: #FA693A;
+}
+
+/* 求职简历列表页 */
+.red{
+	color: #ef473a;
+}
+.list-type-pic-big{
+  	width: 70px;
+  	height:70px;
+  	border-radius: 70px;
+  	margin: 0 auto;
+  	margin-top: 7px;
+  	border: none;
+
+}
+.list-type-pic-big img{
+  	width: 70px;
+  	height:70px;
+	border-radius: 70px;
+}
+.resume-list-small{
+	color: #d1d1d1;
+}
+
+
+
+/* 二手页 */
+.list-type-sh{
+	width: 100%;
+}
+.list-type-sh img{
+	width: 100px;
+    height: 100px;
 }

@@ -21,26 +21,26 @@ angular.module('route',[])
             //搜索相关
             .state('search',{
                 url:'/search',
-                templateUrl:'templates/search.html',
+                templateUrl:'templates/list.html',
                 controller:'SearchController'
             })
             //个人简历
-            .state('ResumeList', {
-                url:'/resume',
+            .state('resumeList', {
+                url:'/resume/:id',
                 templateUrl:'templates/ResumeList.html'
             })
-            .state('ResumeDetail', {
+            .state('resumeDetail', {
                 url:'/resumedetail/:id',
                 templateUrl:'templates/ResumeDetail.html',
                 controller:'ResumeDetailController'
             })
             //二手物品
-            .state('ShList', {
+            .state('shList', {
                 url:'/sh',
                 templateUrl:'templates/ShList.html',
                 controller:'ShListController'
             })
-            .state('ShDetail', {
+            .state('shDetail', {
                 url:'/shdetail/:id',
                 templateUrl:'templates/ShDetail.html',
                 controller:'ShDetailController'

@@ -1,5 +1,5 @@
 angular.module('sh.controllers',[])
-.controller('ShListController',function ($scope,$http,$ionicPopup,$ionicModal){
+.controller('ShListController',function ($scope,$http,$ionicModal,GetListService){
     var pageBase = 0;
     var pageSize = 8;
     var shListApi = "http://120.24.218.56/api/sh/list";
@@ -35,29 +35,20 @@ angular.module('sh.controllers',[])
 	    $http.get(shListApi+"?pageNumber="+pageBase+"&pageSize="+pageSize)
 	        .success(function(newItems) {
                 if (newItems.ok == true && newItems.data.length > 0) {
-                    for (var i = 0; i < newItems.data.length; i++) {
-                        $scope.items.push(newItems.data[i]);
-                    }; 
-                    var alertPopup = $ionicPopup.alert({
-                        title: '友情提示：',
-                        template: '刷新成功！'
-                    });
+                    $scope.items.push(newItems.data);
                 }else if(newItems.ok == true && newItems.data.length == 0) {
-                    var alertPopup = $ionicPopup.alert({
-                        title: '友情提示：',
-                        template: '已经没有更多信息了( ¯ □ ¯ )'
-                    });
+                    GetListService.alertTip("已经没有更多信息了");
                 }else{
-                    var alertPopup = $ionicPopup.alert({
-                        title: '友情提示：',
-                        template: newItems.message
-                    });
+                    GetListService.alertTip(newItems.message);
                 };
 	        })
 	        .finally(function() {
 	            $scope.$broadcast('scroll.infiniteScrollComplete');
 	        });
     }
+    $scope.$on('$stateChangeSuccess', function() {
+        $scope.loadMore();
+    });
 
     //modal弹出模态窗口，热门分类
     $ionicModal.fromTemplateUrl('modal-hot.html',function(modal){

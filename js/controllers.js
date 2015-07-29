@@ -8,7 +8,7 @@
  *
 */
 angular.module('starter.controllers',['search.controllers','my.controllers'])
-.controller('ListController',function($scope,$http,$ionicPopup, $timeout,$ionicModal,$stateParams){
+.controller('ListController',function($scope,$http,$ionicPopup,$ionicModal,$stateParams,GetListService){
 
     //初始化 请求页面参数
     var pageBase = 0;
@@ -54,20 +54,11 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
                         for (var i = 0; i < newItems.data.length; i++) {
                             $scope.items.unshift(newItems.data[i]);
                         }; 
-                        var alertPopup = $ionicPopup.alert({
-                            title: '友情提示：',
-                            template: '刷新成功！'
-                        });
+                        GetListService.alertTip("刷新成功！");
                     }else if(newItems.ok == true && newItems.data.length == 0) {
-                        var alertPopup = $ionicPopup.alert({
-                            title: '友情提示：',
-                            template: '已经没有更多信息了( ¯ □ ¯ )'
-                        });
+                        GetListService.alertTip("已经没有更多信息了");
                     }else{
-                        var alertPopup = $ionicPopup.alert({
-                            title: '友情提示：',
-                            template: newItems.message
-                        });
+                        GetListService.alertTip(newItems.message);
                     };
                 })
                 .finally(function() {
@@ -81,20 +72,11 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
                         for (var i = 0; i < newItems.data.length; i++) {
                             $scope.items.unshift(newItems.data[i]);
                         }; 
-                        var alertPopup = $ionicPopup.alert({
-                            title: '友情提示：',
-                            template: '刷新成功！'
-                        });
+                        GetListService.alertTip("刷新成功！");
                     }else if(newItems.ok == true && newItems.data.length == 0) {
-                        var alertPopup = $ionicPopup.alert({
-                            title: '友情提示：',
-                            template: '已经没有更多信息了( ¯ □ ¯ )'
-                        });
+                        GetListService.alertTip("已经没有更多信息了");
                     }else{
-                        var alertPopup = $ionicPopup.alert({
-                            title: '友情提示：',
-                            template: newItems.message
-                        });
+                        GetListService.alertTip(newItems.message);
                     };
                 })
                 .finally(function() {
@@ -180,7 +162,7 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
     }
 })
 
-.controller('getRegionAndPayCotroller',function($scope){
+.controller('getRegionAndPayCotroller',function($scope,$http){
     var locations = ["张店区","周村区","淄川区","临淄区","博山区","桓台区","高青区","沂源县"];
     var paytypes = ["日结","周结","月结","完工结算"];
     $scope.locations = locations;
@@ -198,6 +180,7 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
         $http.get(searchApi)
             .success(function(newItems) {
                 if (newItems.ok == true) {
+                    console.log(newItems.data);
                     $scope.items = newItems.data;
                 }else{
                     //else code
@@ -206,12 +189,13 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
     }
     $scope.getLocationList = function(location){
         var key = "?region="+location;
-        var searchApi = $scope.searchApi + key;
+        var searchApi = $scope.searchApi;
 
         console.log(searchApi);
-
-        $http.get(searchApi)
+        console.log(key);
+        $http.get(searchApi+key)
             .success(function(newItems) {
+                console.log(newItems);
                 if (newItems.ok == true) {
                     $scope.items = newItems.data;
                 }else{

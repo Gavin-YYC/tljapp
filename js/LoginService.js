@@ -1,21 +1,25 @@
 angular.module('user.service',[])
-.factory('AuthService',function ($http){
+.factory('AuthService',function ($q,$http){
 	var authService = {};
-	var userApi = "http://120.24.218.56/login";
-	authService.login = function (data){
+	authService.login = function (data,url){
+		var d = $q.defer();
 		return $http({
-				url:userApi,
+				url:url,
 				method:"POST",
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 	   			},
 				data: data
 			})
-			.then(function (resp){
-				console.log(resp.data);
-				Session.create(resp.data.id);
-				return resp.data.id;
-			})
+            .success(function (data,status){
+            	console.log(data);
+                d.resolve(data);
+            })
+            .error(function (data,status){
+            	console.log(data);
+                d.reject(data);
+            })
+        return d.promise;
 	}
 
 	/*

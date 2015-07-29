@@ -2,46 +2,48 @@
 	<ion-nav-bar align-title="center">
 		<ion-nav-back-button>返回</ion-nav-back-button>
 	</ion-nav-bar>
-	<ion-content class="has-header">
+	<ion-content class="has-header" ng-controller="ResumeListController">
 
 		<div class="button-bar bar-assertive">
-		  	<a class="button icon-right ion-chevron-up" ng-click="modalType.show()">意向</a>
-		  	<a class="button icon-right ion-chevron-up" ng-click="modalPaytype.show()">性别</a>
-		  	<a class="button icon-right ion-chevron-up" ng-click="modalLocation.show()">地区</a>
+		  	<a class="button icon-right ion-chevron-up" ng-click="IntendModal.show()">意向</a>
+		  	<a class="button icon-right ion-chevron-up" ng-click="GenderModal.show()">性别</a>
+		  	<a class="button icon-right ion-chevron-up" ng-click="AreaModal.show()">地区</a>
 		</div>
 
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功">
 		</ion-refresher>
+
 		<ion-list>
-			<a class="item padding0" href="#/resumedetail/11">
+			<a class="item padding0" href="#/resumedetail/{{item.id}}" ng-repeat="item in items">
 				<div class="row">
 					<div class="col col-25 margin0">
 						<div class="list-type list-type-pic list-type-pic-big">
-							<img src="http://120.24.218.56/static/images/users/80">
+							<img src="http://120.24.218.56/static/images/users/{{item.photoPath}}">
 						</div>
 					</div>
 					<div class="col col-75">
 						<div class="row padding">
-							<div class="col col-33 padding0">王美丽</div>
-							<div class="col col-33 padding0">女</div>
-							<div class="col col-33 padding0">22岁</div>
+							<div class="col col-33 padding0" ng-bind="item.name"></div>
+							<div class="col col-33 padding0" ng-bind="item.gender"></div>
+							<div class="col col-33 padding0">{{item.height}}cm</div>
 						</div>
 						<div class="row padding"><span class="red">意向职位</span>：家教、促销、礼仪</div>
-						<div class="row padding resume-list-small">更新时间：2015-02-22 12:02</div>
+						<div class="row padding resume-list-small">更新时间：{{item.createdTime | date:'yyyy-MM-dd'}}</div>
 					</div>
 				</div>
 			</a>
 		</ion-list>
+		<!--<ion-infinite-scroll on-infinite="loadMore()" distance="30%"></ion-infinite-scroll>-->
 	</ion-content>
 
-	<!--二级目录-->
-	<script id="modal-type.html" type="text/ng-template">
+	<!--求职意向-->
+	<script id="modal-intend.html" type="text/ng-template">
 		<ion-modal-view>
 		    <ion-header-bar class="bar-assertive">
-		        <h1 class="title">选择分类</h1>
-		        <button class="button button-clear button-primary" ng-click="modal.hide()">确定</button>
+		        <h1 class="title">求职意向</h1>
+		        <button class="button button-clear button-primary" ng-click="IntendModal.hide()">确定</button>
 		    </ion-header-bar>
-		    <ion-content ng-controller="getCategoriesCotroller">
+		    <ion-content class="has-header" ng-controller="GetJobCateCotroller">
 			    <div class="list">
 				    <label class="item item-radio">
 					    <input type="radio" name="group" ng-click="goList(0)">
@@ -65,18 +67,18 @@
 		    </ion-content>
 		</ion-modal-view>
 	</script>
-	<!--区域选择-->
-	<script id="modal-location.html" type="text/ng-template">
+	<!--选择性别-->
+	<script id="modal-gender.html" type="text/ng-template">
 		<ion-modal-view>
 		    <ion-header-bar class="bar-assertive">
-		        <h1 class="title">选择区域</h1>
-		        <button class="button button-clear button-primary" ng-click="modal.hide()">确定</button>
+		        <h1 class="title">选择性别</h1>
+		        <button class="button button-clear button-primary" ng-click="GenderModal.hide()">确定</button>
 		    </ion-header-bar>
-		    <ion-content ng-controller="getRegionAndPayCotroller">
+		    <ion-content ng-controller="SearchResumeGenderCotroller">
 				<div class="list">
-				  	<label class="item item-radio" ng-repeat="location in locations">
-					    <input type="radio" name="group"  ng-click="getLocationList(location)">
-					    <div class="item-content">{{location}}</div>
+				  	<label class="item item-radio" ng-repeat="gender in genders">
+					    <input type="radio" name="group"  ng-click="getGender(gender)">
+					    <div class="item-content">{{gender}}</div>
 					    <i class="radio-icon ion-checkmark"></i>
 				  	</label>
 				</div>
@@ -84,12 +86,12 @@
 		</ion-modal-view>
 	</script>
 
-	<!--结算方式-->
-	<script id="modal-pay.html" type="text/ng-template">
+	<!--工作地区-->
+	<script id="modal-area.html" type="text/ng-template">
 		<ion-modal-view>
 		    <ion-header-bar class="bar-assertive">
-		        <h1 class="title">选择结算方式</h1>
-		        <button class="button button-clear button-primary" ng-click="modal.hide()">确定</button>
+		        <h1 class="title">工作地区</h1>
+		        <button class="button button-clear button-primary" ng-click="AreaModal.hide()">确定</button>
 		    </ion-header-bar>
 		    <ion-content ng-controller="getRegionAndPayCotroller">
 				<div class="list">

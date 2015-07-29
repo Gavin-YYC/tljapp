@@ -6,21 +6,20 @@
     </ion-header-bar>
     <ion-content>
     	<div class="redline"></div>
+		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
 		<div class="list card">
-
 			<div class="row">
 				<div class="col col-33 margin0">
 					<div class="list-type list-type-pic list-type-pic-big">
-						<img src="http://120.24.218.56/static/images/users/80">
+						<img src="http://120.24.218.56/static/images/users/{{items.photoPath}}">
 					</div>
 				</div>
 				<div class="col col-67">
-					<div class="row padding">姓名：赵飞燕（女）</div>
-					<div class="row padding">年龄：20岁</div>
-					<div class="row padding">身高：170cm</div>
-					<div class="row padding">城市：淄博</div>
-					<div class="row padding">学校：山东理工大学</div>
-					<div class="row padding">专业：音乐表演专业</div>
+					<div class="row padding">姓名：{{items.name}}（{{items.gender}}）</div>
+					<div class="row padding">年龄：{{items.age}}岁</div>
+					<div class="row padding">身高：{{items.height}}cm</div>
+					<div class="row padding">学校：{{items.school}}</div>
+					<div class="row padding">专业：{{items.major}}</div>
 				</div>
 			</div>
 
@@ -31,26 +30,26 @@
 
 			<div class="row">
 				<div class="col col-33 resume-rec"><span></span>意向地区</div>
-				<div class="col col-67">张店区</div>
+				<div class="col col-67">{{items.preferredRegion}}</div>
 			</div>
 
 			<div class="row">
 				<div class="col col-33 resume-rec"><span></span>自我介绍</div>
-				<div class="col col-67">哈鸡毛包</div>
+				<div class="col col-67">{{items.introduce}}</div>
 			</div>
 
 			<div class="row">
 				<div class="col col-33 resume-rec"><span></span>工作经验</div>
-				<div class="col col-67">暂无</div>
+				<div class="col col-67">{{items.experience}}</div>
 			</div>
 
 			<div class="row">
 				<div class="col col-33">联系方式</div>
 				<div class="col col-67">
-					<i class="icon iconfont icon-dianhua"></i><br>
-					<i class="icon iconfont icon-wechat"></i><br>
-					<i class="icon iconfont icon-qq"></i><br>
-					<i class="icon iconfont icon-xinfeng"></i>
+					<i class="icon iconfont icon-dianhua"></i> {{items.phoneNumber}}<br>
+					<i class="icon iconfont icon-wechat"></i> {{items.wechatAccount}}<br>
+					<i class="icon iconfont icon-qq"></i> {{items.qq}}<br>
+					<i class="icon iconfont icon-xinfeng"></i> {{items.email}}
 				</div>
 			</div>
 
@@ -63,6 +62,7 @@
 				    </a>
 				</div>
 			</div>
+
 		</div>
     </ion-content>
 </ion-view>

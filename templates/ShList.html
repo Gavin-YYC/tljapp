@@ -4,10 +4,16 @@
 	</ion-nav-bar>
 	<ion-content class="has-header">
 
-		<div class="button-bar bar-assertive">
-		  	<a class="button icon-right ion-arrow-up-b" ng-click="modalHot.show()">热门</a>
-		  	<a class="button icon-right ion-arrow-down-b" ng-click="modalClass.show()">分类</a>
-		  	<a class="button icon-right ion-arrow-down-b" ng-click="modalPrice.show()">价格</a>
+		<div class="button-bar bar-balanced">
+		  	<a class="button" ng-click="modalHot.show()">热门推荐</a>
+		  	<select class="button" ng-controller="getShCateListCotroller" ng-model="select.classId" ng-change="classIdChange()">
+		  		<option value="">分类</option>
+		  		<option ng-repeat="item in items" ng-value="item.id" ng-bind="item.name"></option>
+		  	</select>
+		  	<select class="button" ng-controller="getShCateListCotroller" ng-model="select.price" ng-change="priceChange()">
+		  		<option value="">价格</option>
+		  		<option ng-repeat="price in prices" ng-value="price" ng-bind="price"></option>
+		  	</select>
 		</div>
 
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功">
@@ -34,76 +40,7 @@
 				</div>
 			</a>
 		</ion-list>
-
-		<ion-infinite-scroll ng-if="moreDataCanBeLoaded()" on-infinite="loadMore()" distance="30%"></ion-infinite-scroll>
 	</ion-content>
-
-	<!--热门分类-->
-	<script id="modal-hot.html" type="text/ng-template">
-		<ion-modal-view>
-		    <ion-header-bar class="bar-assertive">
-		        <h1 class="title">人热门分类</h1>
-		        <button class="button button-clear button-primary" ng-click="modal.hide()">确定</button>
-		    </ion-header-bar>
-		    <ion-content ng-controller="getCategoriesCotroller">
-			    <div class="list">
-				    <label class="item item-radio">
-					    <input type="radio" name="group" ng-click="goList(0)">
-					    <div class="item-content">
-					    	<div class="list-type list-type-pic" style="color:#FA693A;border-color:#FA693A">
-								<span>所有</span>
-							</div>
-					    </div>
-					    <i class="radio-icon ion-checkmark"></i>
-					</label>
-				    <label class="item item-radio" ng-repeat="category in categories">
-					    <input type="radio" name="group" ng-click="goList(category.id)">
-					    <div class="item-content">
-					    	<div class="list-type list-type-pic" style="color:{{category.themeColor}};border-color:{{category.themeColor}}">
-								<span>{{category.name}}</span>
-							</div>
-					    </div>
-					    <i class="radio-icon ion-checkmark"></i>
-					</label>
-				</div>
-		    </ion-content>
-		</ion-modal-view>
-	</script>
-	<!--分类-->
-	<script id="modal-class.html" type="text/ng-template">
-		<ion-modal-view>
-		    <ion-header-bar class="bar-assertive">
-		        <h1 class="title">选择分类</h1>
-		        <button class="button button-clear button-primary" ng-click="modal.hide()">确定</button>
-		    </ion-header-bar>
-		    <ion-content ng-controller="getShCateListCotroller">
-				<div class="list">
-				  	<label class="item item-radio" ng-repeat="item in items">
-					    <input type="radio" name="group"  ng-click="getLocationList(item.id)">
-					    <div class="item-content">{{item.name}}</div>
-					    <i class="radio-icon ion-checkmark"></i>
-				  	</label>
-				</div>
-		    </ion-content>
-		</ion-modal-view>
-	</script>
-
-	<!--价格-->
-	<script id="modal-price.html" type="text/ng-template">
-		<ion-modal-view>
-		    <ion-header-bar class="bar-assertive">
-		        <h1 class="title">选择价格</h1>
-		        <button class="button button-clear button-primary" ng-click="modal.hide()">确定</button>
-		    </ion-header-bar>
-		    <ion-content ng-controller="getRegionAndPayCotroller">
-				<div class="list">
-				  	<label class="item item-radio" ng-repeat="paytype in paytypes">
-					    <input type="radio" name="group"  ng-click="getPayTypeList(paytype)">
-					    <div class="item-content">{{paytype}}</div>
-					    <i class="radio-icon ion-checkmark"></i>
-				  	</label>
-				</div>
-		    </ion-content>
-		</ion-modal-view>
-	</script>
+	<ion-infinite-scroll ng-if="moreDataCanBeLoaded()" on-infinite="loadMore()" distance="30%">
+	</ion-infinite-scroll>
 </ion-view>

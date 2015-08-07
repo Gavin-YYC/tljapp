@@ -3,8 +3,8 @@
  *获取二级目录、三级详情、评论等接口的统一服务
  *只传入一个api即可
 */
-angular.module('getlist.service',[])
-.factory('GetListService',function ($q,$http,$ionicPopup){
+angular.module('getlist.service',['ngCookies'])
+.factory('GetListService',function ($q,$http,$ionicPopup,$cookies){
 	var getListService = {};
 	//获取二级列表
 	getListService.getList = function (api){
@@ -53,6 +53,25 @@ angular.module('getlist.service',[])
             .error(function (data,status){
                 d.reject(data);
             })
+        return d.promise;
+	}
+
+	getListService.userPost = function (api, data){
+		var d = $q.defer();
+		$http({
+            url:api,
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: data
+		})
+        .success(function (data,status){
+            d.resolve(data);
+        })
+        .error(function (data,status){
+            d.reject(data);
+        })
         return d.promise;
 	}
 

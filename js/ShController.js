@@ -8,8 +8,7 @@ angular.module('sh.controllers',[])
     $http.get(shListApi)
         .success(function(newItems) {
             if (newItems.ok == true) {
-            	console.log(newItems.data);
-                $scope.items = newItems.data;
+                $scope.items = newItems.data.list;
             }else{
                 //else code
             };
@@ -19,8 +18,8 @@ angular.module('sh.controllers',[])
 	    $http.get(shListApi)
 	        .success(function(newItems) {
 	            if (newItems.ok == true) {
-	            	console.log(newItems.data);
-	                $scope.items = newItems.data;
+                    console.log(newItems.data.list.length);
+	                $scope.items.unshift(newItems.data.list);
 	            }else{
 	                //else code
 	            };
@@ -34,9 +33,10 @@ angular.module('sh.controllers',[])
     	pageBase++;
 	    $http.get(shListApi+"?pageNumber="+pageBase+"&pageSize="+pageSize)
 	        .success(function(newItems) {
-                if (newItems.ok == true && newItems.data.length > 0) {
-                    $scope.items.push(newItems.data);
-                }else if(newItems.ok == true && newItems.data.length == 0) {
+                if (newItems.ok == true && newItems.data.list.length > 0) {
+                    console.log(newItems.data.list.length);
+                    $scope.items.push(newItems.data.list);
+                }else if(newItems.ok == true && newItems.data.list.length == 0) {
                     GetListService.alertTip("已经没有更多信息了");
                 }else{
                     GetListService.alertTip(newItems.message);
@@ -49,28 +49,6 @@ angular.module('sh.controllers',[])
     $scope.$on('$stateChangeSuccess', function() {
         $scope.loadMore();
     });
-
-    //modal弹出模态窗口，热门分类
-    $ionicModal.fromTemplateUrl('modal-hot.html',function(modal){
-        $scope.modalHot = modal;
-    },{
-        animation: 'slide-in-up'
-    });
-
-    //modal弹出模态窗口，分类
-    $ionicModal.fromTemplateUrl('modal-class.html',function(modal){
-        $scope.modalClass = modal;
-    },{
-        animation: 'slide-in-up'
-    });
-
-    //modal弹出模态窗口，价格
-    $ionicModal.fromTemplateUrl('modal-price.html',function(modal){
-        $scope.modalPrice = modal;
-    },{
-        animation: 'slide-in-up'
-    });
-
 })
 
 
@@ -79,27 +57,36 @@ angular.module('sh.controllers',[])
     var shCateApi = "http://120.24.218.56/api/sh/cate/list";
     GetListService.getList(shCateApi)
         .success(function (data,status){
-            $scope.items = data.data;
+            $scope.items = data.data.list;
         })
     $scope.goList = function(id){
         $location.url("list/"+id); 
     }
+
+    //按照价格进行搜索
+    var price = ['0-10','10-50','50-100','100-500','1000-5000','>5000'];
+    $scope.prices = price;
+    $scope.classIdChange = function (){
+        var cateId = $scope.select.classId;
+        var api = "http://120.24.218.56/api/sh/cate/"+cateId;
+        GetListService.getList(api)
+            .then(function (data){
+                console.log(data);
+            })
+    }
 })
 
 //获取二手物品单个信息详情
-.controller('ShDetailController',function ($scope,$http,$stateParams,$ionicHistory){
+.controller('ShDetailController',function ($scope,$http,$stateParams,$ionicHistory,GetListService){
     $scope.myGoBack = function (){
         $ionicHistory.goBack();
     }
-
     var shApi = "http://120.24.218.56/api/sh/"+$stateParams.id;
     var commentApi = "http://120.24.218.56/api/review/job/"+$stateParams.id;
-
     GetListService.getDetail(shApi)
         .success(function (data,status){
             $scope.items = data.data;
         })
-
     GetListService.getComment(commentApi)
         .success(function (data,status){
             $scope.comments = data.data;

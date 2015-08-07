@@ -1,16 +1,23 @@
 <ion-view title="个人中心">
 	<ion-nav-bar class="padding0" align-title="center">
 		<ion-nav-back-button>返回</ion-nav-back-button>
-		<button class="right">sd</button>
 	</ion-nav-bar>
 	<ion-content ng-controller="MyController">
-
-		<div class="list">
-
-			<a class="item item-thumbnail-left">
-				<img src="cover.jpg">
-				<h2>Pretty Hate Machine</h2>
-				<p>Nine Inch Nails</p>
+		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
+		<div class="list tlj-list">
+			<a class="item padding0" href="#/my/{{user.id}}">
+				<div class="row">
+			      	<div class="col col-33">
+				      	<div class="circle circleimg">
+							<img src="http://120.24.218.56/static/images/users/{{user.profilePhotoId}}">
+						</div>
+			      	</div>
+			      	<div class="col col-40">
+			      		<h2 class="title-jianzhi" ng-bind="user.username"></h2>
+			      		<p ng-bind="user.schoolOrganization"></p>
+			      	</div>
+			      	<div class="col col-25 arrow-left"><i class="icon ion-ios-arrow-right"></i></div>
+		      	</div>
 		    </a>
 
 			<div class="item item-divider"></div>
@@ -49,8 +56,8 @@
 				<i class="icon ion-ios-paper"></i>
 				意见反馈
 			</a>
-			<div class="item">
-				<button class="button button-block button-positive">
+			<div class="item" ng-controller="LogoutController">
+				<button class="button button-block button-positive" ng-click="logout()">
 					退出登录
 				</button>	
 			</div>

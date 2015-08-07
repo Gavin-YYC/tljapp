@@ -4,16 +4,22 @@
 	</ion-nav-bar>
 	<ion-content>
 	
-		<div class="button-bar bar-assertive">
+		<div class="button-bar bar-assertive" ng-controller="getRegionAndPayCotroller">
 		  	<a class="button icon-right ion-chevron-up" ng-click="modalType.show()">分类</a>
-		  	<a class="button icon-right ion-chevron-down" ng-click="modalPaytype.show()">结算</a>
-		  	<a class="button icon-right ion-chevron-down" ng-click="modalLocation.show()">区域</a>
+		  	<select class="button" ng-model="select.location" ng-change="locationChange()">
+		  		<option value="">区域</option>
+		  		<option ng-repeat="location in locations" ng-value="location" ng-bind="location"></option>
+		  	</select>
+		  	<select class="button" ng-model="select.paytype" ng-change="paytypeChange()">
+		  		<option value="">结算</option>
+		  		<option ng-repeat="paytype in paytypes" ng-value="paytype" ng-bind="paytype"></option>
+		  	</select>
 		</div>
 
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
 		<ion-list>
 			<ion-item ng-repeat="item in items">
-				<a class="item no-boder" href="#/detail/{{item.id}}">
+				<a class="item no-boder" ng-href="#/detail/{{item.id}}">
 					<div class="row">
 						<div class="col col-25 padding0">
 							<div class="list-type list-type-pic" style="color:{{item.category.themeColor}};border-color:{{item.category.themeColor}}">
@@ -39,6 +45,8 @@
 				</a>
 			</ion-item>
 		</ion-list>
+		<ion-infinite-scroll ng-if="moreDataCanBeLoaded()" on-infinite="loadMore()" distance="30%">
+		</ion-infinite-scroll>
 		
 	</ion-content>
 
@@ -69,43 +77,6 @@
 					    </div>
 					    <i class="radio-icon ion-checkmark"></i>
 					</label>
-				</div>
-		    </ion-content>
-		</ion-modal-view>
-	</script>
-	<!--区域选择-->
-	<script id="modal-location.html" type="text/ng-template">
-		<ion-modal-view>
-		    <ion-header-bar class="bar-assertive">
-		        <h1 class="title">选择区域</h1>
-		        <button class="button button-clear button-primary" ng-click="modal.hide()">确定</button>
-		    </ion-header-bar>
-		    <ion-content ng-controller="getRegionAndPayCotroller">
-				<div class="list">
-				  	<label class="item item-radio" ng-repeat="location in locations">
-					    <input type="radio" name="group"  ng-click="getLocationList(location)">
-					    <div class="item-content">{{location}}</div>
-					    <i class="radio-icon ion-checkmark"></i>
-				  	</label>
-				</div>
-		    </ion-content>
-		</ion-modal-view>
-	</script>
-
-	<!--结算方式-->
-	<script id="modal-pay.html" type="text/ng-template">
-		<ion-modal-view>
-		    <ion-header-bar class="bar-assertive">
-		        <h1 class="title">选择结算方式</h1>
-		        <button class="button button-clear button-primary" ng-click="modal.hide()">确定</button>
-		    </ion-header-bar>
-		    <ion-content ng-controller="getRegionAndPayCotroller">
-				<div class="list">
-				  	<label class="item item-radio" ng-repeat="paytype in paytypes">
-					    <input type="radio" name="group"  ng-click="getPayTypeList(paytype)">
-					    <div class="item-content">{{paytype}}</div>
-					    <i class="radio-icon ion-checkmark"></i>
-				  	</label>
 				</div>
 		    </ion-content>
 		</ion-modal-view>

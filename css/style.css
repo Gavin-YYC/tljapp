@@ -145,6 +145,15 @@ a{
 	color: #43BA94;
 	font-family: "Microsoft YaHei";
 }
+.tlj-list .circleimg{
+	width: 60px;
+	height: 60px;
+	margin: 0 auto;
+}
+.tlj-list .circleimg img{
+	width: 60px;
+	height: 60px;
+}
 .tlj-list .circle .icon-zixingche{
 	color: #43BA94;
 	padding-top: 8px;

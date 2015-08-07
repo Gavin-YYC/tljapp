@@ -1,53 +1,89 @@
+/*
+ *  my.controllers 
+ *  Children Controlles Followed：
+ *    --IndexController    （主页控制器）
+ *    --LoginController    （登录控制器）
+ *    --RegisterController （注册控制器）
+ *    --MyController       （个人中心控制器）
+ *    --feedbackController （意见反馈中心控制器）
+ *    --LogoutController   （注销控制器）
+*/
 angular.module('my.controllers',[])
-.controller('IndexController',function ($scope,$ionicModal,$ionicHistory){
-	
-    $ionicModal.fromTemplateUrl('modal-login.html',function(modal){
-        $scope.LoginModal = modal;
-    },{
-        scope: $scope,
-        focusFirstInput: true,
-        animation: 'slide-in-up'
-    });
-
-
-    $ionicModal.fromTemplateUrl('modal-register.html',function(modal){
-        $scope.RegisterModal = modal;
-    },{
-        scope: $scope,
-        animation: 'slide-in-up',
-        focusFirstInput: true
-    });
+//个人中心控制器
+.controller('IndexController',function ($scope,$ionicModal,$ionicHistory,$state,Auth,GetListService){
+    //进入个人中心
+    $scope.goToMy = function(){
+        var username = Auth.getToken();
+        username ? $state.go("my") : $state.go("login");
+    }
 })
 
-//login controller
-.controller('LoginController',function ($scope,AuthService,GetListService){
+//用户登录，
+.controller('LoginController',function ($scope, $state, $timeout, Login, Auth, GetListService){
     $scope.message = "";
     $scope.user = {
         username:null,
         password:null
     }
     $scope.user.rememberMe = true;
-    var userApi = "http://120.24.218.56/login";
+    //登录操作
     $scope.login = function(){
+        var userApi = "http://120.24.218.56/login?m=1";
         var subdata = "username="+$scope.user.username+"&password="+$scope.user.password+"&rememberMe="+$scope.user.rememberMe;
-        AuthService.login(subdata,userApi)
+        Login.new(subdata,userApi)
             .then(function (data){
                 if (!data.data.result) {
                     GetListService.alertTip(data.data.message);
-                }else{
+                }else{  
+                    Auth.setToken(data.data.parm.id);
                     GetListService.alertTip("登录成功！");
+                    $timeout(function() {
+                        $state.go('/');
+                    }, 1500);
                 };
             },function (data){
                 console.log(data);
             })
     }
+    //去注册
+    $scope.register = function (){
+        $state.go("register");
+    }
     
 })
 
-.controller('MyController',function ($scope,$state,$ionicModal) {
-	$scope.goToMy = function(){
-		$state.go("my");
-	}
+//用户注册
+.controller('RegisterController',function ($scope, $state, $timeout, Login, Auth, GetListService){
+    //去登录
+    $scope.login = function (){
+        $state.go("login");
+    }
+})
+
+//个人中心内控制器
+.controller('MyController',function ($scope,$state,$ionicModal,Auth,GetListService) {
+    var userId = Auth.getToken();
+    if (userId) {
+        var api = "http://120.24.218.56/api/user/"+userId;
+        GetListService.getList(api).then(function(data){
+            $scope.user = data.data.data;
+            console.log(data.data.data);
+        })
+    }else{
+        $state.go("login");
+    };
+
+    //下拉更新资料
+    $scope.doRefresh = function (){
+        GetListService.userPost(api,data).then(function(data){
+            $scope.user = data.data.data;
+        })
+        .finally(function() {
+            $scope.$broadcast('scroll.refreshComplete');
+        });
+    }
+
+    //弹出投稿反馈模态框
     $ionicModal.fromTemplateUrl('feedback.html',function(modal){
         $scope.FeedbackModal = modal;
     },{
@@ -56,7 +92,7 @@ angular.module('my.controllers',[])
     });
 })
 
-//投稿反馈
+//投稿反馈内容提交
 .controller('feedbackController',function ($scope,$http,GetListService){
     $scope.feed = {
         content:null,
@@ -75,7 +111,38 @@ angular.module('my.controllers',[])
                 }
             })
     }
-
-
 })
 
+//用户注销
+.controller('LogoutController',function ($scope,$state,$ionicPopup,Auth){
+    $scope.logout = function (){
+       var confirmPopup = $ionicPopup.confirm({
+         title: '桃李街提示：',
+         template: '确认退出？'
+       });
+       confirmPopup.then(function(res) {
+        console.log(res);
+         if(res) {
+           Auth.logout();
+           $state.go('/');
+           console.log("注销成功");
+         } else {
+           console.log('取消注销');
+         }
+       });
+    }
+})
+
+//查看我的个人资料
+.controller('MyDetailController',function ($scope, Auth, GetListService){
+    var username = Auth.getToken();
+    if (username) {
+        var api = "http://120.24.218.56/api/user/name/"+username;
+        GetListService.getList(api).then(function(data){
+            $scope.user = data.data.data;
+            console.log(data.data.data);
+        })
+    }else{
+        $state.go("login");
+    };
+})

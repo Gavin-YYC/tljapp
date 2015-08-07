@@ -61,7 +61,7 @@
 				    <i class="icon ion-thumbsdown"></i> {{item.dislikes}}
 			    </a>
 			    <a class="tab-item" href="#">
-				    <i class="icon ion-chatbox"></i>
+				    <i class="icon ion-chatbox"></i> {{comments.length}}
 			    </a>
 			    <a class="tab-item" href="#">
 			      	<i class="icon ion-share"></i>
@@ -79,4 +79,12 @@
 			</div>
 		</div>
     </ion-content>
+    <ion-footer-bar class="item-input-inset">
+	  	<label class="item-input-wrapper">
+	    	<i class="icon ion-ios-barcode-outline placeholder-icon"></i>
+	    	<input type="text" placeholder="评论" ng-model="commentDate">
+	  	</label>
+	  	<button class="button button-clear" ng-click="sendComment(commentDate)">评论</button>
+	</ion-footer-bar>
+
 </ion-view>

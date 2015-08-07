@@ -1,9 +1,10 @@
 <ion-view title="兼职列表">
-	<ion-nav-bar class="padding0" align-title="center">
+	<ion-nav-bar align-title="center">
 		<ion-nav-back-button>返回</ion-nav-back-button>
 	</ion-nav-bar>
-	<ion-content ng-controller="SearchController">
-		<div class="button-bar bar-assertive padding0">
+	<ion-content>
+	
+		<div class="button-bar bar-assertive">
 		  	<a class="button icon-right ion-chevron-up" ng-click="modalType.show()">分类</a>
 		  	<a class="button icon-right ion-chevron-down" ng-click="modalPaytype.show()">结算</a>
 		  	<a class="button icon-right ion-chevron-down" ng-click="modalLocation.show()">区域</a>
@@ -12,7 +13,7 @@
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
 		<ion-list>
 			<ion-item ng-repeat="item in items">
-				<a class="item no-boder padding0" href="#/detail/{{item.id}}">
+				<a class="item no-boder" href="#/detail/{{item.id}}">
 					<div class="row">
 						<div class="col col-25 padding0">
 							<div class="list-type list-type-pic" style="color:{{item.category.themeColor}};border-color:{{item.category.themeColor}}">
@@ -22,7 +23,7 @@
 						<div class="col col-75">
 							<h2>{{item.title}}</h2>
 							<p>
-								<i class="icon ion-social-yen-outline"></i> {{item.wage}}元/{{item.salaryUnit}}
+								&yen; {{item.wage}}元/{{item.salaryUnit}}
 							</p>
 						</div>
 					</div>

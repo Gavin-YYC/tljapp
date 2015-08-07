@@ -20,14 +20,15 @@ angular.module('route',[])
             })
             //搜索相关
             .state('search',{
-                url:'/search',
+                url:'/search/:type/:id',
                 templateUrl:'templates/list.html',
                 controller:'SearchController'
             })
             //个人简历
             .state('resumeList', {
                 url:'/resume/:id',
-                templateUrl:'templates/ResumeList.html'
+                templateUrl:'templates/ResumeList.html',
+                controller:'ResumeListController'
             })
             .state('resumeDetail', {
                 url:'/resumedetail/:id',
@@ -50,6 +51,22 @@ angular.module('route',[])
                 url:'/my',
                 templateUrl:'templates/my.html',
                 controller:'MyController'
+            })
+            //个人详情
+            .state('myDetail',{
+                url:'/my/:id',
+                templateUrl:'templates/MyDetail.html',
+                controller:'MyDetailController'
+            })
+            //登录
+            .state('login',{
+                url:'/login',
+                templateUrl:'templates/login.html',
+            })
+            //登录
+            .state('register',{
+                url:'/register',
+                templateUrl:'templates/register.html',
             })
         //其他情况，返回首页
         $urlRouterProvider.otherwise('/');

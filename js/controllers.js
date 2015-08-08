@@ -84,7 +84,7 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
 })
 
 /* 兼职详情页，加载内容的同时加载评论 */
-.controller('DetailController',function ($scope, $http, $stateParams, GetListService){
+.controller('DetailController',function ($scope, $http, $stateParams, GetListService ,Auth){
     var userId = $stateParams.id;
     var jobApi = "http://120.24.218.56/api/job/"+userId;
     var commentApi = "http://120.24.218.56/api/review/job/"+userId;

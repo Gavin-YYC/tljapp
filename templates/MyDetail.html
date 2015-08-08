@@ -4,5 +4,13 @@
 	</ion-nav-bar>
 	<ion-content ng-controller="MyDetailController">
 		<p>大家好，我是{{user.name}}，我是一个漂亮的{{user.gender}}生，我今年{{user.age}}岁了。</p>
+		<div class="list">  
+      		<div class="item" ng-repeat="img in images_list">  
+       			<img src="{{img}}" width="100%">  
+      		</div>  
+    	</div>  
+ 		<button class="button button-full button-positive" ng-click="addAttachment()">
+            select（选择图片）
+        </button>
 	</ion-content>
 </ion-view>

@@ -8,7 +8,7 @@
  *    --feedbackController （意见反馈中心控制器）
  *    --LogoutController   （注销控制器）
 */
-angular.module('my.controllers',[])
+angular.module('my.controllers',['ngCordova'])
 //个人中心控制器
 .controller('IndexController',function ($scope,$ionicModal,$ionicHistory,$state,Auth,GetListService){
     //进入个人中心
@@ -134,10 +134,10 @@ angular.module('my.controllers',[])
 })
 
 //查看我的个人资料
-.controller('MyDetailController',function ($scope, Auth, GetListService){
+.controller('MyDetailController',function ($scope, Auth, GetListService, $ionicActionSheet, $cordovaImagePicker){
     var username = Auth.getToken();
     if (username) {
-        var api = "http://120.24.218.56/api/user/name/"+username;
+        var api = "http://120.24.218.56/api/user/"+username;
         GetListService.getList(api).then(function(data){
             $scope.user = data.data.data;
             console.log(data.data.data);
@@ -145,4 +145,45 @@ angular.module('my.controllers',[])
     }else{
         $state.go("login");
     };
+
+
+//=========================
+    $scope.images_list = ['a','b','c'];  
+    // "添加附件"Event  
+    $scope.addAttachment = function() {  
+        //nonePopover();
+        $ionicActionSheet.show({  
+            buttons: [{ text: '相机' }, { text: '图库' }  ],  
+            cancelText: '关闭', 
+            cancel: function() {  
+                return true;  
+            },  
+            buttonClicked: function(index) {  
+                switch (index){  
+                    case 0:appendByCamera();break;  
+                    case 1: pickImage();break;  
+                    default:break;  
+                }      
+                return true;  
+            }  
+        });  
+    }   
+    //image picker  
+    var pickImage = function () {  
+        var options = {  
+            maximumImagesCount: 1,  
+            width: 800,  
+            height: 800,  
+            quality: 80  
+        };  
+        $cordovaImagePicker.getPictures(options)  
+            .then(function (results) {   
+                $scope.images_list.push(results[0]);       
+            }, function (error) {  
+                // error getting photos  
+            });
+    }
+//=========================
+
+
 })

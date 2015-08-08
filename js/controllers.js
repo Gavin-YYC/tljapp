@@ -84,31 +84,23 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
 })
 
 /* 兼职详情页，加载内容的同时加载评论 */
-.controller('DetailController',function ($scope, $http, $stateParams, GetListService, Auth){
-    $scope.id = $stateParams.id;
-    var jobApi = "http://120.24.218.56/api/job/";
-    var commentApi = "http://120.24.218.56/api/review/job/"
+.controller('DetailController',function ($scope, $http, $stateParams, GetListService){
+    var userId = $stateParams.id;
+    var jobApi = "http://120.24.218.56/api/job/"+userId;
+    var commentApi = "http://120.24.218.56/api/review/job/"+userId;
+    var subCommentApi = "http://120.24.218.56/user/job/"+userId+"/review/post";
     //查询兼职内容
-    $http.get(jobApi+$scope.id)
-        .success(function(jobDetail){
-            if (jobDetail.ok == true) {
-                $scope.item = jobDetail.data;
-            };
-        })
+    GetListService.getList(jobApi).then(function (data){
+        $scope.item = data.data.data;
+    })
     //查询指定ID下的评论
-    $http.get(commentApi+$scope.id)
-        .success(function(commentDetail){
-            if (commentDetail.ok == true) {
-                $scope.comments = commentDetail.data.list;
-                console.log($scope.comments);
-            };
-        })
-
+    GetListService.getList(commentApi).then(function (data){
+        $scope.comments = data.data.data.list;
+    })
+    //提交评论
     $scope.sendComment = function (data){
-        var api = "http://120.24.218.56/user/job/"+$scope.id+"/review/post";
         var data = "content="+data+"&member_id="+Auth.getToken();
-        console.log(data);
-        GetListService.userPost(api,data).then(function (data){
+        GetListService.userPost(subCommentApi,data).then(function (data){
             console.log(data);
         })
     }
@@ -117,10 +109,9 @@ angular.module('starter.controllers',['search.controllers','my.controllers'])
 /* 获取二级目录 */
 .controller('getCategoriesCotroller',function($scope,$http,$location,GetListService){
     var categoryApi = "http://120.24.218.56/api/job/cate/list";
-    GetListService.getList(categoryApi)
-        .success(function (data,status){
+    GetListService.getList(categoryApi).then(function (data){
             $scope.categories = data.data.list;
-        })
+    })
     $scope.goList = function(id){
         $location.url("list/"+id); 
     }

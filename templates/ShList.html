@@ -38,17 +38,20 @@
 					</div>
 					<div class="col col-67">
 						<div class="row padding">{{item.title}}</div>
-						<div class="row padding"><span class="red">&yen;{{item.sellPrice}} 可小刀</div>
 						<div class="row padding resume-list-small">
-							<i class="icon ion-ios-location-outline"></i>&nbsp;{{item.tradePlace}}
+							{{item.category.name}} &nbsp; 
+							{{item.depreciationRate}} &nbsp; 
+							&yen; {{item.sellPrice}}
 						</div>
 						<div class="row padding resume-list-small">
-							<i class="icon ion-android-time"></i>&nbsp;{{item.postTime | date:'yyyy-MM-dd mm:ss'}}
+							<i class="icon ion-ios-location-outline"></i>&nbsp; {{item.tradePlace}} &nbsp;
+							<i class="icon ion-android-time"></i>&nbsp; {{item.postTime | timeFileter}}
 						</div>
 					</div>
 				</div>
 			</a>
 		</ion-list>
+		<p class="emptyContent" ng-if="emptyContent">Sorry,该项目下没有内容</p>
 	</ion-content>
 	<ion-infinite-scroll on-infinite="loadMore()" distance="30%"></ion-infinite-scroll>
 </ion-view>

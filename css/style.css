@@ -340,3 +340,11 @@ a{
 	border-bottom: 1px solid #ccc;
 	overflow: hidden;
 }
+
+.emptyContent{
+	text-align: center;
+	font-size: 14px;
+	font-weight: bold;
+	color: #ccc;
+	padding-top: 100px;
+}

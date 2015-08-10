@@ -5,26 +5,26 @@
 // the 2nd parameter is an array of 'requires'
 
 angular.module('tljApp', [
-  'ionic',
-  'route',
-  'user.service',
-  'getlist.service',
-  'starter.controllers',
-  'resume.controllers',
-  'sh.controllers'
-  ])
+    'ionic',
+    'route',
+    'user.service',
+    'getlist.service',
+    'starter.controllers',
+    'resume.controllers',
+    'sh.controllers'
+])
 
 .run(function($rootScope, $ionicPlatform, $ionicHistory) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  })
+    $ionicPlatform.ready(function() {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if(window.cordova && window.cordova.plugins.Keyboard) {
+          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if(window.StatusBar) {
+          StatusBar.styleDefault();
+        }
+    })
 })
 .constant('ACCESS_LEVELS', {
     pub: 1,
@@ -36,12 +36,12 @@ angular.module('tljApp', [
     var timestampMarker = {
         request: function (config) {
             $rootScope.loading = true;
-            config.requestTimestamp = new Date().getTime();
+            //config.requestTimestamp = new Date().getTime();
             return config;
         },
         response: function (response) {
             $rootScope.loading = false;
-            response.config.responseTimestamp = new Date().getTime();
+            //response.config.responseTimestamp = new Date().getTime();
             return response;
         }
     };
@@ -50,3 +50,30 @@ angular.module('tljApp', [
 .config(['$httpProvider',function ($httpProvider){
     $httpProvider.interceptors.push('timestampMarker');
 }])
+
+//自定义时间过滤器
+.filter('timeFileter',function (){
+    //如果是当天 显示几分钟前
+    return function (date){
+        var post = new Date(date);
+        var date= new Date();
+        var time =date.getTime() - post.getTime();
+        if(time < 0){
+            return "1分钟前";
+        }
+        if (date.getDate() === post.getDate() && time < 86400000) {
+            if (time < 60 * 60 * 1000) {
+                return Math.ceil(time / (60 * 1000)) + "分钟前";
+            } else {
+                return Math.ceil(time / (60 * 60 * 1000))+ "小时前";
+            }
+        }else{
+            var month  = post.getMonth()+1;
+            var day = post.getDate();
+            if (month<10) month = "0"+month;
+            if (day < 10) day = "0"+day;
+            return (month)+"-"+day;
+        }
+        return time;
+    }
+})

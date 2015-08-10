@@ -4,20 +4,27 @@
 	</ion-nav-bar>
 	<ion-content ng-controller="RegisterController" class="has-header padding">
 		<ion-list>
+			<div class="card">
+			  	<div 
+			  	class="item item-text-wrap" 
+			  	ng-style='{"color":color,"background-color":bgColor}'>
+			    {{err.msg}}
+			  	</div>
+			</div>
 		    <label class="item item-input">
-			    <span class="input-label">邮箱</span>
-			    <input type="text">
+			    <span class="input-label">用户名</span>
+			    <input type="text" ng-model="reg.username" ng-minlength="6" required>
 		    </label>
 		    <label class="item item-input">
 			    <span class="input-label">密码</span>
-			    <input type="password">
+			    <input type="password" ng-model="reg.password" ng-minlength="6" required>
 		    </label>
 		    <label class="item item-input">
 			    <span class="input-label">重复密码</span>
-			    <input type="password">
+			    <input type="password" ng-model="reg.rePassword" ng-minlength="6" required>
 		    </label>
 			<div class="item">
-				<button class="button button-block button-positive" ng-click="register()">
+				<button class="button button-block button-positive" ng-click="register(reg)">
 					提交注册
 				</button>	
 				<button class="button button-block button-clear button-positive" ng-click="login()">

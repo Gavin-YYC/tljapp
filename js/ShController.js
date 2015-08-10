@@ -12,8 +12,13 @@ angular.module('sh.controllers',[])
     var shListApi = "http://120.24.218.56/api/sh/list";
     //接收从子控制器中传来的数据（选择分类等）
     $scope.$on('to-parent', function (event, data){
-        console.log(data);
-        $scope.items = data;
+        if (data == "") {
+            $scope.items = data;
+            $scope.emptyContent = true;
+        }else{
+            $scope.items = data;
+            $scope.emptyContent = false;
+        };
     })
     //页面初始化
     GetListService.getList(shListApi).then(function (data){

@@ -9,7 +9,13 @@ angular.module('starter.controllers',['my.controllers'])
     var cateListApi = "http://120.24.218.56/api/job/category/"+cateId;
 
     $scope.$on('to-parent',function (event,data){
-        $scope.items = data;
+        if (data == "") {
+            $scope.items = data;
+            $scope.emptyContent = true;
+        }else{
+            $scope.items = data;
+            $scope.emptyContent = false;
+        };
     })
 
     //加载兼职首页的数据，0表示返回的所有数据，其他数值表示兼职分类下二级栏目的Id

@@ -53,10 +53,38 @@ angular.module('my.controllers',['ngCordova'])
 })
 
 //用户注册
-.controller('RegisterController',function ($scope, $state, $timeout, Login, Auth, GetListService){
+.controller('RegisterController',function ($scope, $state, $timeout, GetListService){
     //去登录
     $scope.login = function (){
         $state.go("login");
+    }
+    $scope.reg = {
+        username : "",
+        password : "",
+        rePassword: ""
+    }
+    $scope.err = {
+        msg:"请输入注册信息："
+    }
+    //注册事件
+    $scope.register = function (reg){
+        var api = "http://120.24.218.56/register";
+        var data = "username="+reg.username+"&password="+reg.password+"&rePassword="+reg.rePassword+"&isEmployer=false";
+        GetListService.userPost(api, data).then(function (data){
+            if (!data.result) {
+                $scope.color = "#fff";
+                $scope.bgColor = "#ef473a";
+                $scope.err.msg = data.message;
+            }else{
+                $scope.color = "#fff";
+                $scope.bgColor = "#33cd5f";
+                $scope.err.msg = "注册成功！";
+                GetListService.alertTip("注册成功！");
+                $timeout(function (){
+                    $state.go("login");
+                },1500)
+            }
+        })
     }
 })
 

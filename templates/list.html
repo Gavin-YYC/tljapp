@@ -54,7 +54,8 @@
 
 		<ion-infinite-scroll ng-if="moreDataCanBeLoaded()" on-infinite="loadMore()" distance="30%">
 		</ion-infinite-scroll>
-		
+		<!--如果没有内容，则显示下面的信息-->
+		<p class="emptyContent" ng-if="emptyContent">Sorry,该项目下没有内容</p>
 	</ion-content>
 
 	<!--二级目录-->

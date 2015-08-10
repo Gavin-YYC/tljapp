@@ -6,11 +6,11 @@
 
 		<div class="button-bar bar-assertive">
 		  	<a class="button icon-right ion-chevron-up" ng-click="IntendModal.show()">意向</a>
-		  	<select class="button" ng-controller="SearchResumeGenderCotroller" ng-model="select.gender" ng-change="genderChange()">
+		  	<select class="button" ng-controller="SearchResumeGenderCotroller" ng-model="select.gender" ng-change="genderChange(select.gender)">
 		  		<option value="">性别</option>
 		  		<option ng-repeat="gender in genders" ng-value="gender" ng-bind="gender"></option>
 		  	</select>
-		  	<select class="button" ng-controller="SearchResumeGenderCotroller" ng-model="select.location" ng-change="locationChange()">
+		  	<select class="button" ng-controller="SearchResumeGenderCotroller" ng-model="select.location" ng-change="locationChange(select.location)">
 		  		<option value="">区域</option>
 		  		<option ng-repeat="location in locations" ng-value="location" ng-bind="location"></option>
 		  	</select>

@@ -1,100 +1,115 @@
+/*
+ * create by Gavin
+ * 二手模块
+ * 页面初始化、分类选择、搜索、查看单个二手详情
+ * 加载评论
+*/
 angular.module('sh.controllers',[])
-.controller('ShListController',function ($scope,$http,$ionicModal,GetListService){
-    var pageBase = 0;
+.controller('ShListController',function ($scope, $http, GetListService){
+    //初始化页面数据
+    var pageNumber = 0;
     var pageSize = 8;
     var shListApi = "http://120.24.218.56/api/sh/list";
-
+    //接收从子控制器中传来的数据（选择分类等）
     $scope.$on('to-parent', function (event, data){
+        console.log(data);
         $scope.items = data;
     })
-
-    $http.get(shListApi)
-        .success(function(newItems) {
-            if (newItems.ok == true) {
-                $scope.items = newItems.data.list;
-            }else{
-                //else code
-            };
-        })
-
+    //页面初始化
+    GetListService.getList(shListApi).then(function (data){
+        $scope.items = data.data.data.list;
+    })
+    //页面上拉刷新
     $scope.doRefresh = function (){
-	    $http.get(shListApi)
-	        .success(function(newItems) {
-	            if (newItems.ok == true) {
-                    console.log(newItems.data.list.length);
-	                $scope.items.unshift(newItems.data.list);
-	            }else{
-	                //else code
-	            };
-	        })
-	        .finally(function() {
-	            $scope.$broadcast('scroll.refreshComplete');
-	        });
+        GetListService.getList(shListApi).then(function (data){
+            $scope.items = data.data.data.list;
+        }).finally(function(){
+	        $scope.$broadcast('scroll.refreshComplete');
+	    });
     }
-
+    //上拉刷出更多数据
     $scope.loadMore = function (){
-    	pageBase++;
-	    $http.get(shListApi+"?pageNumber="+pageBase+"&pageSize="+pageSize)
-	        .success(function(newItems) {
-                if (newItems.ok == true && newItems.data.list.length > 0) {
-                    //$scope.items.push(newItems.data.list);
-                }else if(newItems.ok == true && newItems.data.list.length == 0) {
-                    GetListService.alertTip("已经没有更多信息了");
-                }else{
-                    GetListService.alertTip(newItems.message);
-                };
-	        })
-	        .finally(function() {
-	            $scope.$broadcast('scroll.infiniteScrollComplete');
-	        });
+    	pageNumber++;
+        var api = shListApi+"?pageNumber="+pageNumber+"&pageSize="+pageSize;
+        console.log(api);
+        // GetListService.getList(api).then(function (data){
+        //     $scope.items = data.data.data.list;
+        // }).finally(function(){
+        //     $scope.$broadcast('scroll.infiniteScrollComplete');
+        // });
     }
-    $scope.$on('$stateChangeSuccess', function() {
-        $scope.loadMore();
-    });
+})
+
+.controller('buttonBarController',function ($scope, GetListService){
+    $scope.showModal = function (){
+        $scope.selecting = !$scope.selecting;
+    }
+    $scope.ShCommons = ['全新','九成新','八成新','七成新','六成新'];
+    $scope.goOldAndNew = function (data){
+        var api = "http://120.24.218.56/api/sh/filter?depreciationRate="+data;
+        GetListService.getList(api).then(function (data){
+            $scope.$emit('to-parent', data.data.data.list);
+        })
+        $scope.selecting = !$scope.selecting;
+    }
 })
 
 
 //获取二手物品分类列表
-.controller('getShCateListCotroller',function ($scope,GetListService){
+.controller('getShCateListCotroller',function ($scope, $state, GetListService){
     var price = ['0-10','10-50','50-100','100-500','1000-5000','>5000'];
     $scope.prices = price;
     var shCateApi = "http://120.24.218.56/api/sh/cate/list";
     GetListService.getList(shCateApi).then(function (data){
         $scope.items = data.data.data.list;
     })
-
     //按照二手物品分类进行搜索
     $scope.classIdChange = function (value){
+        //如果选择了“分类”将不进行操作
         if (value == "") {
-            return false;
+            $state.go('shList');
         };
         var api = "http://120.24.218.56/api/sh/category/"+value;
         GetListService.getList(api).then(function (data){
-            console.log(data.data.data.list)
             $scope.$emit('to-parent',data.data.data.list);
         })
     }
+    //根据价格区间进行搜索
     $scope.priceChange = function (value){
+        //如果选择了“价格”，则不进行操作
         if (value == "") {
             return false;
         };
-        var api = "http://120.24.218.56/api/sh/search";
+        //对选项进行字符串分割
+        var dataArr = value.split('-');
+        if (dataArr.length == 2) {
+            minPrice = dataArr[0];
+            maxPrice = dataArr[1];
+            var api = "http://120.24.218.56/api/sh/filter?rangeQuery=1&minPrice="+minPrice+"&maxPrice="+maxPrice;
+        }
+        if (value == ">5000") {
+            minPrice = value.substring(1);
+            var api = "http://120.24.218.56/api/sh/filter?rangeQuery=1&minPrice="+minPrice;
+        }
+        GetListService.getList(api).then(function (data){
+            $scope.$emit('to-parent',data.data.data.list);
+        })
     }
 })
 
 //获取二手物品单个信息详情
-.controller('ShDetailController',function ($scope,$http,$stateParams,$ionicHistory,GetListService){
+.controller('ShDetailController',function ($scope, $ionicHistory, $stateParams, GetListService){
     $scope.myGoBack = function (){
         $ionicHistory.goBack();
     }
     var shApi = "http://120.24.218.56/api/sh/"+$stateParams.id;
     var commentApi = "http://120.24.218.56/api/review/job/"+$stateParams.id;
-    GetListService.getDetail(shApi)
-        .success(function (data,status){
-            $scope.items = data.data;
-        })
-    GetListService.getComment(commentApi)
-        .success(function (data,status){
-            $scope.comments = data.data;
-        })
+    //加载二手详情
+    GetListService.getDetail(shApi).then(function (data){
+        $scope.details = data.data.data;
+    })
+    //加载评论
+    GetListService.getComment(commentApi).then(function (data){
+        $scope.comments = data.data.data.list;
+    })
 })

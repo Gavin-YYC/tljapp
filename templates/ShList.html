@@ -3,22 +3,19 @@
 		<ion-nav-back-button>返回</ion-nav-back-button>
 	</ion-nav-bar>
 	<ion-content class="has-header">
-
 		<div class="button-bar bar-balanced">
 		  	<a class="button" ng-click="modalHot.show()">热门推荐</a>
-		  	<select class="button" ng-controller="getShCateListCotroller" ng-model="select.classId" ng-change="classIdChange()">
+		  	<select class="button" ng-controller="getShCateListCotroller" ng-model="select.classId" ng-change="classIdChange(select.classId)">
 		  		<option value="">分类</option>
 		  		<option ng-repeat="item in items" ng-value="item.id" ng-bind="item.name"></option>
 		  	</select>
-		  	<select class="button" ng-controller="getShCateListCotroller" ng-model="select.price" ng-change="priceChange()">
+		  	<select class="button" ng-controller="getShCateListCotroller" ng-model="select.price" ng-change="priceChange(select.price)">
 		  		<option value="">价格</option>
 		  		<option ng-repeat="price in prices" ng-value="price" ng-bind="price"></option>
 		  	</select>
 		</div>
-
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功">
 		</ion-refresher>
-
 		<ion-list>
 			<a class="item padding0" href="#/shdetail/{{item.id}}" ng-repeat="item in items">
 				<div class="row">

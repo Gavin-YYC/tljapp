@@ -148,7 +148,7 @@ angular.module('my.controllers',['ngCordova'])
 
 
 //=========================
-    $scope.images_list = ['a','b','c'];  
+    $scope.images_list = [];  
     // "添加附件"Event  
     $scope.addAttachment = function() {  
         //nonePopover();
@@ -168,17 +168,25 @@ angular.module('my.controllers',['ngCordova'])
             }  
         });  
     }   
+    //从相机选取图片
+    var appendByCamera = function () {
+        navigator.camera.getPicture(function(result) {
+           q.resolve(result);
+        }, function(err) {
+           q.reject(err);
+        }, options);
+    }
     //image picker  
     var pickImage = function () {  
         var options = {  
-            maximumImagesCount: 1,  
-            width: 800,  
-            height: 800,  
+            maximumImagesCount: 4,  
+            width: 800,
+            height: 800,
             quality: 80  
         };  
         $cordovaImagePicker.getPictures(options)  
             .then(function (results) {   
-                $scope.images_list.push(results[0]);       
+                $scope.images_list.push(results[0]);
             }, function (error) {  
                 // error getting photos  
             });

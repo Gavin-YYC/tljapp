@@ -3,7 +3,10 @@ angular.module('sh.controllers',[])
     var pageBase = 0;
     var pageSize = 8;
     var shListApi = "http://120.24.218.56/api/sh/list";
-    //var shListApi = "http://localhost:8100/js/shlist.json";
+
+    $scope.$on('to-parent', function (event, data){
+        $scope.items = data;
+    })
 
     $http.get(shListApi)
         .success(function(newItems) {
@@ -34,8 +37,7 @@ angular.module('sh.controllers',[])
 	    $http.get(shListApi+"?pageNumber="+pageBase+"&pageSize="+pageSize)
 	        .success(function(newItems) {
                 if (newItems.ok == true && newItems.data.list.length > 0) {
-                    console.log(newItems.data.list.length);
-                    $scope.items.push(newItems.data.list);
+                    //$scope.items.push(newItems.data.list);
                 }else if(newItems.ok == true && newItems.data.list.length == 0) {
                     GetListService.alertTip("已经没有更多信息了");
                 }else{
@@ -54,25 +56,29 @@ angular.module('sh.controllers',[])
 
 //获取二手物品分类列表
 .controller('getShCateListCotroller',function ($scope,GetListService){
-    var shCateApi = "http://120.24.218.56/api/sh/cate/list";
-    GetListService.getList(shCateApi)
-        .success(function (data,status){
-            $scope.items = data.data.list;
-        })
-    $scope.goList = function(id){
-        $location.url("list/"+id); 
-    }
-
-    //按照价格进行搜索
     var price = ['0-10','10-50','50-100','100-500','1000-5000','>5000'];
     $scope.prices = price;
-    $scope.classIdChange = function (){
-        var cateId = $scope.select.classId;
-        var api = "http://120.24.218.56/api/sh/cate/"+cateId;
-        GetListService.getList(api)
-            .then(function (data){
-                console.log(data);
-            })
+    var shCateApi = "http://120.24.218.56/api/sh/cate/list";
+    GetListService.getList(shCateApi).then(function (data){
+        $scope.items = data.data.data.list;
+    })
+
+    //按照二手物品分类进行搜索
+    $scope.classIdChange = function (value){
+        if (value == "") {
+            return false;
+        };
+        var api = "http://120.24.218.56/api/sh/category/"+value;
+        GetListService.getList(api).then(function (data){
+            console.log(data.data.data.list)
+            $scope.$emit('to-parent',data.data.data.list);
+        })
+    }
+    $scope.priceChange = function (value){
+        if (value == "") {
+            return false;
+        };
+        var api = "http://120.24.218.56/api/sh/search";
     }
 })
 

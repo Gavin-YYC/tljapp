@@ -18,12 +18,6 @@ angular.module('route',[])
                 templateUrl:'templates/detail.html',
                 controller:'DetailController'
             })
-            //搜索相关
-            .state('search',{
-                url:'/search/:type/:id',
-                templateUrl:'templates/list.html',
-                controller:'SearchController'
-            })
             //个人简历
             .state('resumeList', {
                 url:'/resume/:id',

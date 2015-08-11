@@ -13,8 +13,7 @@ angular.module('my.controllers',['ngCordova'])
 .controller('IndexController',function ($scope,$ionicModal,$ionicHistory,$state,Auth,GetListService){
     //进入个人中心
     $scope.goToMy = function(){
-        var username = Auth.getToken();
-        username ? $state.go("my") : $state.go("login");
+        $state.go("my",{},{reload: true});
     }
 })
 
@@ -38,7 +37,7 @@ angular.module('my.controllers',['ngCordova'])
                     Auth.setToken(data.data.parm.id);
                     GetListService.alertTip("登录成功！");
                     $timeout(function() {
-                        $state.go('/');
+                        $state.go("/");
                     }, 1500);
                 };
             },function (data){
@@ -106,35 +105,40 @@ angular.module('my.controllers',['ngCordova'])
 })
 
 //个人中心内控制器
-.controller('MyController',function ($scope,$state,$ionicModal,Auth,GetListService) {
+.controller('MyController',function ($scope, $state, $ionicModal, $ionicHistory, Auth, GetListService) { 
+    //用户是否登录验证
     var userId = Auth.getToken();
-    if (userId) {
+    if (userId != "") {
         var api = "http://120.24.218.56/api/user/"+userId;
         GetListService.getList(api).then(function(data){
             $scope.user = data.data.data;
-            console.log(data.data.data);
+            $scope.noLogin = false;
+            $scope.bgColor = "";
         })
     }else{
-        $state.go("login");
-    };
-
-    //下拉更新资料
-    $scope.doRefresh = function (){
-        GetListService.userPost(api,data).then(function(data){
-            $scope.user = data.data.data;
-        })
-        .finally(function() {
-            $scope.$broadcast('scroll.refreshComplete');
-        });
+        //显示登录或者个人中心
+        $scope.noLogin = true;
+        $scope.bgColor = "#eee";
     }
-
+    //返回上一页
+    $scope.myGoBack = function (){
+        $ionicHistory.goBack();
+    };
     //弹出投稿反馈模态框
     $ionicModal.fromTemplateUrl('feedback.html',function(modal){
         $scope.FeedbackModal = modal;
     },{
         scope: $scope,
         animation: 'slide-in-up'
-    });
+    })
+})
+
+.controller('ChildPageController',function ($scope, Auth){
+    //进入分页面
+    $scope.myGoTo = function (ChilePage){
+        var userId = Auth.getToken();
+        userId ? console.log("真的是真的") : console.log("还没有登录！");
+    }
 })
 
 //投稿反馈内容提交

@@ -1,62 +1,57 @@
 <ion-view title="个人中心">
-	<ion-nav-bar class="padding0" align-title="center">
-		<ion-nav-back-button>返回</ion-nav-back-button>
-	</ion-nav-bar>
-	<ion-content ng-controller="MyController">
-		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
-		<div class="list tlj-list">
-			<a class="item padding0" href="#/my/{{user.id}}">
+	<ion-content ng-controller="MyController" class="user_space">
+		<div class="myInfo_login">
+			<div class="login_header">
+				<span ng-click="myGoBack()"><i class="icon iconfont">&#xe60d;</i>&nbsp;返回</span>
+				我的
+			</div>
+			<div class="my_buttons" ng-if="noLogin">
 				<div class="row">
-			      	<div class="col col-33">
-				      	<div class="circle circleimg">
-							<img src="http://120.24.218.56/static/images/users/{{user.profilePhotoId}}">
-						</div>
-			      	</div>
-			      	<div class="col col-40">
-			      		<h2 class="title-jianzhi" ng-bind="user.username"></h2>
-			      		<p ng-bind="user.schoolOrganization"></p>
-			      	</div>
-			      	<div class="col col-25 arrow-left"><i class="icon ion-ios-arrow-right"></i></div>
-		      	</div>
-		    </a>
-
-			<div class="item item-divider"></div>
-
-			<a class="item item-icon-left" href="#">
-				<i class="icon ion-clipboard"></i>
+					<a ng-href="#/login">登录</a>
+					<a ng-href="#/register">注册</a>
+				</div>
+			</div>
+			<div class="my_photo" ng-if="!noLogin">
+				<a ng-href="/#/my/{{user.id}}">
+					<div class="login_logo">
+						<img src="http://120.24.218.56/static/images/users/{{user.profilePhotoId}}" alt="">
+						<p ng-bind="user.username"></p>
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="list" ng-controller="ChildPageController">
+			<a class="item item-icon-left com_item_border" ng-click="myGoTo('myResume')" ng-style='{"background-color":bgColor}'>
+				<i class="icon iconfont" style="color:#3FC3CF">&#xe614;</i>
 				我的简历
 			</a>
 
-			<a class="item item-icon-left" href="#">
-				<i class="icon ion-cube"></i>
+			<a class="item item-icon-left com_item_border" ng-click='myGoTo("myCollection")' ng-style='{"background-color":bgColor}'>
+				<i class="icon iconfont" style="color:#FF697E">&#xe610;</i>
 				我的收藏
 			</a>
 
-			<a class="item item-icon-left" href="#">
-				<i class="icon ion-pricetag"></i>
+			<a class="item item-icon-left com_item_border" ng-click='myGoTo("myPublish")' ng-style='{"background-color":bgColor}'>
+				<i class="icon iconfont" style="color:#4CCDA4">&#xe615;</i>
 				我的发布
 			</a>
 
-			<div class="item item-divider"></div>
-
-			<a class="item item-icon-left" href="#">
-				<i class="icon ion-ios-bell"></i>
+			<a class="item item-icon-left com_item_border" ng-click='myGoTo("myMessage")' ng-style='{"background-color":bgColor}'>
+				<i class="icon iconfont" style="color:#FA693A">&#xe613;</i>
 				消息通知
 				<span class="badge badge-assertive">0</span>
 			</a>
 
-			<a class="item item-icon-left" href="#">
-				<i class="icon ion-radio-waves"></i>
+			<a class="item item-icon-left com_item_border" ng-click='myGoTo("myPwd")' ng-style='{"background-color":bgColor}'>
+				<i class="icon iconfont" style="color:#84CD5B">&#xe60e;</i>
 				修改密码
 			</a>
 
-			<div class="item item-divider"></div>
-
-			<a class="item item-icon-left" href="#" ng-click="FeedbackModal.show()">
-				<i class="icon ion-ios-paper"></i>
+			<a class="item item-icon-left com_item_border" ng-click="FeedbackModal.show()">
+				<i class="icon iconfont" style="color:#E8B309">&#xe612;</i>
 				意见反馈
 			</a>
-			<div class="item" ng-controller="LogoutController">
+			<div class="item" ng-controller="LogoutController" ng-if="!noLogin">
 				<button class="button button-block button-positive" ng-click="logout()">
 					退出登录
 				</button>	

@@ -48,7 +48,6 @@ angular.module('user.service',['ngCookies'])
 				data: data
 			})
             .success(function (data,status){
-            	console.log(data);
                 d.resolve(data);
             })
             .error(function (data,status){

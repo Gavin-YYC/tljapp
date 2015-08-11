@@ -43,6 +43,7 @@ angular.module('route',[])
             //个人中心
             .state('my',{
                 url:'/my',
+                cache:'false',
                 templateUrl:'templates/my.html',
                 controller:'MyController'
             })

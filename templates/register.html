@@ -11,29 +11,31 @@
 			    {{err.msg}}
 			  	</div>
 			</div>
+		<form name="form" novalidate="novalidate" ng-submit="register(reg)">
 			<div class="row user_select">
 				<div class="col col-50">
-					<input type="radio" name="userClass" class="reg_radio" checked="checked" value="student" />&nbsp;学生
+					<input type="radio" name="userClass" class="reg_radio" checked="checked" value="false" ng-model="reg.userType" />&nbsp;学生
 				</div>
 				<div class="col col-50">
-					<input type="radio" name="userClass" class="reg_radio" value="manager" />&nbsp;商家
+					<input type="radio" name="userClass" class="reg_radio" value="true" ng-model="reg.userType" />&nbsp;商家
 				</div>
 			</div>
 		    <label class="item item-input input_border_top">
 			    <span class="input-label input_span"><i class="icon iconfont">&#xe60c;</i></span>
-			    <input type="text" ng-model="reg.username" placeholder="建议使用邮箱注册" ng-minlength="6" required>
+			    <input type="text" name="email" ng-model="reg.username" placeholder="建议使用邮箱注册" ng-minlength="6" required>
 		    </label>
 		    <label class="item item-input">
 			    <span class="input-label input_span"><i class="icon iconfont">&#xe60b;</i></span>
-			    <input type="password" ng-model="reg.password" placeholder="请设置密码" ng-minlength="6" required>
+			    <input type="password" name="password" ng-model="reg.password" placeholder="请设置密码" ng-minlength="6" required>
 		    </label>
 		    <label class="item item-input input_border_bottom">
 			    <span class="input-label input_span"><i class="icon iconfont">&#xe60b;</i></span>
-			    <input type="password" ng-model="reg.rePassword" placeholder="请再次输入密码" ng-minlength="6" required>
+			    <input type="password" name="rePassword" ng-model="reg.rePassword" placeholder="请再次输入密码" ng-minlength="6" required>
 		    </label>
-			<button class="button button-block button-balanced" ng-click="register(reg)">
+			<button class="button button-block button-balanced">
 				完成注册
 			</button>	
+		</form>
 			<button class="button button-block button-assertive" ng-click="login()">
 				去登录
 			</button>	

@@ -68,21 +68,23 @@ angular.module('my.controllers',['ngCordova'])
     }
     //配置页面错误提示
     $scope.hasErr = false;
+    $scope.err = {
+        msg:""
+    }
+    //初始化注册表单
     $scope.reg = {
         username : "",
         password : "",
-        rePassword: ""
-    }
-    $scope.err = {
-        msg:"请输入注册信息："
+        rePassword: "",
+        userType : "false"
     }
     //注册事件
     $scope.register = function (reg){
         var api = "http://120.24.218.56/register";
-        var data = "username="+reg.username+"&password="+reg.password+"&rePassword="+reg.rePassword+"&isEmployer=false";
+        var data = "username="+reg.username+"&password="+reg.password+"&rePassword="+reg.rePassword+"&isEmployer="+reg.userType;
+        console.log(data);
         GetListService.userPost(api, data).then(function (data){
             $scope.hasErr = true;
-            console.log(data);
             if (!data.result) {
                 $scope.color = "#fff";
                 $scope.bgColor = "#ef473a";

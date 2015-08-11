@@ -1,36 +1,42 @@
 <ion-view title="注册">
-	<ion-nav-bar class="bar-assertive" align-title="center">
-	    <ion-nav-back-button>返回</ion-nav-back-button>
-	</ion-nav-bar>
-	<ion-content ng-controller="RegisterController" class="has-header padding">
+	<ion-content ng-controller="RegisterController" class="padding user_login">
+		<div class="login_header">
+			<span ng-click="myGoBack()"><i class="icon iconfont">&#xe60d;</i>&nbsp;返回</span>
+			注册
+		</div>
 		<ion-list>
-			<div class="card">
-			  	<div 
-			  	class="item item-text-wrap" 
+			<div class="card reg_errCard" ng-if="hasErr">
+			  	<div class="item item-text-wrap"
 			  	ng-style='{"color":color,"background-color":bgColor}'>
 			    {{err.msg}}
 			  	</div>
 			</div>
-		    <label class="item item-input">
-			    <span class="input-label">用户名</span>
-			    <input type="text" ng-model="reg.username" ng-minlength="6" required>
-		    </label>
-		    <label class="item item-input">
-			    <span class="input-label">密码</span>
-			    <input type="password" ng-model="reg.password" ng-minlength="6" required>
-		    </label>
-		    <label class="item item-input">
-			    <span class="input-label">重复密码</span>
-			    <input type="password" ng-model="reg.rePassword" ng-minlength="6" required>
-		    </label>
-			<div class="item">
-				<button class="button button-block button-positive" ng-click="register(reg)">
-					提交注册
-				</button>	
-				<button class="button button-block button-clear button-positive" ng-click="login()">
-					去登录
-				</button>	
+			<div class="row user_select">
+				<div class="col col-50">
+					<input type="radio" name="userClass" class="reg_radio" checked="checked" value="student" />&nbsp;学生
+				</div>
+				<div class="col col-50">
+					<input type="radio" name="userClass" class="reg_radio" value="manager" />&nbsp;商家
+				</div>
 			</div>
+		    <label class="item item-input input_border_top">
+			    <span class="input-label input_span"><i class="icon iconfont">&#xe60c;</i></span>
+			    <input type="text" ng-model="reg.username" placeholder="建议使用邮箱注册" ng-minlength="6" required>
+		    </label>
+		    <label class="item item-input">
+			    <span class="input-label input_span"><i class="icon iconfont">&#xe60b;</i></span>
+			    <input type="password" ng-model="reg.password" placeholder="请设置密码" ng-minlength="6" required>
+		    </label>
+		    <label class="item item-input input_border_bottom">
+			    <span class="input-label input_span"><i class="icon iconfont">&#xe60b;</i></span>
+			    <input type="password" ng-model="reg.rePassword" placeholder="请再次输入密码" ng-minlength="6" required>
+		    </label>
+			<button class="button button-block button-balanced" ng-click="register(reg)">
+				完成注册
+			</button>	
+			<button class="button button-block button-assertive" ng-click="login()">
+				去登录
+			</button>	
 		</ion-list>
 	</ion-content>
 </ion-view>

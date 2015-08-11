@@ -19,7 +19,7 @@ angular.module('my.controllers',['ngCordova'])
 })
 
 //用户登录，
-.controller('LoginController',function ($scope, $state, $timeout, Login, Auth, GetListService){
+.controller('LoginController',function ($scope, $ionicHistory, $state, $timeout, Login, Auth, GetListService){
     $scope.message = "";
     $scope.user = {
         username:null,
@@ -49,15 +49,25 @@ angular.module('my.controllers',['ngCordova'])
     $scope.register = function (){
         $state.go("register");
     }
+    //后退一步
+    $scope.myGoBack = function (){
+        $ionicHistory.goBack();
+    }
     
 })
 
 //用户注册
-.controller('RegisterController',function ($scope, $state, $timeout, GetListService){
+.controller('RegisterController',function ($scope, $ionicHistory, $state, $timeout, GetListService){
     //去登录
     $scope.login = function (){
         $state.go("login");
     }
+    //上一页
+    $scope.myGoBack = function (){
+        $ionicHistory.goBack();
+    }
+    //配置页面错误提示
+    $scope.hasErr = false;
     $scope.reg = {
         username : "",
         password : "",
@@ -71,10 +81,15 @@ angular.module('my.controllers',['ngCordova'])
         var api = "http://120.24.218.56/register";
         var data = "username="+reg.username+"&password="+reg.password+"&rePassword="+reg.rePassword+"&isEmployer=false";
         GetListService.userPost(api, data).then(function (data){
+            $scope.hasErr = true;
+            console.log(data);
             if (!data.result) {
                 $scope.color = "#fff";
                 $scope.bgColor = "#ef473a";
                 $scope.err.msg = data.message;
+                if (data.parm) {
+                    $scope.err.msg = data.parm.username+'\n'+data.parm.password;
+                };
             }else{
                 $scope.color = "#fff";
                 $scope.bgColor = "#33cd5f";

@@ -1,20 +1,5 @@
 /* Empty. Add your own CSS if you like */
 
-/* 自定义字体文件 */
-@font-face {font-family: 'iconfont';
-    src: url('iconfont.eot'); /* IE9*/
-    src: url('iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('iconfont.woff') format('woff'), /* chrome、firefox */
-    url('iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-    url('iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
-}
-.iconfont{
-    font-family:"iconfont" !important;
-    font-size:16px;font-style:normal;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-stroke-width: 0.2px;
-    -moz-osx-font-smoothing: grayscale;
-}
 .icon-diy-index{
 	color: #fff;
 	font-size: 50px;
@@ -27,19 +12,6 @@
 .icon-fabu{
 	font-size: 45px;
 }
-.icon-zixingche:before { content: "\e600"; }
-.icon-qq:before { content: "\e601"; }
-.icon-dianhua:before { content: "\e602"; }
-.icon-target:before { content: "\e60a"; }
-.icon-shoucang:before { content: "\e603"; }
-.icon-jianzhi:before { content: "\e604"; }
-.icon-jiaodian:before { content: "\e605"; }
-.icon-wechat:before { content: "\e606"; }
-.icon-xinfeng:before { content: "\e607"; }
-.icon-508jianlikuguanli:before { content: "\e608"; }
-.icon-fabu:before { content: "\e609"; }
-/* 自定义字体文件结束 */
-
 
 body{
 	background: #f3f3f3;
@@ -324,9 +296,6 @@ a{
 /*二手页面，弹出选择框*/
 .shListModal{
 	position: relative;
-	width: 100%;
-	height: 100%;
-	background-color: #000;
 }
 .shListModal .selectNewModal{
 	position: absolute;
@@ -347,4 +316,79 @@ a{
 	font-weight: bold;
 	color: #ccc;
 	padding-top: 100px;
+}
+
+/*登录页面美化*/
+.login_logo{
+	width: 100%;
+	text-align: center;
+	color: #fff;
+	margin-top: 50px;
+	margin-bottom: 40px;
+}
+.login_logo img{
+	width: 80px;
+	margin: 0 auto;
+}
+.user_login{
+	background:url(../img/loginbg.jpg);
+	background-position: center;
+  	background-size: cover;
+  	background-repeat: no-repeat;
+}
+.user_login .login_header{
+	text-align: center;
+	color: #fff;
+	position: relative;
+	margin-top: 5px;
+}
+.user_login .login_header span{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100px;
+	height: 30px;
+	text-align: left;
+}
+.user_login button{
+	border-radius: 10px;
+}
+.user_login .list{
+	border-radius: 20px;
+}
+.input_border_top{
+	border-radius: 10px 10px 0 0;
+}
+.input_border_bottom{
+	border-radius: 0 0 10px 10px;
+	margin-bottom: 15px;
+}
+.input_span{
+	width: 15%;
+}
+.input_span i{
+	font-size: 25px;
+}
+/*美化注册页面*/
+.user_select{
+	text-align: center;
+	color: #fff;
+	height: 50px;
+	font-size: 16px;
+}
+.user_select input[type="radio"]{
+	margin-top: -5px;
+}
+.reg_radio{
+	width: 25px;
+	height: 25px;
+	vertical-align: middle;
+	
+}
+.user_login .user_select{
+	margin-top: 50px;
+}
+.reg_errCard{
+	border-radius: 10px;
+	margin-bottom: 40px;
 }

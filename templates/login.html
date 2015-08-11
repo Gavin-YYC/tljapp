@@ -1,26 +1,29 @@
 <ion-view title="登录">
-	<ion-nav-bar class="bar-assertive" align-title="center">
-	    <ion-nav-back-button>返回</ion-nav-back-button>
-	</ion-nav-bar>
-	<ion-content ng-controller="LoginController" class="has-header padding">
+	<ion-content ng-controller="LoginController" class="padding user_login" has-bouncing="true">
+		<div class="login_header">
+			<span ng-click="myGoBack()"><i class="icon iconfont">&#xe60d;</i>&nbsp;返回</span>
+			登录
+		</div>
+		<div class="login_logo">
+			<img src="./img/reg_logo.png" alt="">
+			<p>桃李街</p>
+		</div>
 		<ion-list>
 	        <div>{{message}}</div>
-		    <label class="item item-input">
-			    <span class="input-label">用户名</span>
+		    <label class="item item-input input_border_top">
+			    <span class="input-label input_span"><i class="icon iconfont">&#xe60c;</i></span>
 			    <input type="text" ng-model="user.username" placeholder="请输入用户名">
 		    </label>
-		    <label class="item item-input">
-			    <span class="input-label">密码</span>
+		    <label class="item item-input input_border_bottom">
+			    <span class="input-label input_span"><i class="icon iconfont">&#xe60b;</i></span>
 			    <input type="password" ng-model="user.password" placeholder="请输入密码">
 		    </label>
-			<div class="item">
-				<button class="button button-block button-positive" ng-click="login()">
-					登录
-				</button>
-				<button class="button button-block button-clear button-positive" ng-click="register()">
-					去注册
-				</button>
-			</div>
+			<button class="button button-block button-assertive" ng-click="login()">
+				登录
+			</button>
+			<button class="button button-block button-balanced" ng-click="register()">
+				去注册
+			</button>
 		</ion-list>
 	</ion-content>
 </ion-view>

@@ -2,7 +2,7 @@
 	<ion-nav-bar align-title="center">
 		<ion-nav-back-button>返回</ion-nav-back-button>
 	</ion-nav-bar>
-	<ion-content class="has-header">
+	<ion-content class="has-header" style="background:#F4F4F4">
 		<div class="button-bar bar-balanced shListModal" ng-controller="buttonBarController">
 			<!--二手物品分类搜索-->
 		  	<select class="button" ng-controller="getShCateListCotroller" ng-model="select.classId" ng-change="classIdChange(select.classId)">
@@ -29,19 +29,25 @@
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功">
 		</ion-refresher>
 		<ion-list>
-			<a class="item padding0" href="#/shdetail/{{item.id}}" ng-repeat="item in items">
-				<div class="row">
-					<div class="col col-33 margin0">
+			<a class="item sh_item" href="#/shdetail/{{item.id}}" ng-repeat="item in items">
+				<div class="row padding0">
+					<div class="col col-33 col_pic margin0 padding0">
 						<div class="list-type-sh">
 							<img src="http://120.24.218.56/static/images/users/{{item.picturePath}}">
 						</div>
 					</div>
-					<div class="col col-67">
+					<div class="col col-67 padding0">
 						<div class="row padding">{{item.title}}</div>
 						<div class="row padding resume-list-small">
-							{{item.category.name}} &nbsp; 
-							{{item.depreciationRate}} &nbsp; 
-							&yen; {{item.sellPrice}}
+							<div class="col col-33 padding_com">
+								<span class="sh_list_cate">{{item.category.name}}</span>
+							</div>
+							<div class="col col-33 padding_com">
+								<span class="sh_list_cate">{{item.depreciationRate}}</span>
+							</div>
+							<div class="col col-33 padding_com">
+								<span class="sh_list_price">&yen; {{item.sellPrice}}</span>
+							</div>
 						</div>
 						<div class="row padding resume-list-small">
 							<i class="icon ion-ios-location-outline"></i>&nbsp; {{item.tradePlace}} &nbsp;

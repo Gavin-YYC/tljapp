@@ -234,13 +234,39 @@ a{
 
 
 
-/* 二手页 */
+/*校园二手页面*/
+.sh_item{
+	padding: 0;
+	margin: 8px;
+}
+.sh_item .col-pic{
+	height: 100px;
+	overflow: hidden;
+}
 .list-type-sh{
 	width: 100%;
+	height: 100px;
 }
 .list-type-sh img{
-	width: 100px;
-    height: 100px;
+	width: 100%;
+	height: 100px;
+}
+.sh_list_cate{
+	display: block;
+	border: 1px solid #4CCDA4;
+	padding: 3px;
+	color: #4CCDA4;
+	border-radius: 3px;
+	text-align: center;
+}
+.sh_list_price{
+	display: block;
+	color: #F96A39;
+	padding: 3px;
+	text-align: right;
+}
+.resume-list-small .padding_com{
+	padding-left: 0px;
 }
 
 
@@ -401,6 +427,7 @@ a{
 	height: 200px;
 	background:url(../img/mybg.jpg);
 	position: relative;
+	z-index: 1;
 }
 .user_space .myInfo_login .login_header{
 	text-align: center;
@@ -419,7 +446,6 @@ a{
 	text-align: left;
 }
 .user_space .myInfo_login .my_buttons a{
-	display: block;
 	width: 80px;
 	height: 35px;
 	border: 1px solid #fff;
@@ -435,6 +461,13 @@ a{
 	z-index: 99;
 	width: 100%;
 	height: 150px;
+	overflow: hidden;
+}
+.user_space .myInfo_login .my_photo img{
+	width: 80px;
+	height: 80px;
+	border-radius: 80px;
+	border: 1px solid #eee;
 	overflow: hidden;
 }
 .user_space .myInfo_login .my_photo a{

@@ -45,6 +45,7 @@ angular.module('sh.controllers',[])
     }
 })
 
+//点击新旧菜单时
 .controller('buttonBarController',function ($scope, GetListService){
     $scope.showModal = function (){
         $scope.selecting = !$scope.selecting;

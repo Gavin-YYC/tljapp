@@ -4,7 +4,8 @@
 	</ion-nav-bar>
 	<ion-content>
 		<div class="button-bar bar-assertive" ng-controller="getRegionAndPayCotroller">
-		  	<a class="button icon-right ion-chevron-up" ng-click="modalType.show()">分类</a>
+		  	<a class="button icon-right ion-chevron-up" ng-click="modalType.show()">分类</a> 
+
 		  	<select class="button" ng-model="select.location" ng-change="locationChange(select.location)">
 		  		<option value="">区域</option>
 		  		<option ng-repeat="location in locations" ng-value="location" ng-bind="location"></option>
@@ -16,6 +17,7 @@
 		</div>
 
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
+
 		<ion-list>
 			<ion-item ng-repeat="item in items">
 				<a class="item no-boder" ng-href="#/detail/{{item.id}}">
@@ -59,6 +61,7 @@
 	</ion-content>
 
 	<!--二级目录-->
+	
 	<script id="modal-type.html" type="text/ng-template">
 		<ion-modal-view>
 		    <ion-header-bar class="bar-assertive">
@@ -89,4 +92,5 @@
 		    </ion-content>
 		</ion-modal-view>
 	</script>
+	
 </ion-view>

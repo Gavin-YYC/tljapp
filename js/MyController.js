@@ -133,11 +133,11 @@ angular.module('my.controllers',['ngCordova'])
     })
 })
 
-.controller('ChildPageController',function ($scope, Auth){
+.controller('ChildPageController',function ($scope, $state, Auth){
     //进入分页面
     $scope.myGoTo = function (ChilePage){
         var userId = Auth.getToken();
-        userId ? console.log("真的是真的") : console.log("还没有登录！");
+        userId ? console.log("真的是真的") : $state.go("login");
     }
 })
 

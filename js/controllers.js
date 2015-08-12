@@ -1,6 +1,6 @@
 /* 兼职页面控制器 */
-angular.module('starter.controllers',['my.controllers'])
-.controller('ListController',function($scope,$http,$ionicPopup,$ionicModal,$stateParams,GetListService){
+angular.module('starter.controllers',['my.controllers','directives.dropdown'])
+.controller('ListController',function($scope,$http,$ionicModal,$stateParams,GetListService){
     //初始化 请求页面参数
     var pageBase = 0;
     var pageSize = 8;
@@ -124,8 +124,9 @@ angular.module('starter.controllers',['my.controllers'])
         $scope.categories = data.data.data.list;
     })
     $scope.goList = function(id){
-        $location.url("list/"+id); 
+        $location.url("list/"+id);
     }
+
 })
 
 /* 按地区和结算方式搜索 */

@@ -1,23 +1,30 @@
-<ion-view title="简历详情" ng-controller="ShDetailController">
+<ion-view title="详情" ng-controller="ShDetailController">
     <ion-header-bar align-title="center">
         <button class="button button-clear icon-left ion-ios-arrow-left" ng-click="myGoBack()">返回</button>
-        <h1 class="title">简历详情</h1>
-        <button class="button button-clear icon-left ion-heart">收藏</button>
+        <h1 class="title">物品详情</h1>
+        <button class="button button-clear"><i class="icon iconfont">&#xe610;</i> 收藏</button>
     </ion-header-bar>
     <ion-content>
-    	<div class="redline"></div>
-		<div class="list card">
-			<div class="row">
-				<div class="col col-33 margin0">
-					<div class="list-type list-type-pic list-type-pic-big">
-						<img src="http://120.24.218.56/static/images/users/{{details.picturePath}}">
-					</div>
+		<ion-slide-box auto-play="true" does-continue="true" class="sh_detail_pics">
+			<ion-slide ng-repeat="pic in pics">
+				<div class="box blue"><img ng-src="http://120.24.218.56/static/images/users/{{pic}}" alt=""></div>
+			</ion-slide>
+		</ion-slide-box>
+		<div class="list padding0">
+			<div class="row sh_detail_title">{{details.title}}</div>
+			<div class="row sh_detail">
+				<div class="col col-67">
+					<span class="sh_list_cate">{{details.category.name}}</span>&nbsp;
+					<span class="sh_list_cate">{{details.depreciationRate}}</span><br>
+					<span class="time"><i class="icon iconfont">&#xe616;</i>{{details.postTime | date:'yyyy-MM-dd mm:ss'}}</span>
 				</div>
-				<div class="col col-75">
-					{{details.title}}
+				<div class="col col-33 mainmenu">
+					<div class="circle">&yen;{{details.sellPrice}}</div>
 				</div>
 			</div>
-
+			<div class="row sh_detail_line">
+				<i class="icon iconfont">&#xe617;</i>交易地点：{{details.tradePlace}}
+			</div>
 			<div class="item">
 				<div class="list">
 					<a class="item item-avatar" href="#"  ng-repeat="comment in comments">

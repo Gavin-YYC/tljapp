@@ -112,7 +112,11 @@ angular.module('sh.controllers',[])
     var commentApi = "http://120.24.218.56/api/review/job/"+$stateParams.id;
     //加载二手详情
     GetListService.getDetail(shApi).then(function (data){
+        var picturePath = data.data.data.picturePath.split(";");
+        $scope.pics = picturePath;
+        $scope.pics = picturePath;
         $scope.details = data.data.data;
+        console.log($scope.details);
     })
     //加载评论
     GetListService.getComment(commentApi).then(function (data){

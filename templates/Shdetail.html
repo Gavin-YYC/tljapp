@@ -7,7 +7,7 @@
     <ion-content>
 		<ion-slide-box auto-play="true" does-continue="true" class="sh_detail_pics">
 			<ion-slide ng-repeat="pic in pics">
-				<div class="box blue"><img ng-src="http://120.24.218.56/static/images/users/{{pic}}" alt=""></div>
+				<img src="http://120.24.218.56/static/images/users/{{pic}}" alt="">
 			</ion-slide>
 		</ion-slide-box>
 		<div class="list padding0">
@@ -16,7 +16,7 @@
 				<div class="col col-67">
 					<span class="sh_list_cate">{{details.category.name}}</span>&nbsp;
 					<span class="sh_list_cate">{{details.depreciationRate}}</span><br>
-					<span class="time"><i class="icon iconfont">&#xe616;</i>{{details.postTime | date:'yyyy-MM-dd mm:ss'}}</span>
+					<span class="time"><i class="icon iconfont">&#xe616;</i>{{details.postTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
 				</div>
 				<div class="col col-33 mainmenu">
 					<div class="circle">&yen;{{details.sellPrice}}</div>
@@ -24,6 +24,20 @@
 			</div>
 			<div class="row sh_detail_line">
 				<i class="icon iconfont">&#xe617;</i>交易地点：{{details.tradePlace}}
+			</div>
+			<div class="item tabs tabs-secondary tabs-icon-left">
+			    <a class="tab-item" href="#" ng-style='{"color":zanColor}' ng-click="zan()">
+				    <i class="icon ion-thumbsup"></i> {{details.likes}}
+			    </a>
+			    <a class="tab-item" href="#">
+				    <i class="icon ion-thumbsdown"></i> {{details.dislikes}}
+			    </a>
+			    <a class="tab-item" href="#">
+				    <i class="icon ion-chatbox"></i> {{comments.length}}
+			    </a>
+			    <a class="tab-item" href="#">
+			      	<i class="icon ion-share"></i>
+			    </a>
 			</div>
 			<div class="item">
 				<div class="list">

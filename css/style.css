@@ -231,13 +231,17 @@ a{
 .resume-list-small{
 	color: #d1d1d1;
 }
-
-
-
 /*校园二手页面*/
 .sh_item{
 	padding: 0;
 	margin: 8px;
+	margin-bottom: 0px;
+	z-index: 50;
+}
+.sh_all_list{
+	padding: 0;
+	background-color: inherit;
+	border: none;
 }
 .sh_item .col-pic{
 	height: 100px;
@@ -246,10 +250,12 @@ a{
 .list-type-sh{
 	width: 100%;
 	height: 100px;
+	z-index: 1;
 }
 .list-type-sh img{
 	width: 100%;
 	height: 100px;
+	z-index: 1;
 }
 .sh_list_cate{
 	display: block;
@@ -264,9 +270,15 @@ a{
 	color: #F96A39;
 	padding: 3px;
 	text-align: right;
+	z-index: 1;
 }
 .resume-list-small .padding_com{
 	padding-left: 0px;
+	z-index: 1;
+}
+.sh_list_last{
+	padding-bottom: 0;
+	z-index: 1;
 }
 /*校园二手详情页面*/
 .sh_detail .mainmenu .circle{
@@ -280,7 +292,7 @@ a{
 }
 .sh_detail_pics img{
 	width: 100%;
-	height: 300px;
+	height: 150px;
 }
 .sh_detail_title{
 	width: 100%;
@@ -293,6 +305,7 @@ a{
 .sh_detail .sh_list_cate{
 	display: inline-block;
 	margin-top: 15px;
+	z-index: 1;
 }
 .sh_detail{
 	border-top: 1px solid #eee;
@@ -306,6 +319,7 @@ a{
 .sh_detail_line{
 	padding-left: 8px;
 	border-top: 1px solid #eee;
+	border-bottom: 2px solid #eee;
 	letter-spacing:1px;
 	line-height: 50px;
 	color: #c1c1c1;
@@ -488,6 +502,7 @@ a{
 	text-align: left;
 }
 .user_space .myInfo_login .my_buttons a{
+	display: block;
 	width: 80px;
 	height: 35px;
 	border: 1px solid #fff;

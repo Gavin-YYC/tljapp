@@ -95,11 +95,51 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
 })
 
 /* 兼职详情页，加载内容的同时加载评论 */
-.controller('DetailController',function ($scope, $http, $stateParams, GetListService ,Auth){
+.controller('DetailController',function ($scope, $http, $stateParams, GetListService, Auth, FormatRusult){
+    //获取用户信息
+    var user = Auth.getUser() || "";
+    var token = Auth.getToken() || "";
+    var tokenKey = "?appToken="+token;
+    //初始化API
     var userId = $stateParams.id;
     var jobApi = "http://120.24.218.56/api/job/"+userId;
     var commentApi = "http://120.24.218.56/api/review/job/"+userId;
     var subCommentApi = "http://120.24.218.56/user/job/"+userId+"/review/post";
+    var zanApi = "http://120.24.218.56/user/job/"+$stateParams.id+"/checklike"+tokenKey;
+    //执行是否登录以及赞过检查
+    if (user == "" || token == "") {
+        $scope.zanColor = "";
+    }else{
+        GetListService.getList(zanApi).then(function (data){
+            if (data.data.message=="true") {
+                $scope.zanColor="#F96A39";
+            }else{
+                $scope.zanColor = "";
+            };
+        })
+    };
+    //用户点赞
+    $scope.zan = function (){
+        var api = "http://120.24.218.56/user/job/"+$stateParams.id+"/like"+tokenKey;
+        GetListService.userPost(api).then(function (data){
+            if (data.message == 16) {
+                var api = "http://120.24.218.56/user/job/"+$stateParams.id+"/unlike"+tokenKey;
+                GetListService.userPost(api).then(function (data){
+                    if(data.message == 0){
+                        $scope.zanColor="";
+                        $scope.item.likes -= 1;
+                    }
+                })
+            }else if(data.message == 0){
+                $scope.zanColor="#F96A39";
+                $scope.item.likes += 1;
+            }else{
+                FormatRusult.format(data.message).then(function (data){
+                    GetListService.alertTip(data);
+                })
+            }
+        })
+    }
     //查询兼职内容
     GetListService.getList(jobApi).then(function (data){
         $scope.item = data.data.data;

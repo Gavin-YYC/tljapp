@@ -3,33 +3,34 @@
 		<ion-nav-back-button>返回</ion-nav-back-button>
 	</ion-nav-bar>
 	<ion-content class="has-header" style="background:#F4F4F4">
+		<div class="overlay" ng-show="overlay" ng-click="showList = false;overlay = false;"></div>
 		<div class="button-bar bar-balanced shListModal" ng-controller="buttonBarController">
-			<!--二手物品分类搜索-->
-		  	<select class="button" ng-controller="getShCateListCotroller" ng-model="select.classId" ng-change="classIdChange(select.classId)">
-		  		<option value="">分类</option>
-		  		<option ng-repeat="item in items" ng-value="item.id" ng-bind="item.name"></option>
-		  	</select>
-		  	<!--二手物品新旧程度搜索-->
-		  	<!--<select class="button" ng-controller="getShCateListCotroller" ng-model="select.classId" ng-change="classIdChange(select.classId)">
-		  		<option value="">新旧</option>
-		  		<option ng-repeat="item in items" ng-value="item.id" ng-bind="item.name"></option>
-		  	</select>-->
-		  	<div class="button" ng-click="showModal()">新旧</div>
-		  	<!--二手物品价格区间搜素-->
-		  	<select class="button" ng-controller="getShCateListCotroller" ng-model="select.price" ng-change="priceChange(select.price)">
-		  		<option value="">价格</option>
-		  		<option ng-repeat="price in prices" ng-value="price" ng-bind="price"></option>
-		  	</select>
-		  	<div class="selectNewModal modal" ng-if="selecting">
+		  	<div class="button dropdown" ng-click='showModal("class")'>新旧</div>
+		  	<div class="button" ng-click='showModal("NewAndOld")'>新旧</div>
+		  	<div class="button" ng-click='showModal("price")'>价格</div>
+		  	<!--分类选项-->
+		  	<div class="selectNewModal modal" ng-if="selecting.class" ng-controller="getShCateListCotroller">
+		  		<div class="list">
+		  			<a class="item" ng-repeat="item in items" ng-bind="item.name" ng-click="goClass(item.id)"></a>
+		  		</div>
+		  	</div>
+			<!--新旧程度选项-->
+		  	<div class="selectNewModal modal" ng-if="selecting.newAndOld">
 		  		<div class="list">
 		  			<a class="item" ng-repeat="ShCommon in ShCommons" ng-bind="ShCommon" ng-click="goOldAndNew(ShCommon)"></a>
+		  		</div>
+		  	</div>
+		  	<!--价格选项-->
+		  	<div class="selectNewModal modal" ng-if="selecting.price" ng-controller="getShCateListCotroller">
+		  		<div class="list">
+		  			<a class="item" ng-repeat="price in prices" ng-bind="price" ng-click="goPrice(price)"></a>
 		  		</div>
 		  	</div>
 		</div>
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功">
 		</ion-refresher>
 		<ion-list>
-			<a class="item sh_item" href="#/shdetail/{{item.id}}" ng-repeat="item in items">
+			<a ng-repeat="item in items" class="item sh_item" ng-href="/#/shdetail/{{item.id}}">
 				<div class="row padding0">
 					<div class="col col-33 col_pic margin0 padding0">
 						<div class="list-type-sh">
@@ -49,7 +50,7 @@
 								<span class="sh_list_price">&yen; {{item.sellPrice}}</span>
 							</div>
 						</div>
-						<div class="row padding resume-list-small">
+						<div class="row resume-list-small sh_list_last">
 							<i class="icon ion-ios-location-outline"></i>&nbsp; {{item.tradePlace}} &nbsp;
 							<i class="icon ion-android-time"></i>&nbsp; {{item.postTime | timeFileter}}
 						</div>

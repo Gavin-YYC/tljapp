@@ -27,14 +27,16 @@ angular.module('my.controllers',['ngCordova'])
     $scope.user.rememberMe = true;
     //登录操作
     $scope.login = function(){
-        var userApi = "http://120.24.218.56/login?m=1";
-        var subdata = "username="+$scope.user.username+"&password="+$scope.user.password+"&rememberMe="+$scope.user.rememberMe;
+        var userApi = "http://120.24.218.56/login";
+        var subdata = "username="+$scope.user.username+"&password="+$scope.user.password+"&rememberMe="+$scope.user.rememberMe+"&m=1";
         Login.new(subdata,userApi)
             .then(function (data){
+                console.log(data);
                 if (!data.data.result) {
                     GetListService.alertTip(data.data.message);
-                }else{  
-                    Auth.setToken(data.data.parm.id);
+                }else{
+                    Auth.setUser(data.data.parm.id);
+                    Auth.setToken(data.data.parm.appToken);
                     GetListService.alertTip("登录成功！");
                     $timeout(function() {
                         $state.go("/");
@@ -107,7 +109,7 @@ angular.module('my.controllers',['ngCordova'])
 //个人中心内控制器
 .controller('MyController',function ($scope, $state, $ionicModal, $ionicHistory, Auth, GetListService) { 
     //用户是否登录验证
-    var userId = Auth.getToken();
+    var userId = Auth.getUser();
     if (userId != "") {
         var api = "http://120.24.218.56/api/user/"+userId;
         GetListService.getList(api).then(function(data){
@@ -184,7 +186,8 @@ angular.module('my.controllers',['ngCordova'])
 
 //查看我的个人资料
 .controller('MyDetailController',function ($scope, Auth, GetListService, $ionicActionSheet, $cordovaImagePicker){
-    var username = Auth.getToken();
+    var username = Auth.getUser();
+    console.log(username);
     if (username) {
         var api = "http://120.24.218.56/api/user/"+username;
         GetListService.getList(api).then(function(data){

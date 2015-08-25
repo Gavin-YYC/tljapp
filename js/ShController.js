@@ -115,7 +115,7 @@ angular.module('sh.controllers',['directives.dropdown'])
 })
 
 //获取二手物品单个信息详情
-.controller('ShDetailController',function ($scope, $ionicHistory, $stateParams, GetListService, Auth, FormatRusult){
+.controller('ShDetailController',function ($scope, $ionicSlideBoxDelegate, $ionicHistory, $stateParams, GetListService, Auth, FormatRusult){
     //用户后退
     $scope.myGoBack = function (){
         $ionicHistory.goBack();
@@ -168,6 +168,7 @@ angular.module('sh.controllers',['directives.dropdown'])
     GetListService.getDetail(shApi).then(function (data){
         var picturePath = data.data.data.picturePath.split(";");
         $scope.pics = picturePath;
+        $ionicSlideBoxDelegate.$getByHandle('image-viewer').update();
         $scope.details = data.data.data;
         console.log($scope.details);
     })

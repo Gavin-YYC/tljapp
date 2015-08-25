@@ -70,10 +70,11 @@
 
 			<div class="item">
 				<div class="list">
-					<a class="item item-avatar" href="#"  ng-repeat='comment in comments | orderBy:"id":true' ng-click="showBox(comment.id)">
+					<a class="item item-avatar"  ng-repeat='comment in comments | orderBy:"id":true' ng-click="showBox($index,comment.id)">
 				      	<img src="http://120.24.218.56/static/images/users/{{comment.member.profilePhotoId}}">
 				      	<h2>{{comment.member.username}}</h2>
 				      	<p>{{comment.content}}</p>
+				      	<p>{{comment.time | timeFileter}}发布</p>
 				    </a>
 				    <button class="button button-block" ng-if="emptyContent" ng-click="loadMoreCom()">加载更多...</button>
 				    <p class="emptyContent" ng-if="!emptyContent" style="padding-top:30px;">没有更多评论了！.</p>

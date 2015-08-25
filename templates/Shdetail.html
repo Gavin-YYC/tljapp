@@ -1,13 +1,15 @@
-<ion-view title="详情" ng-controller="ShDetailController">
+<ion-view title="详情">
     <ion-header-bar align-title="center">
         <button class="button button-clear icon-left ion-ios-arrow-left" ng-click="myGoBack()">返回</button>
         <h1 class="title">物品详情</h1>
         <button class="button button-clear"><i class="icon iconfont">&#xe610;</i> 收藏</button>
     </ion-header-bar>
     <ion-content>
-		<ion-slide-box class="sh_detail_pics" auto-play="true" does-continue="true">
-			<ion-slide ng-repeat="pic in pics" style='background:url("http://120.24.218.56/static/images/users/{{pic}}")'>
-				
+		<ion-slide-box delegate-handle="image-viewer">
+			<ion-slide ng-repeat="pic in pics">
+				<div class="sh-detail-pic" >
+					<img src="http://120.24.218.56/static/images/users/{{pic}}" alt="">
+				</div>
 			</ion-slide>
 		</ion-slide-box>
 		<div class="list padding0">

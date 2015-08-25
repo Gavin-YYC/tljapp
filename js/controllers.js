@@ -161,6 +161,7 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     //查询指定ID下的评论
     GetListService.getList(commentApi).then(function (data){
         $scope.comments = data.data.data.list;
+        console.log($scope.comments)
         $scope.commentsCount = data.data.data.resultCount;
         if ($scope.commentsCount >= 8) {
             $scope.emptyContent = true;
@@ -207,7 +208,9 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
         })
     }
     //显示删除盒子
-    $scope.showBox = function(commentID){
+    $scope.showBox = function(delList,commentId){
+        console.log(delList);
+        console.log(commentId);
         var hideSheet = $ionicActionSheet.show({
              buttons: [
                { text: '删除' }
@@ -219,11 +222,11 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
                 },
              buttonClicked: function(index) {
                 //执行删除操作
-                var delApi = "http://120.24.218.56/user/"+userId+"/review/delete/"+commentID+tokenKey;
+                var delApi = "http://120.24.218.56/user/job/"+userId+"/review/delete/"+commentId+tokenKey;
                 GetListService.userPost(delApi,{}).then(function (data){
                     console.log(data)
                     if (data.message == 0) {
-                        $scope.comments.unshift(jsonData);
+                        $scope.comments.splice(delList,1);
                     }else{
                         FormatRusult.format(data.message).then(function (data){
                             GetListService.alertTip(data);

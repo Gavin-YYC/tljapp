@@ -289,10 +289,6 @@ a{
 	font-size: 20px;
 	margin-top: 10px;
 }
-.sh_detail_pics img{
-	width: 100%;
-	height: 150px;
-}
 .sh_detail_title{
 	width: 100%;
 	line-height: 50px;
@@ -322,6 +318,14 @@ a{
 	letter-spacing:1px;
 	line-height: 50px;
 	color: #c1c1c1;
+}
+.sh-detail-pic{
+	height: 150px;
+	width: 100%;
+	overflow: hidden;
+}
+.sh-detail-pic img{
+	width: 100%;
 }
 
 

@@ -95,7 +95,7 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
 })
 
 /* 兼职详情页，加载内容的同时加载评论 */
-.controller('DetailController',function ($scope, $http, $stateParams, GetListService, Auth, FormatRusult){
+.controller('DetailController',function ($scope, $ionicActionSheet, $http, $stateParams, GetListService, Auth, FormatRusult){
     //获取用户信息
     var user = Auth.getUser() || "";
     var token = Auth.getToken() || "";
@@ -104,12 +104,22 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     var userId = $stateParams.id;
     var jobApi = "http://120.24.218.56/api/job/"+userId;
     var commentApi = "http://120.24.218.56/api/review/job/"+userId;
-    var subCommentApi = "http://120.24.218.56/user/job/"+userId+"/review/post";
+    var subCommentApi = "http://120.24.218.56/user/job/"+userId+"/review/post"+tokenKey;
     var zanApi = "http://120.24.218.56/user/job/"+$stateParams.id+"/checklike"+tokenKey;
     //执行是否登录以及赞过检查
     if (user == "" || token == "") {
         $scope.zanColor = "";
+        $scope.inUser = {
+            profilePhotoId: "",
+            username: ""
+        };
     }else{
+        //获取用户信息
+        var userApi = "http://120.24.218.56/api/user/"+user;
+        GetListService.getList(userApi).then(function(data){
+            $scope.inUser = data.data.data;
+        })
+        //用户是否点赞
         GetListService.getList(zanApi).then(function (data){
             if (data.data.message=="true") {
                 $scope.zanColor="#F96A39";
@@ -148,12 +158,46 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     GetListService.getList(commentApi).then(function (data){
         $scope.comments = data.data.data.list;
     })
+
     //提交评论
-    $scope.sendComment = function (data){
-        var data = "content="+data+"&member_id="+Auth.getToken();
+    $scope.sendComment = function (){
+        var data = "content="+$scope.commentData;
+        var jsonData = {
+            member: {
+                profilePhotoId: $scope.inUser.profilePhotoId,
+                username: $scope.inUser.username
+            },
+            content:$scope.commentData
+        }
         GetListService.userPost(subCommentApi,data).then(function (data){
             console.log(data);
+            if (data.message == 0) {
+                $scope.comments.unshift(jsonData);
+            }else{
+                FormatRusult.format(data.message).then(function (data){
+                    GetListService.alertTip(data);
+                })
+            }
         })
+    }
+    //显示删除盒子
+    $scope.showBox = function(commentID){
+        var hideSheet = $ionicActionSheet.show({
+             buttons: [
+               { text: '删除' }
+             ],
+             titleText: '选择操作',
+             cancelText: '取消',
+             cancel: function() {
+                  // add cancel code..
+                },
+             buttonClicked: function(index) {
+                //执行删除操作
+                var delApi = "120.24.218.56/user/"+userId+"/review/delete/"+commentID;
+                console.log(delApi);
+                return true;
+             }
+        });
     }
  })
 

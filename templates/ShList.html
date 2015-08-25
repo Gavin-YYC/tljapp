@@ -30,7 +30,7 @@
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功">
 		</ion-refresher>
 		<ion-list>
-			<a ng-repeat="item in items" class="item sh_item" ng-href="/#/shdetail/{{item.id}}">
+			<a class="item sh_item" ng-repeat="item in items" ng-href="#/shdetail/{{item.id}}">
 				<div class="row padding0">
 					<div class="col col-33 col_pic margin0 padding0">
 						<div class="list-type-sh">
@@ -60,5 +60,5 @@
 		</ion-list>
 		<p class="emptyContent" ng-if="emptyContent">Sorry,该项目下没有内容</p>
 	</ion-content>
-	<ion-infinite-scroll on-infinite="loadMore()" distance="30%"></ion-infinite-scroll>
+	<ion-infinite-scroll on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
 </ion-view>

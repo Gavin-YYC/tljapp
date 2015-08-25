@@ -62,7 +62,7 @@ angular.module('getlist.service',['ngCookies'])
             url:api,
             method:"POST",
             headers:{
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             data: data
 		})

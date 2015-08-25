@@ -236,7 +236,8 @@ a{
 	padding: 0;
 	margin: 8px;
 	margin-bottom: 0px;
-	z-index: 50;
+	z-index: 999;
+	display: block;
 }
 .sh_all_list{
 	padding: 0;

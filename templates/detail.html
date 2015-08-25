@@ -2,7 +2,7 @@
     <ion-nav-bar align-title="center">
         <ion-nav-back-button>返回</ion-nav-back-button>
     </ion-nav-bar>
-    <ion-content ng-controller="DetailController">
+    <ion-content>
     	<div class="redline"></div>
 		<div class="list card">
 			<div class="item">
@@ -70,7 +70,7 @@
 
 			<div class="item">
 				<div class="list">
-					<a class="item item-avatar" href="#"  ng-repeat="comment in comments">
+					<a class="item item-avatar" href="#"  ng-repeat="comment in comments" ng-click="showBox(comment.id)">
 				      	<img src="http://120.24.218.56/static/images/users/{{comment.member.profilePhotoId}}">
 				      	<h2>{{comment.member.username}}</h2>
 				      	<p>{{comment.content}}</p>
@@ -82,9 +82,8 @@
     <ion-footer-bar class="item-input-inset">
 	  	<label class="item-input-wrapper">
 	    	<i class="icon ion-ios-barcode-outline placeholder-icon"></i>
-	    	<input type="text" placeholder="评论" ng-model="commentDate">
+	    	<input type="text" placeholder="评论" ng-model="commentData">
 	  	</label>
-	  	<button class="button button-clear" ng-click="sendComment(commentDate)">评论</button>
+	  	<button class="button button-clear" ng-click="sendComment()">评论</button>
 	</ion-footer-bar>
-
 </ion-view>

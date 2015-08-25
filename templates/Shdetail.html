@@ -5,9 +5,9 @@
         <button class="button button-clear"><i class="icon iconfont">&#xe610;</i> 收藏</button>
     </ion-header-bar>
     <ion-content>
-		<ion-slide-box auto-play="true" does-continue="true" class="sh_detail_pics">
+		<ion-slide-box class="sh_detail_pics" auto-play="true" does-continue="true">
 			<ion-slide ng-repeat="pic in pics">
-				<img src="http://120.24.218.56/static/images/users/{{pic}}" alt="">
+				<img ng-src="http://120.24.218.56/static/images/users/{{pic}}" alt="">
 			</ion-slide>
 		</ion-slide-box>
 		<div class="list padding0">

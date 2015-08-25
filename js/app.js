@@ -32,16 +32,14 @@ angular.module('tljApp', [
 })
 
 //loading
-.factory('timestampMarker', ["$rootScope", function ($rootScope) {
+.factory('timestampMarker', ["$rootScope","$timeout", function ($rootScope, $timeout) {
     var timestampMarker = {
         request: function (config) {
             $rootScope.loading = true;
-            //config.requestTimestamp = new Date().getTime();
             return config;
         },
         response: function (response) {
             $rootScope.loading = false;
-            //response.config.responseTimestamp = new Date().getTime();
             return response;
         }
     };

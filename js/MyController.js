@@ -31,7 +31,6 @@ angular.module('my.controllers',['ngCordova'])
         var subdata = "username="+$scope.user.username+"&password="+$scope.user.password+"&rememberMe="+$scope.user.rememberMe+"&m=1";
         Login.new(subdata,userApi)
             .then(function (data){
-                console.log(data);
                 if (!data.data.result) {
                     GetListService.alertTip(data.data.message);
                 }else{
@@ -185,8 +184,8 @@ angular.module('my.controllers',['ngCordova'])
 })
 
 //查看我的个人资料
-.controller('MyDetailController',function ($scope, Auth, GetListService, $ionicActionSheet, $cordovaImagePicker){
-    var username = Auth.getUser();
+.controller('MyDetailController',function ($scope, Auth, GetListService, $cordovaCamera, $ionicActionSheet, $cordovaImagePicker){
+    var username = Auth.getUser() || "";
     console.log(username);
     if (username) {
         var api = "http://120.24.218.56/api/user/"+username;
@@ -201,6 +200,22 @@ angular.module('my.controllers',['ngCordova'])
 
 //=========================
     $scope.images_list = [];  
+    
+    $scope.takePhoto = function () {
+        var options = {
+            destinationType: Camera.DestinationType.FILE_URI,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            targetWidth: 600,
+            targetHeight: 800
+        };
+
+        $cordovaCamera.getPicture(options).then(function (imageURI) {
+            alert(imageURI);
+            $scope.images_list.push(imageURI)
+        }, function (err) {
+            // error
+        });
+    }
     // "添加附件"Event  
     $scope.addAttachment = function() {  
         //nonePopover();
@@ -212,7 +227,7 @@ angular.module('my.controllers',['ngCordova'])
             },  
             buttonClicked: function(index) {  
                 switch (index){  
-                    case 0:appendByCamera();break;  
+                    case 0:$scope.takePhoto();break;  
                     case 1: pickImage();break;  
                     default:break;  
                 }      
@@ -232,7 +247,7 @@ angular.module('my.controllers',['ngCordova'])
     var pickImage = function () {  
         var options = {  
             maximumImagesCount: 4,  
-            width: 800,
+            width: 600,
             height: 800,
             quality: 80  
         };  

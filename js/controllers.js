@@ -100,10 +100,14 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     var user = Auth.getUser() || "";
     var token = Auth.getToken() || "";
     var tokenKey = "?appToken="+token;
+    //初始化分页
+    var pageNumber = 0;
+    var pageSize = 8;
+    var pageKey = "?pageNumber="+pageNumber+"&pageSize="+pageSize;
     //初始化API
     var userId = $stateParams.id;
     var jobApi = "http://120.24.218.56/api/job/"+userId;
-    var commentApi = "http://120.24.218.56/api/review/job/"+userId;
+    var commentApi = "http://120.24.218.56/api/review/job/"+userId+pageKey;
     var subCommentApi = "http://120.24.218.56/user/job/"+userId+"/review/post"+tokenKey;
     var zanApi = "http://120.24.218.56/user/job/"+$stateParams.id+"/checklike"+tokenKey;
     //执行是否登录以及赞过检查
@@ -157,11 +161,33 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     //查询指定ID下的评论
     GetListService.getList(commentApi).then(function (data){
         $scope.comments = data.data.data.list;
+        $scope.commentsCount = data.data.data.resultCount;
+        if ($scope.commentsCount >= 8) {
+            $scope.emptyContent = true;
+        }
     })
+    //加载更多评论
+    $scope.loadMoreCom = function (){
+        pageNumber++;
+        var pageKey = "?pageNumber="+pageNumber+"&pageSize="+pageSize;
+        var api = "http://120.24.218.56/api/review/job/"+userId+pageKey;
+        GetListService.getList(api).then(function (data){
+            if (data.data.data.list.length == 8) {
+                $scope.comments = $scope.comments.concat(data.data.data.list);
+            }else{
+                $scope.comments = $scope.comments.concat(data.data.data.list);
+                $scope.emptyContent = false;
+            }
+        })
+    }
 
     //提交评论
     $scope.sendComment = function (){
         var data = "content="+$scope.commentData;
+        if ($scope.commentData == " "||$scope.commentData == null) {
+            GetListService.alertTip("评论内容不能为空！");
+            return false;
+        };
         var jsonData = {
             member: {
                 profilePhotoId: $scope.inUser.profilePhotoId,
@@ -170,9 +196,9 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
             content:$scope.commentData
         }
         GetListService.userPost(subCommentApi,data).then(function (data){
-            console.log(data);
-            if (data.message == 0) {
+            if (data.message == 0 || data.result == true) {
                 $scope.comments.unshift(jsonData);
+                $scope.commentData = [];
             }else{
                 FormatRusult.format(data.message).then(function (data){
                     GetListService.alertTip(data);
@@ -193,8 +219,17 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
                 },
              buttonClicked: function(index) {
                 //执行删除操作
-                var delApi = "120.24.218.56/user/"+userId+"/review/delete/"+commentID;
-                console.log(delApi);
+                var delApi = "http://120.24.218.56/user/"+userId+"/review/delete/"+commentID+tokenKey;
+                GetListService.userPost(delApi,{}).then(function (data){
+                    console.log(data)
+                    if (data.message == 0) {
+                        $scope.comments.unshift(jsonData);
+                    }else{
+                        FormatRusult.format(data.message).then(function (data){
+                            GetListService.alertTip(data);
+                        })
+                    }
+                })
                 return true;
              }
         });

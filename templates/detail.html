@@ -61,7 +61,7 @@
 				    <i class="icon ion-thumbsdown"></i> {{item.dislikes}}
 			    </a>
 			    <a class="tab-item" href="#">
-				    <i class="icon ion-chatbox"></i> {{comments.length}}
+				    <i class="icon ion-chatbox"></i> {{commentsCount}}
 			    </a>
 			    <a class="tab-item" href="#">
 			      	<i class="icon ion-share"></i>
@@ -70,19 +70,27 @@
 
 			<div class="item">
 				<div class="list">
-					<a class="item item-avatar" href="#"  ng-repeat="comment in comments" ng-click="showBox(comment.id)">
+					<a class="item item-avatar" href="#"  ng-repeat='comment in comments | orderBy:"id":true' ng-click="showBox(comment.id)">
 				      	<img src="http://120.24.218.56/static/images/users/{{comment.member.profilePhotoId}}">
 				      	<h2>{{comment.member.username}}</h2>
 				      	<p>{{comment.content}}</p>
 				    </a>
+				    <button class="button button-block" ng-if="emptyContent" ng-click="loadMoreCom()">加载更多...</button>
+				    <p class="emptyContent" ng-if="!emptyContent" style="padding-top:30px;">没有更多评论了！.</p>
 				</div>
 			</div>
+		</div>
+		<!--loading-->
+		<div class="loading-modal modal" ng-if="loading">
+		    <div class="loading">
+		        <ion-spinner icon="lines"></ion-spinner>
+		    </div>
 		</div>
     </ion-content>
     <ion-footer-bar class="item-input-inset">
 	  	<label class="item-input-wrapper">
 	    	<i class="icon ion-ios-barcode-outline placeholder-icon"></i>
-	    	<input type="text" placeholder="评论" ng-model="commentData">
+	    	<input type="text" placeholder="评论" ng-model="commentData" required>
 	  	</label>
 	  	<button class="button button-clear" ng-click="sendComment()">评论</button>
 	</ion-footer-bar>

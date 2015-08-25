@@ -5,7 +5,11 @@
  * 加载评论
 */
 angular.module('sh.controllers',['directives.dropdown'])
-.controller('ShListController',function ($scope, GetListService){
+.controller('ShListController',function ($scope, GetListService, $state){
+    $scope.test = function (id){
+        window.location = "/#/shdetail/"+id;
+        //GetListService.alertTip(id);
+    }
     //初始化页面数据
     var pageNumber = 0;
     var pageSize = 8;

@@ -1,0 +1,57 @@
+<ion-view title="发布兼职">
+    <ion-nav-bar align-title="center">
+        <ion-nav-back-button>返回</ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-content>
+		<ion-slide-box style="height:500px;" on-slide-changed="slideHasChanged($index)">
+			<ion-slide class="tlj-post">
+				<div class="item row">
+					<div class="col col-33 title"><span>标题</span></div>
+					<div class="col col-67"><input type="text" placeholder="请输入标题"></div>
+				</div>
+				<div class="item row">
+					<div class="col col-33 title"><span>兼职类型</span></div>
+					<div class="col col-67">
+						<input type="text" placeholder="请选择兼职类型" ng-click="chooseJobType()" ng-model="job.type">
+					</div>
+				</div>
+				<div class="item row">
+					<div class="col col-33 title"><span>区域选择</span></div>
+					<div class="col col-67">
+						<input type="text" placeholder="请选择兼职类型" ng-click="chooseJobTypeArea()" ng-model="job.typeArea">
+					</div>
+				</div>
+				<div class="item row">
+					<div class="col col-33 title"><span>截止时间</span></div>
+					<div class="col col-67">请选择有效截止时间</div>
+				</div>
+				<div class="item row">
+					<div class="col col-33 title"><span>工资待遇</span></div>
+					<div class="col col-67 tlj-gz-sj">
+						<div class="row">
+							<div class="col col-50">
+								<input type="text" placeholder="工资数字">
+							</div>
+							<div class="col col-50">
+								<input type="text" ng-click="chooseJobMoneyAndTime()" ng-model="job.moneyAndTime"></div>
+						</div>
+					</div>
+				</div>
+				<div class="item row">
+					<div class="col col-33 title"><span>结算方式</span></div>
+					<div class="col col-67">
+						<input type="text" placeholder="请选择兼职类型" ng-click="chooseJobTypeToPay()" ng-model="job.typeToPay">
+					</div>
+				</div>
+				<div class="row next-page">
+					<button class="button button-clear button-next" ng-click="goNext()">下一步</button>
+				</div>
+			</ion-slide>
+			<ion-slide class="tlj-post">
+				<div class="row">
+					<button class="button button-block" ng-click="goPrevious()">上一步</button>
+				</div>
+			</ion-slide>
+		</ion-slide-box>
+	</ion-content>
+</ion-view>

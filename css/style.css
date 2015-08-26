@@ -400,7 +400,7 @@ a{
 	font-size: 14px;
 	font-weight: bold;
 	color: #ccc;
-	padding-top: 100px;
+	padding-top: 10px;
 }
 
 /*登录页面美化*/
@@ -536,4 +536,35 @@ a{
 }
 .com_item_border{
 	border-color: #E9E9E9;
+}
+/*兼职发布页面*/
+.tlj-post .title{
+	color: #fff;
+	height: 55px;
+	text-align: center;
+}
+.tlj-post .title span{
+	width: 80%;
+	margin: 0 auto;
+	display: block;
+	height: 35px;
+	line-height: 35px;
+	border-radius: 5px;
+	background: #65CCED;
+	margin-top: 6px;
+}
+.tlj-post input{
+	margin-top: 7px;
+}
+.tlj-gz-sj .row{
+	padding: 0;
+}
+.next-page .button-next{
+	margin: 0 auto;
+	color: red;
+	width: 30%;
+	height: 30px;
+	border: 1px solid red;
+	border-radius: 10px;
+	margin-top: 30px;
 }

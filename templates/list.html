@@ -3,23 +3,36 @@
 		<ion-nav-back-button>返回</ion-nav-back-button>
 	</ion-nav-bar>
 	<ion-content>
-		<div class="button-bar bar-assertive" ng-controller="getRegionAndPayCotroller">
-		  	<a class="button icon-right ion-chevron-up" ng-click="modalType.show()">分类</a> 
-
-		  	<select class="button" ng-model="select.location" ng-change="locationChange(select.location)">
-		  		<option value="">区域</option>
-		  		<option ng-repeat="location in locations" ng-value="location" ng-bind="location"></option>
-		  	</select>
-		  	<select class="button" ng-model="select.paytype" ng-change="paytypeChange(select.paytype)">
-		  		<option value="">结算</option>
-		  		<option ng-repeat="paytype in paytypes" ng-value="paytype" ng-bind="paytype"></option>
-		  	</select>
+		<div class="overlay" ng-show="overlay" ng-click="showList = false;overlay = false;"></div>
+		<div class="button-bar bar-assertive shListModal" ng-controller="getRegionAndPayCotroller">
+		  	<div class="button dropdown" ng-click='showModal("class")'>分类</div>
+		  	<div class="button" ng-click='showModal("location")'>区域</div>
+		  	<div class="button" ng-click='showModal("paytype")'>结算</div>
+		  	<!--分类选项-->
+		  	<div class="selectNewModal modal" ng-if="selecting.class" ng-controller="getJobCateListCotroller">
+		  		<div class="list">
+		  			<a class="item" ng-click='loadAll("class")'>所有</a>
+		  			<a class="item" ng-repeat="item in items" ng-bind="item.name" ng-click="goClass(item.id)"></a>
+		  		</div>
+		  	</div>
+			<!--区域选择-->
+		  	<div class="selectNewModal modal" ng-if="selecting.location" ng-controller="getJobCateListCotroller">
+		  		<div class="list">
+		  			<a class="item" ng-click='loadAll("location")'>所有</a>
+		  			<a class="item" ng-repeat="location in locations" ng-bind="location" ng-click="goLocation(location)"></a>
+		  		</div>
+		  	</div>
+		  	<!--结算方式-->
+		  	<div class="selectNewModal modal" ng-if="selecting.paytype" ng-controller="getJobCateListCotroller">
+		  		<div class="list">
+		  			<a class="item" ng-click='loadAll("paytype")'>所有</a>
+		  			<a class="item" ng-repeat="paytype in paytypes" ng-bind="paytype" ng-click="goPaytype(paytype)"></a>
+		  		</div>
+		  	</div>
 		</div>
-
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
-
 		<ion-list>
-			<ion-item ng-repeat="item in items">
+			<ion-item ng-repeat="item in items" class="padding0">
 				<a class="item no-boder" ng-href="#/detail/{{item.id}}">
 					<div class="row">
 						<div class="col col-25 padding0">
@@ -45,52 +58,16 @@
 					</h4>
 				</a>
 			</ion-item>
+			<button class="button button-block" ng-if="!emptyContent" ng-click="loadMore()">加载更多</button>
+			<p class="emptyContent" ng-if="emptyContent">Sorry,该项目下没有更多内容</p>
 		</ion-list>
-
 		<!--loading-->
+		<!--
 		<div class="loading-modal modal" ng-if="loading">
 		    <div class="loading">
 		        <ion-spinner icon="lines"></ion-spinner>
 		    </div>
 		</div>
-
-		<ion-infinite-scroll ng-if="moreDataCanBeLoaded()" on-infinite="loadMore()" distance="30%">
-		</ion-infinite-scroll>
-		<!--如果没有内容，则显示下面的信息-->
-		<p class="emptyContent" ng-if="emptyContent">Sorry,该项目下没有内容</p>
+		-->
 	</ion-content>
-
-	<!--二级目录-->
-	
-	<script id="modal-type.html" type="text/ng-template">
-		<ion-modal-view>
-		    <ion-header-bar class="bar-assertive">
-		        <h1 class="title">选择分类</h1>
-		        <button class="button button-clear button-primary" ng-click="modal.hide()">确定</button>
-		    </ion-header-bar>
-		    <ion-content ng-controller="getCategoriesCotroller">
-			    <div class="list">
-				    <label class="item item-radio">
-					    <input type="radio" name="group" ng-click="goList(0)">
-					    <div class="item-content">
-					    	<div class="list-type list-type-pic" style="color:#FA693A;border-color:#FA693A">
-								<span>所有</span>
-							</div>
-					    </div>
-					    <i class="radio-icon ion-checkmark"></i>
-					</label>
-				    <label class="item item-radio" ng-repeat="category in categories">
-					    <input type="radio" name="group" ng-click="goList(category.id)">
-					    <div class="item-content">
-					    	<div class="list-type list-type-pic" style="color:{{category.themeColor}};border-color:{{category.themeColor}}">
-								<span>{{category.name}}</span>
-							</div>
-					    </div>
-					    <i class="radio-icon ion-checkmark"></i>
-					</label>
-				</div>
-		    </ion-content>
-		</ion-modal-view>
-	</script>
-	
 </ion-view>

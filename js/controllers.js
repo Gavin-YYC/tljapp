@@ -1,101 +1,66 @@
 /* 兼职页面控制器 */
 angular.module('starter.controllers',['my.controllers','directives.dropdown'])
-.controller('ListController',function($scope,$http,$ionicModal,$stateParams,GetListService){
+.controller('ListController',function ($scope, GetListService){
     //初始化 请求页面参数
     var pageBase = 0;
     var pageSize = 8;
-    var cateId = $stateParams.id;
     var listApi = "http://120.24.218.56/api/job/list";
-    var cateListApi = "http://120.24.218.56/api/job/category/"+cateId;
-
+    //接收来自子控制器的消息
     $scope.$on('to-parent',function (event,data){
-        if (data == "") {
-            $scope.items = data;
+        //配置全局搜索Api
+        $scope.loadMoreApi = data.api;
+        //页面更新数据
+        if (data.list == "") {
+            $scope.items = data.list;
             $scope.emptyContent = true;
         }else{
-            $scope.items = data;
+            $scope.items = data.list;
             $scope.emptyContent = false;
         };
+        checkNext(data.list.length);
     })
-
-    //加载兼职首页的数据，0表示返回的所有数据，其他数值表示兼职分类下二级栏目的Id
-    if (cateId == 0) {
-        //列表页加载时产生的数据
-        $http.get(listApi)
-            .success(function(newItems) {
-                if (newItems.ok == true) {
-                    console.log(newItems);
-                    $scope.items = newItems.data.list;
-                }else{
-                    //else code
-                };
-            })
-    }else{
-        $http.get(cateListApi)
-            .success(function(newItems) {
-                if (newItems.ok == true) {
-                    console.log(newItems)
-                    $scope.items = newItems.data.list;
-                }else{
-                    //else code
-                };
-            })
-    };
-    
+    //加载兼职首页的数据
+    GetListService.getList(listApi).then(function (data){
+        $scope.items = data.data.data.list;
+        checkNext(data.data.data.list.length);
+    })
     //下拉更新操作，数据更新，并进行提示
     $scope.doRefresh = function(){
-        if (cateId==0) {
-            pageBase++;
-            console.log(listApi+"?pageNumber="+pageBase+"&pageSize="+pageSize);
-            $http.get(listApi+"?pageNumber="+pageBase+"&pageSize="+pageSize)
-                .success(function(newItems) {
-                    if (newItems.ok == true && newItems.data.list.length > 0) {
-                        for (var i = 0; i < newItems.data.list.length; i++) {
-                            $scope.items.unshift(newItems.data.list[i]);
-                        }; 
-                        GetListService.alertTip("刷新成功！");
-                    }else if(newItems.ok == true && newItems.data.list.length == 0) {
-                        GetListService.alertTip("已经没有更多信息了");
-                    }else{
-                        GetListService.alertTip(newItems.message);
-                    };
-                })
-                .finally(function() {
-                    $scope.$broadcast('scroll.refreshComplete');
-                });
-        }else{
-            pageBase++;
-            console.log(cateListApi+"?pageNumber="+pageBase+"&pageSize="+pageSize);
-            $http.get(cateListApi+"?pageNumber="+pageBase+"&pageSize="+pageSize)
-                .success(function(newItems) {
-                    console.log(newItems);
-                    if (newItems.ok == true && newItems.data.list.length > 0) {
-                        for (var i = 0; i < newItems.data.list.length; i++) {
-                            $scope.items.unshift(newItems.data.list[i]);
-                        }; 
-                        GetListService.alertTip("刷新成功！");
-                    }else if(newItems.ok == true && newItems.data.list.length == 0) {
-                        GetListService.alertTip("已经没有更多信息了");
-                    }else{
-                        GetListService.alertTip(newItems.message);
-                    };
-                })
-                .finally(function() {
-                    $scope.$broadcast('scroll.refreshComplete');
-                });
-        };
+        //如果有搜索Api，则刷新搜索页面，否则为普通列表
+        var api = $scope.loadMoreApi ? $scope.loadMoreApi : listApi;
+        GetListService.getList(api).then(function (data){
+            $scope.items = data.data.data.list;
+            checkNext(data.data.data.list.length);
+        }).finally(function(){
+            $scope.$broadcast('scroll.refreshComplete');
+        });
     }
-
-    //modal弹出模态窗口，用于选择分类、结算和区域
-    $ionicModal.fromTemplateUrl('modal-type.html',function(modal){
-        $scope.modalType = modal;
-    },{
-        animation: 'slide-in-up'
-    });
+    //加载更多
+    $scope.loadMore = function (){
+        pageBase++;
+        var pageKey = "?pageNumber="+pageBase+"&pageSize="+pageSize;
+        var api = $scope.loadMoreApi ? $scope.loadMoreApi+pageKey : listApi+pageKey;
+        console.log(api);
+        GetListService.getList(api).then(function (data){
+            $scope.items = $scope.items.concat(data.data.data.list);
+            checkNext(data.data.data.list.length);
+        })
+    }
+    //如果列表结果小于8，则加载下一页
+    function checkNext(resultCount){
+        if (resultCount == 8) {
+            $scope.emptyContent = false;
+        }else{
+            $scope.emptyContent = true;
+        }
+    }
 })
 
 /* 兼职详情页，加载内容的同时加载评论 */
-.controller('DetailController',function ($scope, $ionicActionSheet, $http, $stateParams, GetListService, Auth, FormatRusult){
+.controller('DetailController',function ($scope, $ionicActionSheet, $http, $stateParams, $ionicHistory, GetListService, Auth, FormatRusult){
+    $scope.myGoBack = function (){
+        $ionicHistory.goBack();
+    }
     //获取用户信息
     var user = Auth.getUser() || "";
     var token = Auth.getToken() || "";
@@ -109,7 +74,8 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     var jobApi = "http://120.24.218.56/api/job/"+userId;
     var commentApi = "http://120.24.218.56/api/review/job/"+userId+pageKey;
     var subCommentApi = "http://120.24.218.56/user/job/"+userId+"/review/post"+tokenKey;
-    var zanApi = "http://120.24.218.56/user/job/"+$stateParams.id+"/checklike"+tokenKey;
+    var zanApi = "http://120.24.218.56/user/job/"+userId+"/checklike"+tokenKey;
+    var colApi = "http://120.24.218.56/api/u/job/fav/"+userId+tokenKey;
     //执行是否登录以及赞过检查
     if (user == "" || token == "") {
         $scope.zanColor = "";
@@ -131,22 +97,48 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
                 $scope.zanColor = "";
             };
         })
+        //用户时候收藏
+        GetListService.getList(colApi).then(function (data){
+            if (data.data.data==true) {
+                $scope.colColor="#F96A39";
+            }else{
+                $scope.colColor = "";
+            };
+        })
     };
     //用户点赞
     $scope.zan = function (){
-        var api = "http://120.24.218.56/user/job/"+$stateParams.id+"/like"+tokenKey;
+        var api = "http://120.24.218.56/user/job/"+userId+"/like"+tokenKey;
         GetListService.userPost(api).then(function (data){
+            //如果已经点过赞了，则取消点赞、颜色消失、数字减一
             if (data.message == 16) {
-                var api = "http://120.24.218.56/user/job/"+$stateParams.id+"/unlike"+tokenKey;
+                var api = "http://120.24.218.56/user/job/"+userId+"/unlike"+tokenKey;
                 GetListService.userPost(api).then(function (data){
                     if(data.message == 0){
                         $scope.zanColor="";
                         $scope.item.likes -= 1;
                     }
                 })
+            //如果没有点过赞，则颜色、数字加一
             }else if(data.message == 0){
                 $scope.zanColor="#F96A39";
                 $scope.item.likes += 1;
+            //其他情况，输出错误提示
+            }else{
+                FormatRusult.format(data.message).then(function (data){
+                    GetListService.alertTip(data);
+                })
+            }
+        })
+    }
+    //用户收藏
+    $scope.col = function (){
+        var api = "http://120.24.218.56/user/job/fav/"+userId+tokenKey;
+        GetListService.userPost(api).then(function (data){
+            if (data.message == 16 || data.parm.status == 1) {
+                $scope.colColor="";
+            }else if(data.message == 0 || data.parm.status == 0){
+                $scope.colColor="#F96A39";
             }else{
                 FormatRusult.format(data.message).then(function (data){
                     GetListService.alertTip(data);
@@ -161,7 +153,6 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     //查询指定ID下的评论
     GetListService.getList(commentApi).then(function (data){
         $scope.comments = data.data.data.list;
-        console.log($scope.comments)
         $scope.commentsCount = data.data.data.resultCount;
         if ($scope.commentsCount >= 8) {
             $scope.emptyContent = true;
@@ -209,8 +200,6 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     }
     //显示删除盒子
     $scope.showBox = function(delList,commentId){
-        console.log(delList);
-        console.log(commentId);
         var hideSheet = $ionicActionSheet.show({
              buttons: [
                { text: '删除' }
@@ -239,47 +228,70 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     }
  })
 
-/* 获取二级目录 */
-.controller('getCategoriesCotroller',function ($scope, $location, GetListService){
+//加载二级目录
+.controller('getRegionAndPayCotroller',function ($scope, GetListService, $rootScope){
+    //获取二级目录
     var categoryApi = "http://120.24.218.56/api/job/cate/list";
     GetListService.getList(categoryApi).then(function (data){
-        $scope.categories = data.data.data.list;
+        $scope.items = data.data.data.list;
     })
-    $scope.goList = function(id){
-        $location.url("list/"+id);
+    //初始化：隐藏二级选项菜单
+    $scope.selecting = {
+        location:false,
+        paytype:false
     }
-
-})
-
-/* 按地区和结算方式搜索 */
-.controller('getRegionAndPayCotroller',function ($scope, GetListService, $rootScope){
+    //显示二级选项菜单
+    $scope.showModal = function (value){
+        if (value == "location")
+            $scope.selecting.location = !$scope.selecting.location;
+        if (value == "paytype") 
+            $scope.selecting.paytype = !$scope.selecting.paytype;
+        if (value == "class") 
+            $scope.selecting.class = !$scope.selecting.class;
+    }
     var locations = ["张店区","周村区","淄川区","临淄区","博山区","桓台区","高青区","沂源县"];
     var paytypes = ["日结","周结","月结","完工结算"];
-    var searchApi = "http://120.24.218.56/api/job/search";
-    var pageBase = 0;
-    var pageSize = 8;
     $scope.locations = locations;
     $scope.paytypes = paytypes;
-    //根据地区进行搜索
-    $scope.locationChange = function (value){
-        if (value == "") {
-            return false;
-        };
-        var key = "?region="+value;
-        var api = searchApi+key+"&pageNumber="+pageBase+"&pageSize="+pageSize;
+})
+//按二级目录进行搜索查询，并将消息和Api传递给父控制器
+.controller('getJobCateListCotroller', function ($scope, $state, GetListService){
+    //按照分类目录进行搜索
+    $scope.goClass = function (data){
+        var api = "http://120.24.218.56/api/job/category/"+data;
         GetListService.getList(api).then(function (data){
-            $scope.$emit('to-parent',data.data.data.list);
+            data.data.data.api = api;
+            $scope.$emit('to-parent',data.data.data);
+            $scope.selecting.class = !$scope.selecting.class;
         })
     }
-    //根据结算方式进行搜索
-    $scope.paytypeChange = function (value){
-        if (value == "") {
-            return false;
-        };
-        var key = "?timeToPay="+value;
-        var api = searchApi+key+"&pageNumber="+pageBase+"&pageSize="+pageSize;
+    //按照区域进行搜索
+    $scope.goLocation = function (data){
+        var key = "?region="+data;
+        var api = "http://120.24.218.56/api/job/search"+key;
         GetListService.getList(api).then(function (data){
-            $scope.$emit('to-parent',data.data.data.list);
+            data.data.data.api = api;
+            $scope.$emit('to-parent',data.data.data);
+            $scope.selecting.location = !$scope.selecting.location;
+        })
+    }
+    //按照支付方式进行搜索
+    $scope.goPaytype = function (data){
+        var key = "?timeToPay="+data;
+        var api = "http://120.24.218.56/api/job/search"+key;
+        GetListService.getList(api).then(function (data){
+            data.data.data.api = api;
+            $scope.$emit('to-parent',data.data.data);
+            $scope.selecting.paytype = !$scope.selecting.paytype;
+        })
+    }
+    //显示所有信息
+    $scope.loadAll = function (value){
+        var api = "http://120.24.218.56/api/job/list";
+        GetListService.getList(api).then(function (data){
+            data.data.data.api = api;
+            $scope.$emit('to-parent',data.data.data);
+            $scope.selecting[value] = !$scope.selecting[value];
         })
     }
 })

@@ -1,7 +1,9 @@
 <ion-view title="兼职详情">
-    <ion-nav-bar align-title="center">
-        <ion-nav-back-button>返回</ion-nav-back-button>
-    </ion-nav-bar>
+    <ion-header-bar align-title="center">
+        <button class="button button-clear icon-left ion-ios-arrow-left" ng-click="myGoBack()">返回</button>
+        <h1 class="title">兼职详情</h1>
+        <button class="button button-clear" ng-style='{"color":colColor}' ng-click="col()"><i class="icon iconfont">&#xe610;</i> 收藏</button>
+    </ion-header-bar>
     <ion-content>
     	<div class="redline"></div>
 		<div class="list card">
@@ -80,12 +82,6 @@
 				    <p class="emptyContent" ng-if="!emptyContent" style="padding-top:30px;">没有更多评论了！.</p>
 				</div>
 			</div>
-		</div>
-		<!--loading-->
-		<div class="loading-modal modal" ng-if="loading">
-		    <div class="loading">
-		        <ion-spinner icon="lines"></ion-spinner>
-		    </div>
 		</div>
     </ion-content>
     <ion-footer-bar class="item-input-inset">

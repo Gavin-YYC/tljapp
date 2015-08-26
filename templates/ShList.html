@@ -57,8 +57,8 @@
 					</div>
 				</div>
 			</a>
+			<button class="button button-block" ng-if="!emptyContent" ng-click="loadMore()">加载更多</button>
+			<p class="emptyContent" ng-if="emptyContent">Sorry,该项目下没有更多内容</p>
 		</ion-list>
-		<p class="emptyContent" ng-if="emptyContent">Sorry,该项目下没有内容</p>
 	</ion-content>
-	<ion-infinite-scroll on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
 </ion-view>

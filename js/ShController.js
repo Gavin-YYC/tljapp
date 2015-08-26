@@ -8,7 +8,6 @@ angular.module('sh.controllers',['directives.dropdown'])
 .controller('ShListController',function ($scope, GetListService, $state){
     $scope.test = function (id){
         window.location = "/#/shdetail/"+id;
-        //GetListService.alertTip(id);
     }
     //初始化页面数据
     var pageNumber = 0;
@@ -16,22 +15,30 @@ angular.module('sh.controllers',['directives.dropdown'])
     var shListApi = "http://120.24.218.56/api/sh/list";
     //接收从子控制器中传来的数据（选择分类等）
     $scope.$on('to-parent', function (event, data){
+        //配置全局搜索Api
+        $scope.loadMoreApi = data.api;
         if (data == "") {
-            $scope.items = data;
+            $scope.items = data.list;
             $scope.emptyContent = true;
         }else{
-            $scope.items = data;
+            $scope.items = data.list;
             $scope.emptyContent = false;
         };
+        checkNext(data.list.length);
     })
     //页面初始化
     GetListService.getList(shListApi).then(function (data){
         $scope.items = data.data.data.list;
+        checkNext(data.data.data.list.length);
     })
     //页面上拉刷新
     $scope.doRefresh = function (){
-        GetListService.getList(shListApi).then(function (data){
+        //如果有搜索Api，则刷新搜索页面，否则为普通列表
+        var api = $scope.loadMoreApi ? $scope.loadMoreApi : shListApi;
+        console.log(api);
+        GetListService.getList(api).then(function (data){
             $scope.items = data.data.data.list;
+            checkNext(data.data.data.list.length);
         }).finally(function(){
 	        $scope.$broadcast('scroll.refreshComplete');
 	    });
@@ -39,13 +46,21 @@ angular.module('sh.controllers',['directives.dropdown'])
     //上拉刷出更多数据
     $scope.loadMore = function (){
     	pageNumber++;
-        var api = shListApi+"?pageNumber="+pageNumber+"&pageSize="+pageSize;
+        var pageKey = "?pageNumber="+pageNumber+"&pageSize="+pageSize;
+        var api = $scope.loadMoreApi ? $scope.loadMoreApi+pageKey : shListApi+pageKey;
         console.log(api);
-        // GetListService.getList(api).then(function (data){
-        //     $scope.items = data.data.data.list;
-        // }).finally(function(){
-        //     $scope.$broadcast('scroll.infiniteScrollComplete');
-        // });
+        GetListService.getList(api).then(function (data){
+            $scope.items = $scope.items.concat(data.data.data.list);
+            checkNext(data.data.data.list.length);
+        })
+    }
+    //如果列表结果小于8，则加载下一页
+    function checkNext(resultCount){
+        if (resultCount == 8) {
+            $scope.emptyContent = false;
+        }else{
+            $scope.emptyContent = true;
+        }
     }
 })
 
@@ -67,7 +82,8 @@ angular.module('sh.controllers',['directives.dropdown'])
     $scope.goOldAndNew = function (data){
         var api = "http://120.24.218.56/api/sh/filter?depreciationRate="+data;
         GetListService.getList(api).then(function (data){
-            $scope.$emit('to-parent', data.data.data.list);
+            data.data.data.api = api;
+            $scope.$emit('to-parent', data.data.data);
         })
         $scope.selecting.newAndOld = !$scope.selecting.newAndOld;
     }
@@ -87,14 +103,14 @@ angular.module('sh.controllers',['directives.dropdown'])
         //如果选择了“分类”将不进行操作
         var api = "http://120.24.218.56/api/sh/category/"+value;
         GetListService.getList(api).then(function (data){
-            $scope.$emit('to-parent',data.data.data.list);
+            data.data.data.api = api;
+            $scope.$emit('to-parent',data.data.data);
             $scope.selecting.class = !$scope.selecting.class;
         })   
     }
     //根据价格区间进行搜索
     $scope.goPrice = function (value){
         //如果选择了“价格”，则不进行操作
-        console.log(value);
         if (value == "") $state.go('shList');
         //对选项进行字符串分割
         var dataArr = value.split('-');
@@ -108,7 +124,8 @@ angular.module('sh.controllers',['directives.dropdown'])
             var api = "http://120.24.218.56/api/sh/filter?rangeQuery=1&minPrice="+minPrice;
         }
         GetListService.getList(api).then(function (data){
-            $scope.$emit('to-parent',data.data.data.list);
+            data.data.data.api = api;
+            $scope.$emit('to-parent',data.data.data);
             $scope.selecting.price = !$scope.selecting.price;
         })
     }
@@ -163,7 +180,6 @@ angular.module('sh.controllers',['directives.dropdown'])
             }
         })
     }
-
     //加载二手详情
     GetListService.getDetail(shApi).then(function (data){
         var picturePath = data.data.data.picturePath.split(";");

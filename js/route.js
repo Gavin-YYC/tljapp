@@ -9,7 +9,7 @@ angular.module('route',[])
             })
             //兼职列表
             .state('list', {
-                url:'/list/:id',
+                url:'/list',
                 templateUrl:'templates/list.html',
                 controller:'ListController'
             })
@@ -63,6 +63,13 @@ angular.module('route',[])
                 url:'/register',
                 templateUrl:'templates/register.html',
             })
+            //我的发布
+            .state('post',{
+                url:'/user/jobpost',
+                templateUrl:'templates/PostJob.html',
+                controller:"PostController"
+            })
+
         //其他情况，返回首页
         $urlRouterProvider.otherwise('/');
     })

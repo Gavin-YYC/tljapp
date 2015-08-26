@@ -137,8 +137,19 @@ angular.module('my.controllers',['ngCordova'])
 .controller('ChildPageController',function ($scope, $state, Auth){
     //进入分页面
     $scope.myGoTo = function (ChilePage){
-        var userId = Auth.getToken();
-        userId ? console.log("真的是真的") : $state.go("login");
+        var userId = Auth.getToken()||"";
+        if (userId) {
+            switch (ChilePage){
+                case "myPost":
+                    $state.go("post");
+                break;
+                default:
+                    console.log("nhaos");
+                break;
+            }
+        }else{
+            $state.go("login")
+        }
     }
 })
 
@@ -184,7 +195,7 @@ angular.module('my.controllers',['ngCordova'])
 })
 
 //查看我的个人资料
-.controller('MyDetailController',function ($scope, Auth, GetListService, $cordovaCamera, $ionicActionSheet, $cordovaImagePicker){
+.controller('MyDetailController',function ($scope, Auth, GetListService, $cordovaCamera, $ionicActionSheet, $cordovaImagePicker, $cordovaFileTransfer){
     var username = Auth.getUser() || "";
     console.log(username);
     if (username) {
@@ -201,6 +212,26 @@ angular.module('my.controllers',['ngCordova'])
 //=========================
     $scope.images_list = [];  
     
+    // "添加附件"Event  
+    $scope.addAttachment = function() {  
+        //nonePopover();
+        $ionicActionSheet.show({  
+            buttons: [{ text: '相机' }, { text: '图库' }],  
+            cancelText: '取消', 
+            cancel: function() {  
+                return true;  
+            },  
+            buttonClicked: function(index) {  
+                switch (index){  
+                    case 0: $scope.takePhoto();break;  
+                    case 1: pickImage();break;  
+                    default:break;  
+                }      
+                return true;  
+            }  
+        });  
+    }   
+    //从相机选取图片
     $scope.takePhoto = function () {
         var options = {
             destinationType: Camera.DestinationType.FILE_URI,
@@ -215,33 +246,6 @@ angular.module('my.controllers',['ngCordova'])
         }, function (err) {
             // error
         });
-    }
-    // "添加附件"Event  
-    $scope.addAttachment = function() {  
-        //nonePopover();
-        $ionicActionSheet.show({  
-            buttons: [{ text: '相机' }, { text: '图库' }  ],  
-            cancelText: '关闭', 
-            cancel: function() {  
-                return true;  
-            },  
-            buttonClicked: function(index) {  
-                switch (index){  
-                    case 0:$scope.takePhoto();break;  
-                    case 1: pickImage();break;  
-                    default:break;  
-                }      
-                return true;  
-            }  
-        });  
-    }   
-    //从相机选取图片
-    var appendByCamera = function () {
-        navigator.camera.getPicture(function(result) {
-           q.resolve(result);
-        }, function(err) {
-           q.reject(err);
-        }, options);
     }
     //image picker  
     var pickImage = function () {  
@@ -259,6 +263,104 @@ angular.module('my.controllers',['ngCordova'])
             });
     }
 //=========================
+})
 
-
+//发布兼职信息
+.controller("PostController",function ($scope, $ionicActionSheet, $ionicSlideBoxDelegate){
+    $scope.job = {
+        typeToPay:"",
+        typeArea:"",
+        type:"",
+        moneyAndTime: "元/时"
+    };
+    $scope.goNext = function(index){
+        $ionicSlideBoxDelegate.next();
+    }
+    $scope.goPrevious = function(index){
+        $ionicSlideBoxDelegate.previous();
+    }
+    //选择兼职类型
+    $scope.chooseJobType = function (){
+        $ionicActionSheet.show({
+            buttons: [
+                {text: '家教'},
+                {text: '代理'}
+            ],
+            cancelText: "取消",
+            titleText: '请选择',
+            cancel: function (){
+                return true;
+            },
+            buttonClicked: function (index){
+                //some code at here
+                return true
+            }
+        })
+    }
+    //选择区域
+    $scope.chooseJobTypeArea = function (){
+        $ionicActionSheet.show({
+            buttons: [
+                {text: '张店区'},
+                {text: '周村区'}
+            ],
+            cancelText: "取消",
+            titleText: '请选择',
+            cancel: function (){
+                return true;
+            },
+            buttonClicked: function (index){
+                //some code at here
+                return true
+            }
+        })
+    }
+    //选择结算方式
+    $scope.chooseJobTypeToPay = function (){
+        $ionicActionSheet.show({
+            buttons: [
+                {text: '日结'},
+                {text: '周结'},
+                {text: '月结'},
+                {text: '完工结算'}
+            ],
+            cancelText: "取消",
+            titleText: '请选择',
+            cancel: function (){
+                return true;
+            },
+            buttonClicked: function (index){
+                switch (index){
+                    case 0: $scope.job.typeToPay = "日结"; break;
+                    case 1: $scope.job.typeToPay = "周结"; break;
+                    case 2: $scope.job.typeToPay = "月结"; break;
+                    case 3: $scope.job.typeToPay = "完工结算"; break;
+                }
+                return true
+            }
+        })
+    }
+    //选择工资结算方式
+    $scope.chooseJobMoneyAndTime = function (){
+        $ionicActionSheet.show({
+            buttons: [
+                {text: '元/时'},
+                {text: '元/天'},
+                {text: '元/月'}
+            ],
+            cancelText: "取消",
+            titleText: '请选择',
+            cancel: function (){
+                return true;
+            },
+            buttonClicked: function (index){
+                switch (index){
+                    case 0: $scope.job.moneyAndTime = "元/时"; break;
+                    case 1: $scope.job.moneyAndTime = "元/天"; break;
+                    case 2: $scope.job.moneyAndTime = "元/月"; break;
+                }
+                return true
+            }
+        })
+    }
 })

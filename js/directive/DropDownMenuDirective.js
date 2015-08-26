@@ -1,4 +1,5 @@
 angular.module('directives.dropdown',[])
+//dropdown directive
 .directive('dropdown', function($document) {
 	return {
 		restrict: "C",
@@ -15,4 +16,4 @@ angular.module('directives.dropdown',[])
 			});
 		}
 	}
-});
+})

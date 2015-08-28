@@ -30,10 +30,6 @@
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功">
 		</ion-refresher>
 		<ion-list>
-			<ion-item ng-repeat="item in items">
-				<a class="item" ng-href="#/shdetail/{{item.id}}">{{item.id}}</a>
-			</ion-item>
-			
 			<a class="item sh_item" ng-repeat="item in items" ng-click="test(item.id)">
 				<div class="row padding0">
 					<div class="col col-33 col_pic margin0 padding0">

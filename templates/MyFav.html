@@ -4,8 +4,12 @@
 	</ion-nav-bar>
 	<ion-content class="has-header">
 		<div class="row mypost-page">
-			<button class="button button-block button-clear" ng-class="index==0 ? 'post-active' : 'post-disable'" ng-click="go(0)">兼职信息<span class="badge badge-assertive" ng-class="index==0 ? 'post-active-bg' : 'post-disable-bg'">{{jobCount}}</span></button>
-			<button class="button button-block button-clear" ng-class="index==1 ? 'post-active' : 'post-disable'" ng-click="go(1)">二手物品<span class="badge badge-assertive" ng-class="index==1 ? 'post-active-bg' : 'post-disable-bg'">{{shCount}}</span></button>
+			<div class="col col-50">
+				<button class="button button-block button-clear" ng-class="index==0 ? 'post-active' : 'post-disable'" ng-click="go(0)">兼职信息<span class="badge badge-assertive" ng-class="index==0 ? 'post-active-bg' : 'post-disable-bg'">{{jobCount}}</span></button>
+			</div>
+			<div class="col col-50">
+				<button class="button button-block button-clear" ng-class="index==1 ? 'post-active' : 'post-disable'" ng-click="go(1)">二手物品<span class="badge badge-assertive" ng-class="index==1 ? 'post-active-bg' : 'post-disable-bg'">{{shCount}}</span></button>
+			</div>
 		</div>
 		<ion-slide-box show-pager="false" on-slide-changed="go(index)">
 		  	<ion-slide>

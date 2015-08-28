@@ -448,7 +448,7 @@ angular.module('my.controllers',['ngCordova'])
     var tokenKey = "?appToken="+token;
     var myJobApi = "http://120.24.218.56/api/job/user/"+username+tokenKey;
     var myShApi = "http://120.24.218.56/api/sh/user/"+username+tokenKey+"&filter=false";
-    //加载我收藏的兼职信息
+    //加载我发布的兼职信息
     GetListService.getList(myJobApi).then(function (data){
         $scope.jobItems = data.data.data.list;
         var length = data.data.data.list.length;
@@ -456,7 +456,7 @@ angular.module('my.controllers',['ngCordova'])
         $scope.jobEmptyContent = checkMore(length,resultCount);
         $scope.jobCount = resultCount;
     })
-    //加载我收藏的二手物品
+    //加载我发布的二手物品
     GetListService.getList(myShApi).then(function (data){
         $scope.shItems = data.data.data.list;
         var length = data.data.data.list.length;
@@ -502,11 +502,67 @@ angular.module('my.controllers',['ngCordova'])
         })
     }
 })
-.controller('MyFavController', function ($scope){
+.controller('MyFavController', function ($scope, GetListService, Auth, $ionicSlideBoxDelegate){
     //slide-tab跳转颜色转换
     $scope.index = 0;
     $scope.go = function (index){
         $scope.index = index;
         $ionicSlideBoxDelegate.slide(index);
+    }
+    var username = Auth.getUser() || "";
+    var token = Auth.getToken() || "";
+    var tokenKey = "?appToken="+token;
+    var myJobFavApi = "http://120.24.218.56/api/u/job/favlist"+tokenKey;
+    var myShFavApi = "http://120.24.218.56/api/u/sh/favlist"+tokenKey;
+    //加载我收藏的兼职信息
+    GetListService.getList(myJobFavApi).then(function (data){
+        $scope.jobItems = data.data.data.list;
+        var length = data.data.data.list.length;
+        var resultCount = data.data.data.resultCount;
+        $scope.jobEmptyContent = checkMore(length,resultCount);
+        $scope.jobCount = resultCount;
+    })
+    //加载我收藏的二手物品
+    GetListService.getList(myShFavApi).then(function (data){
+        $scope.shItems = data.data.data.list;
+        var length = data.data.data.list.length;
+        var resultCount = data.data.data.resultCount;
+        $scope.emptyContent = checkMore(length,resultCount);
+        $scope.shCount = resultCount;
+    })
+    //检查是否能加载更多
+    function checkMore(length, resultCount){
+        if (length == 8 && resultCount >=8) {
+            return false;
+        }else{
+            return true;
+        };
+    }
+    //加载更多
+    //初始化分页参数
+    var pageNumber = 0;
+    var pageSize = 8;
+    $scope.loadMore = function(index){
+        pageNumber++;
+        var pageKey = "?pageNumber="+pageNumber+"&pageSize="+pageSize;
+        //加载转换
+        switch (index){
+            case "job":
+                var api = myJobFavApi;
+                var items = "jobItems";
+            break;
+            case "sh":
+                var api = myShFavApi;
+                var items = "shItems";
+            break;
+        }
+        console.log(pageKey)
+        //发起请求 
+        GetListService.getList(api+pageKey).then(function (data){
+            $scope[items] = $scope[items].concat(data.data.data.list);
+            var length = data.data.data.list.length;
+            var resultCount = data.data.data.resultCount;
+            $scope.emptyContent = checkMore(length,resultCount);
+        })
     }
 })

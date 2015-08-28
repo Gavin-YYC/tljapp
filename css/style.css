@@ -705,6 +705,9 @@ a{
 	color: #ccc;
 	border-bottom: 2px solid #ccc;
 }
+.mypost-page>.col-50{
+	padding: 0;
+}
 .mypost-page .post-active{
 	color: #EEBC5B;
 	border-bottom: 2px solid #EEBC5B;

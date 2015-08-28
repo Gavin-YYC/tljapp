@@ -5,10 +5,15 @@
  *    --LoginController    （登录控制器）
  *    --RegisterController （注册控制器）
  *    --MyController       （个人中心控制器）
- *    --feedbackController （意见反馈中心控制器）
+ *    --ChildPageController（个人中心进入各分页面路口）
+ *    --FeedbackController （意见反馈中心控制器）
  *    --LogoutController   （注销控制器）
+ *    --PostController     （发布兼职信息）
+ *    --MyPostController   （我的发布）
+ *    --MyFavController    （我的收藏）
+ *    --ChangePwdController（修改密码）
 */
-angular.module('my.controllers',['ngCordova'])
+angular.module('my.controllers',['ngCordova','my_2.controllers'])
 //个人中心控制器
 .controller('IndexController',function ($scope,$ionicModal,$ionicHistory,$state,Auth,GetListService){
     //进入个人中心
@@ -149,6 +154,7 @@ angular.module('my.controllers',['ngCordova'])
     }
 })
 
+//进入二级菜单路口
 .controller('ChildPageController',function ($scope, $state, Auth){
     //进入分页面
     $scope.myGoTo = function (ChilePage){
@@ -160,6 +166,9 @@ angular.module('my.controllers',['ngCordova'])
                 break;
                 case "myFav":
                     $state.go("myFav");
+                break;
+                case "myMessage":
+                    $state.go("myMessage");
                 break;
                 case "myPwd":
                     $scope.ChangePwd.show();
@@ -175,7 +184,7 @@ angular.module('my.controllers',['ngCordova'])
 })
 
 //投稿反馈内容提交
-.controller('feedbackController',function ($scope,$http,GetListService){
+.controller('FeedbackController',function ($scope,$http,GetListService){
     $scope.feed = {
         content:null,
         email:null

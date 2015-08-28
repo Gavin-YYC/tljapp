@@ -132,6 +132,14 @@ angular.module('my.controllers',['ngCordova'])
         scope: $scope,
         animation: 'slide-in-up'
     })
+    //展示发布页面
+    $scope.postPageShow = false;
+    $scope.showSubPage = function (){
+        $scope.postPageShow = true;
+    }
+    $scope.hideSubPage = function(){
+        $scope.postPageShow = false;
+    }
 })
 
 .controller('ChildPageController',function ($scope, $state, Auth){
@@ -141,7 +149,10 @@ angular.module('my.controllers',['ngCordova'])
         if (userId) {
             switch (ChilePage){
                 case "myPost":
-                    $state.go("post");
+                    $state.go("myPost");
+                break;
+                case "myFav":
+                    $state.go("myFav");
                 break;
                 default:
                     console.log("nhaos");
@@ -207,8 +218,6 @@ angular.module('my.controllers',['ngCordova'])
     }else{
         $state.go("login");
     };
-
-
 //=========================
     $scope.images_list = [];  
     
@@ -266,101 +275,238 @@ angular.module('my.controllers',['ngCordova'])
 })
 
 //发布兼职信息
-.controller("PostController",function ($scope, $ionicActionSheet, $ionicSlideBoxDelegate){
+.controller("PostController",function ($scope, $ionicModal, $ionicPopover, $cordovaDatePicker, $ionicSlideBoxDelegate, GetListService){
+    //初始化表单数据
     $scope.job = {
-        typeToPay:"",
-        typeArea:"",
-        type:"",
-        moneyAndTime: "元/时"
+        typeToPay:"日结",
+        typeArea:"张店区",
+        type:"家教",
+        moneyAndTime: "元/时",
+        title:'',
+        wage:"",
+        enddate:'',
+        time:"",
+        place:"",
+        content:"",
+        require:"",
+        name:"",
+        phoneNumber:"",
+        QQ:""
     };
+    //modal初始化
+    $ionicModal.fromTemplateUrl('my-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
+    //modal初始化
+    $ionicModal.fromTemplateUrl('my-modal-content.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
+    //Popover初始化
+    $ionicPopover.fromTemplateUrl('my-popover.html', {
+        scope: $scope
+    }).then(function(popover) {
+        $scope.popover = popover;
+    });
+    //点击下一步与上一步
     $scope.goNext = function(index){
         $ionicSlideBoxDelegate.next();
+        console.log($scope.job)
     }
     $scope.goPrevious = function(index){
         $ionicSlideBoxDelegate.previous();
     }
     //选择兼职类型
     $scope.chooseJobType = function (){
-        $ionicActionSheet.show({
-            buttons: [
-                {text: '家教'},
-                {text: '代理'}
-            ],
-            cancelText: "取消",
-            titleText: '请选择',
-            cancel: function (){
-                return true;
-            },
-            buttonClicked: function (index){
-                //some code at here
-                return true
-            }
+        $scope.value = "class"; //初始化modal分类
+        $scope.modal.show();    //显示modal
+        var categoryApi = "http://120.24.218.56/api/job/cate/list";
+        GetListService.getList(categoryApi).then(function (data){
+            $scope.items = data.data.data.list;
         })
     }
-    //选择区域
+    //选择区域，解释同上
     $scope.chooseJobTypeArea = function (){
-        $ionicActionSheet.show({
-            buttons: [
-                {text: '张店区'},
-                {text: '周村区'}
-            ],
-            cancelText: "取消",
-            titleText: '请选择',
-            cancel: function (){
-                return true;
-            },
-            buttonClicked: function (index){
-                //some code at here
-                return true
-            }
-        })
+        $scope.value = "area";
+        $scope.modal.show();
+        $scope.items = [
+            {name:"张店区"},
+            {name:"周村区"},
+            {name:"淄川区"},
+            {name:"临淄区"},
+            {name:"博山区"},
+            {name:"桓台区"},
+            {name:"高青区"},
+            {name:"沂源县"}
+        ]
+    }
+    //同步input表单数据
+    $scope.select = function (type,value){
+        switch (type){
+            case "class":
+                $scope.job.type = value;
+            break;
+            case "area":
+                $scope.job.typeArea = value;
+            break;
+            case "pay":
+                $scope.job.typeToPay = value;
+            break;
+            case "day":
+                $scope.job.moneyAndTime = value;
+            break;
+        }
+        $scope.modal.hide();
+        $scope.popover.hide();
     }
     //选择结算方式
-    $scope.chooseJobTypeToPay = function (){
-        $ionicActionSheet.show({
-            buttons: [
-                {text: '日结'},
-                {text: '周结'},
-                {text: '月结'},
-                {text: '完工结算'}
-            ],
-            cancelText: "取消",
-            titleText: '请选择',
-            cancel: function (){
-                return true;
-            },
-            buttonClicked: function (index){
-                switch (index){
-                    case 0: $scope.job.typeToPay = "日结"; break;
-                    case 1: $scope.job.typeToPay = "周结"; break;
-                    case 2: $scope.job.typeToPay = "月结"; break;
-                    case 3: $scope.job.typeToPay = "完工结算"; break;
-                }
-                return true
-            }
-        })
+    $scope.chooseJobTypeToPay = function ($event){
+        $scope.popover.show($event);
+        $scope.value = "pay";
+        $scope.items = ["日结","周结","月结","完工结算"];
     }
     //选择工资结算方式
-    $scope.chooseJobMoneyAndTime = function (){
-        $ionicActionSheet.show({
-            buttons: [
-                {text: '元/时'},
-                {text: '元/天'},
-                {text: '元/月'}
-            ],
-            cancelText: "取消",
-            titleText: '请选择',
-            cancel: function (){
-                return true;
-            },
-            buttonClicked: function (index){
-                switch (index){
-                    case 0: $scope.job.moneyAndTime = "元/时"; break;
-                    case 1: $scope.job.moneyAndTime = "元/天"; break;
-                    case 2: $scope.job.moneyAndTime = "元/月"; break;
-                }
-                return true
-            }
+    $scope.chooseJobMoneyAndTime = function ($event){
+        $scope.popover.show($event);
+        $scope.value = "day";
+        $scope.items = ["元/时","元/天","元/月"];
+    }
+    $scope.chooseTime = function (){
+        var options = {
+            date: new Date(),
+            mode: 'date', // or 'time'
+            minDate: new Date() - 10000,
+            allowOldDates: true,
+            allowFutureDates: false,
+            doneButtonLabel: 'DONE',
+            doneButtonColor: '#F2F3F4',
+            cancelButtonLabel: 'CANCEL',
+            cancelButtonColor: '#000000'
+        };
+        $cordovaDatePicker.show(options).then(function(date){
+            $scope.job.enddate = date;
+        });
+    }
+    //选项切换
+    $scope.show = true;
+    $scope.tonggle = function (){
+        $scope.show = !$scope.show;
+    }
+    //确定输入
+    $scope.re = {
+        content: "",
+        title:""
+    }
+    //进入内容填写页面
+    $scope.chooseContent = function (value){
+        switch (value){
+            case "time":
+                $scope.re.title = "工作时间";
+            break;
+            case "place":
+                $scope.re.title = "工作地点";
+            break;
+            case "content":
+                $scope.re.title = "工作内容";
+            break;
+            case "require":
+                $scope.re.title = "工作要求";
+            break;
+        }
+        $scope.modal.show();
+        $scope.value = value;
+    }
+    $scope.hideModal = function(value){
+
+        console.log($scope.re.content);
+        $scope.job[value] = $scope.re.content;
+        $scope.modal.hide();
+        $scope.re.content = "";
+    }
+    //发布信息按钮
+    $scope.goPost = function (isValid){
+        console.log(isValid);
+    }
+})
+
+//我的发布页面
+.controller("MyPostController", function ($scope, $ionicSlideBoxDelegate, Auth, GetListService){
+    //slide-tab跳转颜色转换
+    $scope.index = 0;
+    $scope.go = function (index){
+        $scope.index = index;
+        $ionicSlideBoxDelegate.slide(index);
+    }
+    //加载数据并初始化
+    var username = Auth.getUser() || "";
+    var token = Auth.getToken() || "";
+    var tokenKey = "?appToken="+token;
+    var myJobApi = "http://120.24.218.56/api/job/user/"+username+tokenKey;
+    var myShApi = "http://120.24.218.56/api/sh/user/"+username+tokenKey+"&filter=false";
+    //加载我收藏的兼职信息
+    GetListService.getList(myJobApi).then(function (data){
+        $scope.jobItems = data.data.data.list;
+        var length = data.data.data.list.length;
+        var resultCount = data.data.data.resultCount;
+        $scope.jobEmptyContent = checkMore(length,resultCount);
+        $scope.jobCount = resultCount;
+    })
+    //加载我收藏的二手物品
+    GetListService.getList(myShApi).then(function (data){
+        $scope.shItems = data.data.data.list;
+        var length = data.data.data.list.length;
+        var resultCount = data.data.data.resultCount;
+        $scope.emptyContent = checkMore(length,resultCount);
+        $scope.shCount = resultCount;
+    })
+    //检查是否能加载更多
+    function checkMore(length, resultCount){
+        if (length == 8 && resultCount >=8) {
+            return false;
+        }else{
+            return true;
+        };
+    }
+    //加载更多
+    //初始化分页参数
+    var pageNumber = 0;
+    var pageSize = 8;
+    $scope.loadMore = function(index){
+        pageNumber++;
+        var pageKey = "pageNumber="+pageNumber+"&pageSize="+pageSize;
+        //加载转换
+        switch (index){
+            case "job":
+                var api = myJobApi;
+                var items = "jobItems";
+                var pageKey = "?"+pageKey;
+            break;
+            case "sh":
+                var api = myShApi;
+                var items = "shItems";
+                var pageKey = "&"+pageKey;
+            break;
+        }
+        console.log(pageKey)
+        //发起请求 
+        GetListService.getList(api+pageKey).then(function (data){
+            $scope[items] = $scope[items].concat(data.data.data.list);
+            var length = data.data.data.list.length;
+            var resultCount = data.data.data.resultCount;
+            $scope.emptyContent = checkMore(length,resultCount);
         })
+    }
+})
+.controller('MyFavController', function ($scope){
+    //slide-tab跳转颜色转换
+    $scope.index = 0;
+    $scope.go = function (index){
+        $scope.index = index;
+        $ionicSlideBoxDelegate.slide(index);
     }
 })

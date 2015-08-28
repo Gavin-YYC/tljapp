@@ -20,7 +20,7 @@ angular.module('route',[])
             })
             //个人简历
             .state('resumeList', {
-                url:'/resume/:id',
+                url:'/resume',
                 templateUrl:'templates/ResumeList.html',
                 controller:'ResumeListController'
             })
@@ -63,13 +63,24 @@ angular.module('route',[])
                 url:'/register',
                 templateUrl:'templates/register.html',
             })
-            //我的发布
+            //进入发布页面
             .state('post',{
                 url:'/user/jobpost',
                 templateUrl:'templates/PostJob.html',
                 controller:"PostController"
             })
-
+            //我的发布
+            .state('myPost',{
+                url:'/user/mypost',
+                templateUrl:'templates/MyPost.html',
+                controller:"MyPostController"
+            })
+            //我的收藏
+            .state('myFav',{
+                url:'/user/myfav',
+                templateUrl:'templates/MyFav.html',
+                controller:"MyFavController"
+            })
         //其他情况，返回首页
         $urlRouterProvider.otherwise('/');
     })

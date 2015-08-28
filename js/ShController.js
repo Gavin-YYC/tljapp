@@ -31,7 +31,7 @@ angular.module('sh.controllers',['directives.dropdown'])
         $scope.items = data.data.data.list;
         checkNext(data.data.data.list.length);
     })
-    //页面上拉刷新
+    //页面下拉刷新
     $scope.doRefresh = function (){
         //如果有搜索Api，则刷新搜索页面，否则为普通列表
         var api = $scope.loadMoreApi ? $scope.loadMoreApi : shListApi;

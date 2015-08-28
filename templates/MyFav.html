@@ -1,0 +1,74 @@
+<ion-view title="我的收藏">
+	<ion-nav-bar class="padding0" align-title="center">
+		<ion-nav-back-button>返回</ion-nav-back-button>
+	</ion-nav-bar>
+	<ion-content class="has-header">
+		<div class="row mypost-page">
+			<button class="button button-block button-clear" ng-class="index==0 ? 'post-active' : 'post-disable'" ng-click="go(0)">兼职信息<span class="badge badge-assertive" ng-class="index==0 ? 'post-active-bg' : 'post-disable-bg'">{{jobCount}}</span></button>
+			<button class="button button-block button-clear" ng-class="index==1 ? 'post-active' : 'post-disable'" ng-click="go(1)">二手物品<span class="badge badge-assertive" ng-class="index==1 ? 'post-active-bg' : 'post-disable-bg'">{{shCount}}</span></button>
+		</div>
+		<ion-slide-box show-pager="false" on-slide-changed="go(index)">
+		  	<ion-slide>
+				<ion-item ng-repeat="item in jobItems" class="padding0">
+					<a class="item no-boder" ng-href="#/detail/{{item.id}}">
+						<div class="row">
+							<div class="col col-25 padding0">
+								<div class="list-type list-type-pic" style="color:{{item.category.themeColor}};border-color:{{item.category.themeColor}}">
+									<span>{{item.category.name}}</span>
+								</div>
+							</div>
+							<div class="col col-75">
+								<h2>{{item.title}}</h2>
+								<p>
+									&yen; {{item.wage}}元/{{item.salaryUnit}}
+								</p>
+							</div>
+						</div>
+						<h4 class="row">
+							<div class="col col-30 tlj-left">
+								<i class="icon ion-ios-location-outline"></i> {{item.region}}
+							</div>
+							<div class="col col-50 tlj-left">
+								<i class="icon ion-android-time"></i> {{item.postTime | date:'yyyy-MM-dd'}}
+							</div>
+							<div class="col col-20 tlj-right">{{item.timeToPay}}</div>
+						</h4>
+					</a>
+				</ion-item>
+				<button class="button button-block" ng-if="!jobEmptyContent" ng-click="loadMore('job')">加载更多</button>
+				<p class="emptyContent" ng-if="jobEmptyContent">Sorry,该项目下没有更多内容</p>
+		  	</ion-slide>
+		  	<ion-slide>
+				<a class="item sh_item" ng-repeat="item in shItems" ng-href="#/shdetail/{{item.id}}">
+					<div class="row padding0">
+						<div class="col col-33 col_pic margin0 padding0">
+							<div class="list-type-sh">
+								<img src="http://120.24.218.56/static/images/users/{{item.picturePath}}">
+							</div>
+						</div>
+						<div class="col col-67 padding0">
+							<div class="row padding">{{item.title}}</div>
+							<div class="row padding resume-list-small">
+								<div class="col col-33 padding_com">
+									<span class="sh_list_cate">{{item.category.name}}</span>
+								</div>
+								<div class="col col-33 padding_com">
+									<span class="sh_list_cate">{{item.depreciationRate}}</span>
+								</div>
+								<div class="col col-33 padding_com">
+									<span class="sh_list_price">&yen; {{item.sellPrice}}</span>
+								</div>
+							</div>
+							<div class="row resume-list-small sh_list_last">
+								<i class="icon ion-ios-location-outline"></i>&nbsp; {{item.tradePlace}} &nbsp;
+								<i class="icon ion-android-time"></i>&nbsp; {{item.postTime | timeFileter}}
+							</div>
+						</div>
+					</div>
+				</a>
+				<button class="button button-block" ng-if="!emptyContent" ng-click="loadMore('sh')">加载更多</button>
+				<p class="emptyContent" ng-if="emptyContent">Sorry,该项目下没有更多内容</p>
+		  	</ion-slide>
+		</ion-slide-box>
+	</ion-content>
+</ion-view>

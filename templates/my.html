@@ -1,5 +1,42 @@
 <ion-view title="个人中心">
-	<ion-content ng-controller="MyController" class="user_space">
+	<ion-footer-bar class="bar-calm" ng-if="!noLogin">
+		<h1 class="title" ng-click="showSubPage()">发布</h1>
+	</ion-footer-bar>
+	<div class="sub-page" ng-if="postPageShow">
+		<div class="rowadv">
+			<img src="./img/adv.png" alt="">
+		</div>
+		<div class="row">
+			<div class="col col-33 animated fadeInUp">
+				<a ui-sref="post">
+					<div class="circle circle1">
+						<i class="icon iconfont icon-diy-index icon-jianzhi"></i>
+					</div>
+					<br>学生兼职
+				</a>
+			</div>
+			<div class="col col-33 animated_1 fadeInUp">
+				<a href="#/sh">
+					<div class="circle circle2">
+						<i class="icon iconfont icon-diy-index icon-zixingche"></i>
+					</div>
+					<br>校园二手
+				</a>
+			</div>
+			<div class="col col-33 animated_2 fadeInUp">
+				<a href="#/resume/0">
+					<div class="circle circle3">
+						<i class="icon iconfont icon-diy-index icon-zhiwu"></i>
+					</div>
+					<br>桃李青藤
+				</a>
+			</div>
+		</div>
+		<div class="rowbox">
+			<div class="close" ng-click="hideSubPage()"><i class="icon ion-android-close"></i></div>
+		</div>
+	</div>
+	<ion-content  class="user_space">
 		<div class="myInfo_login">
 			<div class="login_header">
 				<span ng-click="myGoBack()"><i class="icon iconfont">&#xe60d;</i>&nbsp;返回</span>
@@ -31,7 +68,7 @@
 				我的简历
 			</a>
 
-			<a class="item item-icon-left com_item_border" ng-click='myGoTo("myCollection")' ng-style='{"background-color":bgColor}'>
+			<a class="item item-icon-left com_item_border" ng-click='myGoTo("myFav")' ng-style='{"background-color":bgColor}'>
 				<i class="icon iconfont" style="color:#FF697E">&#xe610;</i>
 				我的收藏
 			</a>
@@ -56,11 +93,11 @@
 				<i class="icon iconfont" style="color:#E8B309">&#xe612;</i>
 				意见反馈
 			</a>
-			<div class="item" ng-controller="LogoutController" ng-if="!noLogin">
-				<button class="button button-block button-positive" ng-click="logout()">
-					退出登录
-				</button>	
-			</div>
+
+			<a class="item item-icon-left com_item_border"  ng-controller="LogoutController" ng-if="!noLogin" ng-click="logout()">
+				<i class="icon iconfont" style="color:#ccc">&#xe600;</i>
+				退出登录
+			</a>
 
 			<script id="feedback.html" type="text/ng-template">
 				<ion-modal-view>
@@ -86,6 +123,6 @@
 				</ion-modal-view>
 			</script>
 		</div>
-
 	<ion-content>
+
 </ion-view>

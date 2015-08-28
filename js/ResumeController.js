@@ -1,81 +1,60 @@
 angular.module('resume.controllers',[])
-.controller('ResumeListController',function ($scope,$rootScope,$ionicModal,$stateParams,GetListService){
+.controller('ResumeListController',function ($scope, $stateParams, GetListService){
+    //初始化分页数据
     var pageBase = 0;
     var pageSize = 8;
-	var resumeApi = "http://120.24.218.56/api/resume/intend/"+$stateParams.id+"?pageNumber="+pageBase+"&pageSize="+pageSize;
-	var allResumeApi = "http://120.24.218.56/api/resume/list"+"?pageNumber="+pageBase+"&pageSize="+pageSize;
-    //首页加载
-    if ($stateParams.id==0) {
-        indexApi = allResumeApi;
-    }else{
-        indexApi = resumeApi;
-    };
-    GetListService.getList(indexApi)
-        .success(function (data,status){
-            $scope.items = data.data.list;
-        })
-    //根据性别选择事件向上传播
+	var allResumeApi = "http://120.24.218.56/api/resume/list";
+
+    //接收从子控制器中传来的数据（选择分类等）
     $scope.$on('to-parent', function (event, data){
-        $scope.items = data;
-    })
-
-    //下拉刷新
-    $scope.doRefresh = function (){
-		GetListService.getList(indexApi)
-	        .success(function (data,status){
-	            $scope.items = data.data.list;
-                console.log(data.data.list)
-	        })
-            .finally(function() {
-                $scope.$broadcast('scroll.refreshComplete');
-            });
-    }
-    //上拉更多
-    $scope.loadMore = function (){
-    	pageBase++;
-        if ($stateParams.id==0) {
-            api = "http://120.24.218.56/api/resume/list"+"?pageNumber="+pageBase+"&pageSize="+pageSize;
+        //配置全局搜索Api
+        $scope.loadMoreApi = data.api;
+        if (data == "") {
+            $scope.items = data.list;
+            $scope.emptyContent = true;
         }else{
-            api = "http://120.24.218.56/api/resume/intend/"+$stateParams.id+"?pageNumber="+pageBase+"&pageSize="+pageSize;
+            $scope.items = data.list;
+            $scope.emptyContent = false;
         };
-        console.log(api);
-		GetListService.getList(api)
-	        .success(function (data,status){
-                if (data.ok == true && data.data.list.length > 0) {
-                    $scope.items.push(data.data.list);
-                }else if(data.ok == true && data.data.list.length == 0) {
-                    GetListService.alertTip("已经没有更多信息了");
-                }else{
-                    GetListService.alertTip(data.message);
-                };
-	        })
-            .finally(function() {
-                $scope.$broadcast('scroll.infiniteScrollComplete');
-            });
-    }
-
-    //modal弹出模态窗口，求职意向
-    $ionicModal.fromTemplateUrl('modal-intend.html',function(modal){
-        $scope.IntendModal = modal;
-    },{
-        scope: $scope,
-        animation: 'slide-in-up'
-    });
-})
-
-//获取兼职分类二级目录
-.controller('GetJobCateCotroller',function ($scope, $location, $stateParams, GetListService){
-	var jobListApi = "http://120.24.218.56/api/job/cate/list";
-	GetListService.getList(jobListApi).then(function (data){
-        $scope.categories = data.data.data.list;
+        checkNext(data.list.length);
     })
-    $scope.goList = function(id){
-        console.log(id)
-        $location.url("resume/"+id);
+    //页面初始化
+    GetListService.getList(allResumeApi).then(function (data){
+        $scope.items = data.data.data.list;
+        checkNext(data.data.data.list.length);
+    })
+    //页面下拉刷新
+    $scope.doRefresh = function (){
+        //如果有搜索Api，则刷新搜索页面，否则为普通列表
+        var api = $scope.loadMoreApi ? $scope.loadMoreApi : allResumeApi;
+        console.log(api);
+        GetListService.getList(api).then(function (data){
+            $scope.items = data.data.data.list;
+            checkNext(data.data.data.list.length);
+        }).finally(function(){
+            $scope.$broadcast('scroll.refreshComplete');
+        });
     }
-    $scope.getAllList = function (){
-        $location.url("resume/"+0);
+    //加载更多
+    $scope.loadMore = function (){
+        pageBase++;
+        var pageKey = "?pageNumber="+pageBase+"&pageSize="+pageSize;
+        var api = $scope.loadMoreApi ? $scope.loadMoreApi+pageKey : allResumeApi+pageKey;
+        console.log(api);
+        GetListService.getList(api).then(function (data){
+            $scope.items = $scope.items.concat(data.data.data.list);
+            checkNext(data.data.data.list.length);
+        })
     }
+    //如果列表结果小于8，则加载下一页
+    function checkNext(resultCount){
+        if (resultCount == 8) {
+            $scope.emptyContent = false;
+        }else{
+            $scope.emptyContent = true;
+        }
+    }
+
 })
 //按性别进行搜索
 .controller('SearchResumeGenderCotroller',function ($scope, GetListService){
@@ -86,15 +65,60 @@ angular.module('resume.controllers',[])
     var pageBase = 0;
     var pageSize = 8;
     //根据性别进行搜索
-	$scope.genderChange = function (value){
+	$scope.goGender = function (value){
         var api = "http://120.24.218.56/api/resume/gender/"+value+"?pageNumber="+pageBase+"&pageSize="+pageSize;
         GetListService.getList(api).then(function (data){
-            $scope.$emit('to-parent',data.data.data.list);
+            data.data.data.api = api;
+            $scope.$emit('to-parent',data.data.data);
+            $scope.selecting.gender = !$scope.selecting.gender;
         })
 	}
     //根据地区进行搜素
-    $scope.locationChange = function (value){
+    $scope.goLocation = function (value){
         var api = "";
+        console.log(value);
+        $scope.selecting.location = !$scope.selecting.location;
+    }
+    //获取意向列表
+    var jobListApi = "http://120.24.218.56/api/job/cate/list";
+    GetListService.getList(jobListApi).then(function (data){
+        $scope.intends = data.data.data.list;
+    })
+    //按照求职意向进行搜索
+    $scope.goIntend = function(value){
+        console.log(value);
+        var resumeApi = "http://120.24.218.56/api/resume/intend/"+value;
+        GetListService.getList(resumeApi).then(function (data){
+            data.data.data.api = resumeApi;
+            $scope.$emit('to-parent',data.data.data);
+            $scope.selecting.intend = !$scope.selecting.intend;
+        })
+    }
+})
+//二级目录下的子控制器
+.controller("getIntendAndGenderCotroller", function ($scope, GetListService){
+    //初始化：隐藏二级选项菜单
+    $scope.selecting = {
+        location:false,
+        gender:false
+    }
+    //显示二级选项菜单
+    $scope.showModal = function (value){
+        if (value == "location")
+            $scope.selecting.location = !$scope.selecting.location;
+        if (value == "intend") 
+            $scope.selecting.intend = !$scope.selecting.intend;
+        if (value == "gender") 
+            $scope.selecting.gender = !$scope.selecting.gender;
+    }
+    //显示所有信息
+    $scope.loadAll = function (value){
+        var api = "http://120.24.218.56/api/resume/list";
+        GetListService.getList(api).then(function (data){
+            data.data.data.api = api;
+            $scope.$emit('to-parent',data.data.data);
+            $scope.selecting[value] = !$scope.selecting[value];
+        })
     }
 })
 //查询简历详情

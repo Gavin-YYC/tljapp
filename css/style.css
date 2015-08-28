@@ -559,12 +559,159 @@ a{
 .tlj-gz-sj .row{
 	padding: 0;
 }
-.next-page .button-next{
+.next-page{
+	width: 100%;
+	height: 30px;
+}
+.tlj-post>.page-ok{
+	padding-right: 0 !important;
+}
+.page-ok .button-ok{
 	margin: 0 auto;
 	color: red;
-	width: 30%;
 	height: 30px;
 	border: 1px solid red;
 	border-radius: 10px;
 	margin-top: 30px;
+}
+.next-page .button-next{
+	margin: 0 auto;
+	color: red;
+	height: 30px;
+	border: 1px solid red;
+	border-radius: 10px;
+	margin-top: 30px;
+}
+.tlj-post input[readonly]:not(.cloned-text-input){
+	  background-color: #fff;
+}
+
+
+/*选择发布页面*/
+.sub-page{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background: rgba(255,255,255,0.9);
+	z-index: 99;
+}
+.sub-page .close{
+	width: 44px;
+	height: 44px;
+	font-size: 40px;
+	color: #FA693A;
+	text-align: center;
+	margin: 0 auto;
+}
+.sub-page .rowbox{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 44px;
+	background: #fff;
+}
+.sub-page .rowadv{
+	position: absolute;
+	top: 15%;
+}
+.sub-page .rowadv img{
+	width: 100%;
+}
+.sub-page .row{
+	position: absolute;
+	bottom: 25%;
+	left: 0;
+	height: 100px;
+	text-align: center;
+}
+.sub-page .circle{
+	margin: 0 auto;
+	border-radius: 50%;
+	background: #ccc;
+	width: 65px;
+	height: 65px;
+}
+.sub-page .circle1{
+	background: #FFA200;
+}
+.sub-page .circle2{
+	background: #4CCDA4;
+}
+.sub-page .circle3{
+	background: #84CC5C;
+}
+.subitem{
+	border: none;
+	padding-left: 0;
+}
+.subitem .subtitle{
+	height: 44px;
+	line-height: 34px;
+	font-weight: bold;
+}
+.subitem .subtitle i{
+	color: #65CCED;
+	font-size: 8px;
+	padding-right: 8px;
+}
+.subitem .col-67{
+	height: 50px;
+	border-top: 1px dashed #ccc;
+}
+.subitem input{
+	margin: 0;
+}
+.tlj-post .mainitem .col-67{
+	line-height: 50px;
+}
+.tlj-post .mainitem .col-67 i{
+	float: right;
+}
+.tlj-post>.item{
+	padding-right: 15px;
+}
+.tlj-post .item>i{
+	float: right;
+	width: 20px;
+	height: 44px;
+	margin-top: 10px;
+	margin-right: 10px;
+	line-height: 44px;
+	
+}
+.sub-content{
+	padding-bottom: 0;
+	padding-top: 0;
+	border-top: none;
+}
+.text-item textarea{
+	width: 100%;
+	height: 100px;
+}
+.sub-color .subtitle i,.color-orange{
+	color: #FFA201;
+}
+.color-none{
+	color: #ccc;
+}
+.color-blue{
+	color: #65CCED;
+}
+/*我的发布页面*/
+.mypost-page .post-disable{
+	color: #ccc;
+	border-bottom: 2px solid #ccc;
+}
+.mypost-page .post-active{
+	color: #EEBC5B;
+	border-bottom: 2px solid #EEBC5B;
+}
+.mypost-page .post-disable-bg{
+	background: #ccc;
+}
+.mypost-page .post-active-bg{
+	background: #EEBC5B;
 }

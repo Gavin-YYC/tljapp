@@ -16,6 +16,13 @@
 body{
 	background: #f3f3f3;
 }
+/*去掉默认的鼠标按下效果*/
+.item.activated{
+	box-shadow:none;
+	border-color:none;
+	color:none;
+	background:#fff;
+}
 a{
 	text-decoration: none;
 	color: #000;
@@ -717,4 +724,12 @@ a{
 }
 .mypost-page .post-active-bg{
 	background: #EEBC5B;
+}
+.button-big{
+  margin: 0 auto;
+  color: red;
+  height: 30px;
+  border: 1px solid red;
+  border-radius: 10px;
+  margin-top: 30px;
 }

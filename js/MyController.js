@@ -132,6 +132,13 @@ angular.module('my.controllers',['ngCordova'])
         scope: $scope,
         animation: 'slide-in-up'
     })
+    //弹出修改密码模态框
+    $ionicModal.fromTemplateUrl('modal-changePwd.html',function(modal){
+        $scope.ChangePwd = modal;
+    },{
+        scope: $scope,
+        animation: 'slide-in-up'
+    })
     //展示发布页面
     $scope.postPageShow = false;
     $scope.showSubPage = function (){
@@ -153,6 +160,9 @@ angular.module('my.controllers',['ngCordova'])
                 break;
                 case "myFav":
                     $state.go("myFav");
+                break;
+                case "myPwd":
+                    $scope.ChangePwd.show();
                 break;
                 default:
                     console.log("nhaos");
@@ -218,12 +228,12 @@ angular.module('my.controllers',['ngCordova'])
     }else{
         $state.go("login");
     };
-//=========================
+
     $scope.images_list = [];  
     
     // "添加附件"Event  
     $scope.addAttachment = function() {  
-        //nonePopover();
+        /*
         $ionicActionSheet.show({  
             buttons: [{ text: '相机' }, { text: '图库' }],  
             cancelText: '取消', 
@@ -239,8 +249,28 @@ angular.module('my.controllers',['ngCordova'])
                 return true;  
             }  
         });  
+        */
+        var pic_path = "https://www.baidu.com/img/bd_logo1.png";
+        var options = {
+            fileKey: "headImgUrl",
+            fileName: 'corvodaTest.jpg',
+            mimeType: "image/jpg",
+            params: {}
+        }
+        var uploadApi = "http://120.24.218.56/static/upload";
+        $cordovaFileTransfer.upload(uploadApi, pic_path, options)
+            .then(function(result) {
+                $scope.success = result;
+            }, function(err) {
+                $scope.success = err;
+            }, function (progress) {
+                $scope.success = progress;
+            })
     }   
     //从相机选取图片
+    $scope.success = "";
+    $scope.success = "";
+    $scope.success = "";
     $scope.takePhoto = function () {
         var options = {
             destinationType: Camera.DestinationType.FILE_URI,
@@ -248,15 +278,27 @@ angular.module('my.controllers',['ngCordova'])
             targetWidth: 600,
             targetHeight: 800
         };
-
         $cordovaCamera.getPicture(options).then(function (imageURI) {
-            alert(imageURI);
-            $scope.images_list.push(imageURI)
+                var options = {
+                    fileKey: "headImgUrl",
+                    fileName: 'corvodaTest.jpg',
+                    mimeType: "image/jpg",
+                    params: {}
+                }
+                var uploadApi = "http://120.24.218.56/static/upload";
+                $cordovaFileTransfer.upload(uploadApi, imageURI, options)
+                    .then(function(result) {
+                        $scope.success = result;
+                    }, function(err) {
+                        $scope.success = err;
+                    }, function (progress) {
+                        $scope.success = progress;
+                    })
         }, function (err) {
             // error
         });
     }
-    //image picker  
+    //image picker
     var pickImage = function () {  
         var options = {  
             maximumImagesCount: 4,  
@@ -265,13 +307,12 @@ angular.module('my.controllers',['ngCordova'])
             quality: 80  
         };  
         $cordovaImagePicker.getPictures(options)  
-            .then(function (results) {   
+            .then(function (results) {
                 $scope.images_list.push(results[0]);
             }, function (error) {  
-                // error getting photos  
+                // error getting photos
             });
     }
-//=========================
 })
 
 //发布兼职信息
@@ -564,5 +605,50 @@ angular.module('my.controllers',['ngCordova'])
             var resultCount = data.data.data.resultCount;
             $scope.emptyContent = checkMore(length,resultCount);
         })
+    }
+})
+.controller("ChangePwdController", function ($scope, $ionicModal, $timeout, GetListService, Auth, FormatRusult){
+    var username = Auth.getUser() || "";
+    var token = Auth.getToken() || "";
+    var tokenKey = "?appToken="+token;
+    var api = "http://120.24.218.56/user/setting/security"+tokenKey;
+    $scope.modify = {
+        oldPwd: "",
+        newPwd: "",
+        reNewPwd: ""
+    }
+    $scope.haserr = false;
+    $scope.err = {message:""};
+    $scope.subPwd = function (){
+        if ($scope.modify.oldPwd.length < 6||$scope.modify.newPwd.length < 6||$scope.modify.reNewPwd.length < 6) {
+            $scope.haserr = true;
+            var errs = "密码长度最少为六位！";
+        }else if ($scope.modify.newPwd != $scope.modify.reNewPwd) {
+            $scope.haserr = true;
+            var errs = "两次密码不一样！";
+        }else{
+            var data = "oldPassword="+$scope.modify.oldPwd+"&newPassword="+$scope.modify.newPwd+"&rePassword="+$scope.modify.reNewPwd;
+            GetListService.userPost(api,data).then(function (data){
+                if (data.message == "0") {
+                    var errs = "密码修改成功！";
+                    $scope.haserr = true;
+                    $scope.err.message = errs;
+                    $timeout(function(){
+                        $scope.ChangePwd.hide();
+                    },1500);
+                }else if (data.message == "3"){
+                    $scope.haserr = true;
+                    var errs = "旧密码错误!";
+                    $scope.err.message = errs;
+                }else{
+                    FormatRusult.format(data.message).then(function (data){
+                        $scope.haserr = true;
+                        var errs = data;
+                        $scope.err.message = errs;
+                    })
+                }
+            })
+        }
+        $scope.err.message = errs;
     }
 })

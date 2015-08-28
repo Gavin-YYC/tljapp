@@ -98,7 +98,35 @@
 				<i class="icon iconfont" style="color:#ccc">&#xe600;</i>
 				退出登录
 			</a>
-
+			<!--秀海密码-->
+			<script id="modal-changePwd.html" type="text/ng-template">
+				<ion-modal-view>
+				    <ion-header-bar class="bar-assertive">
+				    	<button class="button button-clear icon ion-ios-arrow-back" ng-click="ChangePwd.hide()"> 后退</button>
+				        <h1 class="title">修改密码</h1>
+				    </ion-header-bar>
+				    <ion-content class="has-header padding0" ng-controller="ChangePwdController">
+						<div class="list">
+						    <label class="item item-input item-floating-label">
+						    	<input type="password" placeholder="请输入原密码" ng-model="modify.oldPwd">
+						  	</label>
+						  	<label class="item item-input item-floating-label">
+						    	<input type="password" placeholder="请输入新密码" ng-model="modify.newPwd">
+						  	</label>
+						  	<label class="item item-input item-floating-label">
+						    	<input type="password" placeholder="请再次确认新密码" ng-model="modify.reNewPwd">
+						  	</label>
+						  	<div class="row">
+						  		<button class="button button-block button-big" ng-click="subPwd()">提交</button>
+						  	</div>
+						</div>
+						<div class="card" ng-if="haserr">
+						  	<div class="item item-text-wrap">{{err.message}}</div>
+						</div>
+				    </ion-content>
+				</ion-modal-view>
+			</script>
+			<!--意见反馈-->
 			<script id="feedback.html" type="text/ng-template">
 				<ion-modal-view>
 				    <ion-header-bar class="bar-assertive">

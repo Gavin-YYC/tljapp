@@ -149,6 +149,7 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     //查询兼职内容
     GetListService.getList(jobApi).then(function (data){
         $scope.item = data.data.data;
+        console.log($scope.item);
     })
     //查询指定ID下的评论
     GetListService.getList(commentApi).then(function (data){

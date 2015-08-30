@@ -74,6 +74,24 @@ angular.module('getlist.service',['ngCookies'])
         })
         return d.promise;
 	}
+	getListService.userPut = function (api, data){
+		var d = $q.defer();
+		$http({
+            url:api,
+            method:"PUT",
+            headers:{
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            data: data
+		})
+        .success(function (data,status){
+            d.resolve(data);
+        })
+        .error(function (data,status){
+            d.reject(data);
+        })
+        return d.promise;
+	}
 
 	//通用弹出提示
 	getListService.alertTip = function (data){
@@ -81,6 +99,14 @@ angular.module('getlist.service',['ngCookies'])
                     title: '友情提示：',
                     template: data
             });
+	}
+	//查看是否还有下一页
+	getListService.hasNextPage = function (length, resultCount){
+        if (length == 8 && resultCount >=8) {
+            return false;
+        }else{
+            return true;
+        };
 	}
 	return getListService;
 })

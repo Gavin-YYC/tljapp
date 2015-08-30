@@ -4,30 +4,30 @@
     </ion-nav-bar>
     <ion-content>
     	<div class="row padding0" style="width:100%;height:20px; background:#F9F9F9"></div>
-    	<form name="userForm" ng-submit="goPost(userForm.$valid)" novalidate>
+    	<form name="userForm" ng-submit="goPost(userForm)" novalidate="novalidate">
 			<ion-slide-box style="height:500px;" on-slide-changed="slideHasChanged($index)" show-pager="false">
 				<ion-slide class="tlj-post">
 					<div class="item row">
 						<div class="col col-33 title"><span>标题</span></div>
-						<div class="col col-67"><input type="text" required placeholder="请输入标题" ng-model="job.title" ng-maxlength="20"></div>
+						<div class="col col-67"><input type="text" name="jobTitle" required placeholder="请输入标题" ng-model="job.title" ng-class="hasErr"></div>
 					</div>
 					<div class="item row">
 						<div class="col col-33 title"><span style="background:#F6BA5A">兼职类型</span></div>
 						<div class="col col-67">
-							<input type="text" readonly="readonly" placeholder="请选择兼职类型" ng-click="chooseJobType()" ng-model="job.type">
+							<input type="text" name="jobType" readonly="readonly" placeholder="请选择兼职类型" ng-click="chooseJobType()" ng-model="job.type">
 						</div>
 						<i class="icon ion-ios-arrow-right"></i>
 					</div>
 					<div class="item row">
 						<div class="col col-33 title"><span style="background:#95DC80">区域选择</span></div>
 						<div class="col col-67">
-							<input type="text" readonly="readonly" placeholder="请选择兼职类型" ng-click="chooseJobTypeArea()" ng-model="job.typeArea">
+							<input type="text" name="jobTypeArea" readonly="readonly" placeholder="请选择兼职类型" ng-click="chooseJobTypeArea()" ng-model="job.typeArea">
 						</div>
 						<i class="icon ion-ios-arrow-right"></i>
 					</div>
 					<div class="item row">
 						<div class="col col-33 title"><span style="background:#FAB53C">截止时间</span></div>
-						<div class="col col-67"><input type="text" readonly="readonly"placeholder="选择截止时间" ng-model="job.enddate" ng-click="chooseTime()"/></div>
+						<div class="col col-67"><input type="text" name="jobEndDate" readonly="readonly"placeholder="选择截止时间" ng-model="job.enddate" ng-click="chooseTime()"/></div>
 						<i class="icon ion-ios-arrow-right"></i>
 					</div>
 					<div class="item row">
@@ -35,10 +35,10 @@
 						<div class="col col-67 tlj-gz-sj">
 							<div class="row">
 								<div class="col col-50">
-									<input type="number" placeholder="工资数字" ng-model="job.wage">
+									<input type="number" name="jobWage" ng-class="hasErr" required ng-maxlength="4" placeholder="工资数字" ng-model="job.wage">
 								</div>
 								<div class="col col-50">
-									<input type="text" readonly="readonly" ng-click="chooseJobMoneyAndTime($event)" ng-model="job.moneyAndTime"></div>
+									<input type="text" name="jobMoneyAndTime" readonly="readonly" ng-click="chooseJobMoneyAndTime()" ng-model="job.moneyAndTime"></div>
 							</div>
 						</div>
 						<i class="icon ion-ios-arrow-right"></i>
@@ -46,7 +46,7 @@
 					<div class="item row">
 						<div class="col col-33 title"><span style="background:#FAA91C">结算方式</span></div>
 						<div class="col col-67">
-							<input type="text" readonly="readonly" placeholder="请选择兼职类型" ng-click="chooseJobTypeToPay($event)" ng-model="job.typeToPay">
+							<input type="text" name="jobTypeToPay" readonly="readonly" placeholder="请选择兼职类型" ng-click="chooseJobTypeToPay()" ng-model="job.typeToPay">
 						</div>
 						<i class="icon ion-ios-arrow-right"></i>
 					</div>
@@ -62,19 +62,19 @@
 	        		<div class="item sub-content" ng-if="show">
 	        			<div class="item row subitem">
 							<div class="col col-33 subtitle"><i class="icon ion-record"></i><span>时&nbsp;&nbsp;&nbsp;&nbsp;间</span></div>
-							<div class="col col-67"><input type="text" readonly="readonly" placeholder="请填写具体的工作时间" ng-model="job.time" ng-click='chooseContent("time")'></div>
+							<div class="col col-67"><input type="text" required name="jobTime" readonly="readonly" placeholder="请填写具体的工作时间" ng-model="job.time" ng-click='chooseContent("time")'></div>
 	        			</div>
 	        			<div class="item row subitem">
 							<div class="col col-33 subtitle"><i class="icon ion-record"></i><span>地&nbsp;&nbsp;&nbsp;&nbsp;点</span></div>
-							<div class="col col-67"><input type="text" readonly="readonly" placeholder="请填写具体的工作地点" ng-model="job.place" ng-click='chooseContent("place")'></div>
+							<div class="col col-67"><input type="text" required name="jobPlace" readonly="readonly" placeholder="请填写具体的工作地点" ng-model="job.place" ng-click='chooseContent("place")'></div>
 	        			</div>
 	        			<div class="item row subitem">
 							<div class="col col-33 subtitle"><i class="icon ion-record"></i><span>内&nbsp;&nbsp;&nbsp;&nbsp;容</span></div>
-							<div class="col col-67"><input type="text" readonly="readonly" placeholder="请填写工作内容" ng-model="job.content" ng-click='chooseContent("content")'></div>
+							<div class="col col-67"><input type="text" required name="jobContent" readonly="readonly" placeholder="请填写工作内容" ng-model="job.content" ng-click='chooseContent("content")'></div>
 	        			</div>
 	        			<div class="item row subitem">
 							<div class="col col-33 subtitle"><i class="icon ion-record"></i><span>要&nbsp;&nbsp;&nbsp;&nbsp;求</span></div>
-							<div class="col col-67"><input type="text" readonly="readonly" placeholder="请填写工作要求" ng-model="job.require" ng-click='chooseContent("require")'></div>
+							<div class="col col-67"><input type="text" required name="jobRequire" readonly="readonly" placeholder="请填写工作要求" ng-model="job.require" ng-click='chooseContent("require")'></div>
 	        			</div>
 	        		</div>
 	        		<div class="item row mainitem" ng-click="tonggle()">
@@ -84,15 +84,15 @@
 	        		<div class="item sub-content sub-color" ng-if="!show">
 	        			<div class="item row subitem">
 							<div class="col col-33 subtitle"><i class="icon ion-record"></i><span>联系人</span></div>
-							<div class="col col-67"><input type="text" placeholder="请输入您的姓名" ng-model="job.name"></div>
+							<div class="col col-67"><input type="text" required name="jobName" placeholder="请输入您的姓名" ng-model="job.name"></div>
 	        			</div>
 	        			<div class="item row subitem">
 							<div class="col col-33 subtitle"><i class="icon ion-record"></i><span>手机号</span></div>
-							<div class="col col-67"><input type="number" placeholder="您的手机号" ng-model="job.phoneNumber"></div>
+							<div class="col col-67"><input type="number" required name="jobPhoneNumber" placeholder="您的手机号" ng-model="job.phoneNumber"></div>
 	        			</div>
 	        			<div class="item row subitem">
 							<div class="col col-33 subtitle"><i class="icon ion-record"></i><span>Q&nbsp;Q&nbsp;号</span></div>
-							<div class="col col-67"><input type="number" placeholder="您的QQ号" ng-model="job.QQ"></div>
+							<div class="col col-67"><input type="number" name="jobQq" placeholder="您的QQ号" ng-model="job.QQ"></div>
 	        			</div>
 	        		</div>
 					<div class="item row page-ok">
@@ -107,7 +107,7 @@
 			</ion-slide-box>
 		</form>
 		<!--选择分类和区域-->
-		<script id="my-modal.html" type="text/ng-template">
+		<script id="my-modal-select.html" type="text/ng-template">
 		  	<ion-modal-view>
 		    	<ion-header-bar align-title="center">
 		      		<h1 class="title">请选择</h1>
@@ -118,19 +118,6 @@
 		      		</ion-list>
 		    	</ion-content>
 		  </ion-modal-view>
-		</script>
-		<!--选择结算方式与结算周期-->
-		<script id="my-popover.html" type="text/ng-template">
-		  	<ion-popover-view>
-		    	<ion-header-bar align-title="center">
-		      		<h1 class="title">请选择</h1>
-		    	</ion-header-bar>
-		    	<ion-content>
-		      		<ion-list>
-		      			<ion-item ng-repeat="item in items" ng-click='select(value,item)'>{{item}}</ion-item>
-		      		</ion-list>
-		    	</ion-content>
-		  	</ion-popover-view>
 		</script>
 		<!--内容填写-->
 		<script id="my-modal-content.html" type="text/ng-template">

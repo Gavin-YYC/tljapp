@@ -573,6 +573,9 @@ a{
 .tlj-post>.page-ok{
 	padding-right: 0 !important;
 }
+.tlj-post .item .col-67 input{
+	width: 100%;
+}
 .page-ok .button-ok{
 	margin: 0 auto;
 	color: red;
@@ -732,4 +735,58 @@ a{
   border: 1px solid red;
   border-radius: 10px;
   margin-top: 30px;
+}
+.tlj-post .item .col-67 input.haserr{
+    border: 1px solid red;
+    padding: 0 5px;
+    border-radius: 5px;
+}
+/*兼职详情页*/
+.job-detail .item h2{
+	padding-left: 10px;
+	border-left: 5px solid #f96a39;
+}
+.job-detail .item h2.title{
+	font-weight: bold;
+}
+.job-detail .job-title .col-50{
+	color: #c1c1c1;
+}
+.job-detail .item h2.wage{
+	margin-bottom: 10px;
+}
+.job-detail .item h2.wage span{
+	font-size: 25px;
+	color: #f96a39;
+}
+.item-divider{
+	min-height: 0px;
+	background-color: #f4f4f4;
+}
+.job-detail p{
+	line-height: 30px;
+}
+.job-detail .contact-me{
+	height: 80px;
+}
+.job-detail .contact-me .row{
+	height: 80px;
+}
+.job-detail .contact-me .col-80{
+	padding-top: 10px;
+	padding-left: 16px;
+}
+.job-detail .contact-me .col-20{
+	background-color: #4CCDA4;
+	color: #fff;
+}
+.job-detail .contact-me .col-20 a{
+	color: #fff;
+}
+.job-detail .contact-me .col-20 i{
+	display: block;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 3px;
+	font-size: 20px;
 }

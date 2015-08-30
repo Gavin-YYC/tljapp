@@ -1,5 +1,5 @@
 /*
- *  my.controllers 
+ *  my.controllers
  *  Children Controlles Followed：
  *    --IndexController    （主页控制器）
  *    --LoginController    （登录控制器）
@@ -58,7 +58,7 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
     $scope.myGoBack = function (){
         $ionicHistory.goBack();
     }
-    
+
 })
 
 //用户注册
@@ -111,9 +111,11 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
 })
 
 //个人中心内控制器
-.controller('MyController',function ($scope, $state, $ionicModal, $ionicHistory, Auth, GetListService) { 
+.controller('MyController',function ($scope, $state, $ionicModal, $ionicHistory, Auth, GetListService) {
     //用户是否登录验证
     var userId = Auth.getUser();
+    var token = Auth.getToken() || "";
+    var tokenKey = "&appToken="+token;
     if (userId != "") {
         var api = "http://120.24.218.56/api/user/"+userId;
         GetListService.getList(api).then(function(data){
@@ -130,6 +132,12 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
     $scope.myGoBack = function (){
         $ionicHistory.goBack();
     };
+    //显示有多少未读消息
+    $scope.unReadMessage = 0;
+    var unReadApi = "http://120.24.218.56/api/noti/pri/unread?memberId="+userId+tokenKey;
+    GetListService.getList(unReadApi).then(function (data){
+        $scope.unReadMessage = data.data.data.resultCount;
+    })
     //弹出投稿反馈模态框
     $ionicModal.fromTemplateUrl('feedback.html',function(modal){
         $scope.FeedbackModal = modal;
@@ -238,48 +246,32 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
         $state.go("login");
     };
 
-    $scope.images_list = [];  
-    
-    // "添加附件"Event  
-    $scope.addAttachment = function() {  
-        /*
-        $ionicActionSheet.show({  
-            buttons: [{ text: '相机' }, { text: '图库' }],  
-            cancelText: '取消', 
-            cancel: function() {  
-                return true;  
-            },  
-            buttonClicked: function(index) {  
-                switch (index){  
-                    case 0: $scope.takePhoto();break;  
-                    case 1: pickImage();break;  
-                    default:break;  
-                }      
-                return true;  
-            }  
-        });  
-        */
-        var pic_path = "https://www.baidu.com/img/bd_logo1.png";
-        var options = {
-            fileKey: "headImgUrl",
-            fileName: 'corvodaTest.jpg',
-            mimeType: "image/jpg",
-            params: {}
-        }
-        var uploadApi = "http://120.24.218.56/static/upload";
-        $cordovaFileTransfer.upload(uploadApi, pic_path, options)
-            .then(function(result) {
-                $scope.success = result;
-            }, function(err) {
-                $scope.success = err;
-            }, function (progress) {
-                $scope.success = progress;
-            })
-    }   
+    $scope.images_list = [];
+
+    // "添加附件"Event
+    $scope.addAttachment = function() {
+        $ionicActionSheet.show({
+            buttons: [{ text: '相机' }, { text: '图库' }],
+            cancelText: '取消',
+            cancel: function() {
+                return true;
+            },
+            buttonClicked: function(index) {
+                switch (index){
+                    case 0: $scope.takePhoto();break;
+                    case 1: pickImage();break;
+                    default:break;
+                }
+                return true;
+            }
+        });
+    }
     //从相机选取图片
-    $scope.success = "";
-    $scope.success = "";
-    $scope.success = "";
+    $scope.me = {
+        success:"",
+        err:"",
+        progress:""
+    }
     $scope.takePhoto = function () {
         var options = {
             destinationType: Camera.DestinationType.FILE_URI,
@@ -288,44 +280,48 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
             targetHeight: 800
         };
         $cordovaCamera.getPicture(options).then(function (imageURI) {
-                var options = {
-                    fileKey: "headImgUrl",
-                    fileName: 'corvodaTest.jpg',
-                    mimeType: "image/jpg",
-                    params: {}
-                }
-                var uploadApi = "http://120.24.218.56/static/upload";
-                $cordovaFileTransfer.upload(uploadApi, imageURI, options)
-                    .then(function(result) {
-                        $scope.success = result;
-                    }, function(err) {
-                        $scope.success = err;
-                    }, function (progress) {
-                        $scope.success = progress;
-                    })
+            var fileName = imageURI.split("/").pop();
+            $scope.me.success = imageURI + "<br>"+fileName;
+            var options = {
+                fileKey: "headImgUrl",
+                fileName: fileName,
+                mimeType: "image/jpg",
+                params: {}
+            }
+            var uploadApi = "http://120.24.218.56/static/upload";
+            $scope.me.success = upload+"\n"+imageURI;
+            $cordovaFileTransfer.upload(uploadApi, imageURI, options)
+                .then(function(result) {
+                    $scope.me.success = result;
+                }, function(err) {
+                    $scope.me.err = err;
+                }, function (progress) {
+                    $scope.me.progress = progress;
+                })
+                $scope.me.success = "\n在这里\n";
         }, function (err) {
-            // error
+            $scope.me.success = "\n这里是错误"+err;
         });
     }
     //image picker
-    var pickImage = function () {  
-        var options = {  
-            maximumImagesCount: 4,  
+    var pickImage = function () {
+        var options = {
+            maximumImagesCount: 4,
             width: 600,
             height: 800,
-            quality: 80  
-        };  
-        $cordovaImagePicker.getPictures(options)  
+            quality: 80
+        };
+        $cordovaImagePicker.getPictures(options)
             .then(function (results) {
                 $scope.images_list.push(results[0]);
-            }, function (error) {  
+            }, function (error) {
                 // error getting photos
             });
     }
 })
 
 //发布兼职信息
-.controller("PostController",function ($scope, $ionicModal, $ionicPopover, $cordovaDatePicker, $ionicSlideBoxDelegate, GetListService){
+.controller("PostController",function ($scope, $ionicModal, $ionicActionSheet, $cordovaDatePicker, $ionicSlideBoxDelegate, GetListService){
     //初始化表单数据
     $scope.job = {
         typeToPay:"日结",
@@ -343,30 +339,23 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
         phoneNumber:"",
         QQ:""
     };
-    //modal初始化
-    $ionicModal.fromTemplateUrl('my-modal.html', {
+    //选择工作区域和工作类型模态框
+    $ionicModal.fromTemplateUrl('my-modal-select.html',function(modal){
+        $scope.SelectModal = modal;
+    },{
         scope: $scope,
         animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.modal = modal;
-    });
-    //modal初始化
-    $ionicModal.fromTemplateUrl('my-modal-content.html', {
+    })
+    //工作具体内容模态框
+    $ionicModal.fromTemplateUrl('my-modal-content.html',function(modal){
+        $scope.ContentModal = modal;
+    },{
         scope: $scope,
         animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.modal = modal;
-    });
-    //Popover初始化
-    $ionicPopover.fromTemplateUrl('my-popover.html', {
-        scope: $scope
-    }).then(function(popover) {
-        $scope.popover = popover;
-    });
+    })
     //点击下一步与上一步
     $scope.goNext = function(index){
         $ionicSlideBoxDelegate.next();
-        console.log($scope.job)
     }
     $scope.goPrevious = function(index){
         $ionicSlideBoxDelegate.previous();
@@ -374,7 +363,7 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
     //选择兼职类型
     $scope.chooseJobType = function (){
         $scope.value = "class"; //初始化modal分类
-        $scope.modal.show();    //显示modal
+        $scope.SelectModal.show();    //显示modal
         var categoryApi = "http://120.24.218.56/api/job/cate/list";
         GetListService.getList(categoryApi).then(function (data){
             $scope.items = data.data.data.list;
@@ -383,7 +372,7 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
     //选择区域，解释同上
     $scope.chooseJobTypeArea = function (){
         $scope.value = "area";
-        $scope.modal.show();
+        $scope.SelectModal.show(); 
         $scope.items = [
             {name:"张店区"},
             {name:"周村区"},
@@ -412,19 +401,54 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
             break;
         }
         $scope.modal.hide();
-        $scope.popover.hide();
+        $scope.SelectModal.hide();
     }
     //选择结算方式
-    $scope.chooseJobTypeToPay = function ($event){
-        $scope.popover.show($event);
+    $scope.chooseJobTypeToPay = function (){
         $scope.value = "pay";
-        $scope.items = ["日结","周结","月结","完工结算"];
+        $ionicActionSheet.show({
+            buttons: [{ text:'日结'},{text:'周结'},{text:'月结'},{text:'完工结算'}],
+            cancelText: '取消',
+            cancel: function() {
+                return true;
+            },
+            buttonClicked: function(index) {
+                $scope.job.typeToPay = select(index);
+                function select (index) {
+                    switch (index){
+                        case 0: return "日结";break;
+                        case 1: return "周结";break;
+                        case 2: return "月结";break;
+                        case 3: return "完工结算";break;
+                        default:break;
+                    }
+                }
+                return true;
+            }
+        });
     }
     //选择工资结算方式
     $scope.chooseJobMoneyAndTime = function ($event){
-        $scope.popover.show($event);
         $scope.value = "day";
-        $scope.items = ["元/时","元/天","元/月"];
+        $ionicActionSheet.show({
+            buttons: [{ text:'元/时'},{text:'元/天'},{text:'元/月'}],
+            cancelText: '取消',
+            cancel: function() {
+                return true;
+            },
+            buttonClicked: function(index) {
+                $scope.job.moneyAndTime = select(index);
+                function select (index) {
+                    switch (index){
+                        case 0: return "元/时";break;
+                        case 1: return "元/天";break;
+                        case 2: return "元/月";break;
+                        default:break;
+                    }
+                }
+                return true;
+            }
+        });
     }
     $scope.chooseTime = function (){
         var options = {
@@ -468,19 +492,33 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
                 $scope.re.title = "工作要求";
             break;
         }
-        $scope.modal.show();
+        $scope.ContentModal.show();
         $scope.value = value;
     }
     $scope.hideModal = function(value){
-
         console.log($scope.re.content);
         $scope.job[value] = $scope.re.content;
-        $scope.modal.hide();
+        $scope.ContentModal.hide();
         $scope.re.content = "";
     }
     //发布信息按钮
     $scope.goPost = function (isValid){
-        console.log(isValid);
+        var items = [
+            'jobTitle','jobType','jobTypeArea','jobEndDate','jobWage',
+            'jobMoneyAndTime','jobTypeToPay','jobTime','jobPlace','jobContent',
+            'jobRequire','jobName','jobPhoneNumber','jobQq'
+        ];
+        for (var i = 0; i < items.length; i++) {
+            var here = isValid[items[i]];
+            var check = here.$dirty;
+            console.log(check);
+            console.log(i);
+            if (!check && here.$error.required) {
+                $scope.hasErr = "haserr";
+            }else{
+               $scope.hasErr = "gfdgfhgf";
+            }
+        }
     }
 })
 
@@ -503,7 +541,7 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
         $scope.jobItems = data.data.data.list;
         var length = data.data.data.list.length;
         var resultCount = data.data.data.resultCount;
-        $scope.jobEmptyContent = checkMore(length,resultCount);
+        $scope.jobEmptyContent = GetListService.hasNextPage(length,resultCount);
         $scope.jobCount = resultCount;
     })
     //加载我发布的二手物品
@@ -511,7 +549,7 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
         $scope.shItems = data.data.data.list;
         var length = data.data.data.list.length;
         var resultCount = data.data.data.resultCount;
-        $scope.emptyContent = checkMore(length,resultCount);
+        $scope.emptyContent = GetListService.hasNextPage(length,resultCount);
         $scope.shCount = resultCount;
     })
     //检查是否能加载更多
@@ -543,7 +581,7 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
             break;
         }
         console.log(pageKey)
-        //发起请求 
+        //发起请求
         GetListService.getList(api+pageKey).then(function (data){
             $scope[items] = $scope[items].concat(data.data.data.list);
             var length = data.data.data.list.length;
@@ -569,7 +607,7 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
         $scope.jobItems = data.data.data.list;
         var length = data.data.data.list.length;
         var resultCount = data.data.data.resultCount;
-        $scope.jobEmptyContent = checkMore(length,resultCount);
+        $scope.jobEmptyContent = GetListService.hasNextPage(length,resultCount);
         $scope.jobCount = resultCount;
     })
     //加载我收藏的二手物品
@@ -577,17 +615,9 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
         $scope.shItems = data.data.data.list;
         var length = data.data.data.list.length;
         var resultCount = data.data.data.resultCount;
-        $scope.emptyContent = checkMore(length,resultCount);
+        $scope.emptyContent = GetListService.hasNextPage(length,resultCount);
         $scope.shCount = resultCount;
     })
-    //检查是否能加载更多
-    function checkMore(length, resultCount){
-        if (length == 8 && resultCount >=8) {
-            return false;
-        }else{
-            return true;
-        };
-    }
     //加载更多
     //初始化分页参数
     var pageNumber = 0;
@@ -607,7 +637,7 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
             break;
         }
         console.log(pageKey)
-        //发起请求 
+        //发起请求
         GetListService.getList(api+pageKey).then(function (data){
             $scope[items] = $scope[items].concat(data.data.data.list);
             var length = data.data.data.list.length;

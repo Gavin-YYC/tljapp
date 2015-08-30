@@ -87,6 +87,12 @@ angular.module('route',[])
                 templateUrl:'templates/MyMessage.html',
                 controller:"MyMessage"
             })
+            //我的通知、信息
+            .state('myMessageDetail',{
+                url:'/user/mymessage/:id',
+                templateUrl:'templates/MyMessageDetail.html',
+                controller:"MyMessageDetail"
+            })
         //其他情况，返回首页
         $urlRouterProvider.otherwise('/');
     })

@@ -85,8 +85,9 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
         };
     }else{
         //获取用户信息
-        var userApi = "http://120.24.218.56/api/user/"+user;
+        var userApi = "http://120.24.218.56/api/user/"+user+tokenKey;
         GetListService.getList(userApi).then(function(data){
+            console.log(data)
             $scope.inUser = data.data.data;
         })
         //用户是否点赞
@@ -173,7 +174,31 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
             }
         })
     }
-
+    //评论页和底部菜单切换
+    $scope.commentClick = true;
+    $scope.toComment = function (){
+        $scope.commentClick = !$scope.commentClick;
+    }
+    //显示更多
+    $scope.jobDetailMore = function (){
+        $ionicActionSheet.show({
+             buttons: [
+               { text: '举报' },
+               { text: '合作热线' },
+               { text: '意见反馈' }
+             ],
+             titleText: '请选择',
+             cancelText: '取消',
+             cancel: function() {
+                  // add cancel code..
+                },
+             buttonClicked: function(index) {
+                //执行删除操作
+                
+                return true;
+             }
+        });
+    }
     //提交评论
     $scope.sendComment = function (){
         var data = "content="+$scope.commentData;

@@ -765,6 +765,8 @@ a{
 }
 .job-detail p{
 	line-height: 30px;
+	text-overflow: inherit;
+    white-space: normal;
 }
 .job-detail .contact-me{
 	height: 80px;
@@ -779,14 +781,84 @@ a{
 .job-detail .contact-me .col-20{
 	background-color: #4CCDA4;
 	color: #fff;
+	text-align: center;
 }
 .job-detail .contact-me .col-20 a{
 	color: #fff;
+	display: block;
 }
 .job-detail .contact-me .col-20 i{
 	display: block;
 	text-align: center;
 	padding-top: 10px;
 	padding-bottom: 3px;
+	font-size: 20px;
+}
+.job-detail .job-common-color{
+	color: #898989;
+}
+.job-detail .tlj-tip{
+	position: relative;
+	padding: 5px 3px 3px 3px;
+	border: 1px solid #898989;
+	border-radius: 5px;
+	margin: 25px 10px 16px 10px;
+	overflow: inherit;
+	text-align: center;
+}
+.job-detail .tlj-tip p{
+	width: 100%;
+}
+.job-detail .tlj-tip .tlj-tip-word{
+	position: absolute;
+	top: -13px;
+	left: 50%;
+	margin-left: -58px;
+	background-color: #fff;
+	padding: 0 10px;
+	color: #343434;
+	z-index: 99;
+}
+.job-detail .tlj-assess .row .col-33{
+	text-align: center;
+}
+.job-detail .tlj-assess .row{
+	margin-top: 20px;
+}
+.job-detail .tlj-assess .row .col-33 a{
+	padding: 5px 20px;
+	border: 1px solid #c1c1c1;
+	border-radius: 15px;
+	color: #c1c1c1;
+}
+.job-detail .tlj-assess .row .col-33 a i{
+	font-size: 20px;
+}
+.job-detail .job-comment{
+	position: relative;
+	padding-bottom: 80px;
+}
+.job-detail .job-comment h2{
+	padding-left: 0px;
+	border-left: none;
+}
+.job-detail .job-comment .stick-time{
+	position: absolute;
+	top: 15px;
+	right: 5px;
+	color: #c1c1c1;
+	font-size: 12px;
+}
+.job-detail .job-comment .stick-reply{
+	float: right;
+	width: 35px;
+	height: 35px;
+	border-radius: 35px;
+	border: 1px solid #c1c1c1;
+	text-align: center;
+}
+.job-detail .job-comment .stick-reply i{
+	line-height: 35px;
+	color: #c1c1c1;
 	font-size: 20px;
 }

@@ -97,18 +97,18 @@
 			</div>
 		</div>
     </ion-content>
-    <ion-footer-bar class="item-input-inset bar-calm" ng-if="!commentClick">
+    <ion-footer-bar class="bar-calm" ng-if="!commentClick">
     	<div class="row padding0">
-    		<div class="col col-20">
+    		<div class="col col-20" style="padding-top:0px">
     			<button class="button button-clear icon ion-navicon" ng-click="toComment()"></button>
     		</div>
-    		<div class="col col-60">
-			  	<label class="item-input-wrapper" style="margin-top:3px;">
+    		<div class="col col-60" style="padding-top:0px">
+			  	<label class="item-input-wrapper">
 			    	<i class="icon ion-ios-barcode-outline placeholder-icon"></i>
-			    	<input type="text" placeholder="评论" style="width:60%" ng-model="commentData" required>
+			    	<input type="text" placeholder="评论" ng-model="commentData" required>
 			  	</label>
     		</div>
-    		<div class="col col-20">
+    		<div class="col col-20" style="padding-top:0px">
     			<button class="button" ng-click="sendComment()">发布</button>
     		</div>
     	</div>

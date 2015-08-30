@@ -136,14 +136,20 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     $scope.col = function (){
         var api = "http://120.24.218.56/user/job/fav/"+userId+tokenKey;
         GetListService.userPost(api).then(function (data){
-            if (data.message == 16 || data.parm.status == 1) {
-                $scope.colColor="";
-            }else if(data.message == 0 || data.parm.status == 0){
-                $scope.colColor="#F96A39";
+            console.log(data);
+            if (data.hasOwnProperty("parm")) {
+                if (data.parm.status == 1) $scope.colColor="";
+                if (data.parm.status == 0) $scope.colColor="#F96A39";
             }else{
-                FormatRusult.format(data.message).then(function (data){
-                    GetListService.alertTip(data);
-                })
+                if (data.message == 16) {
+                    $scope.colColor="";
+                }else if(data.message == 0){
+                    $scope.colColor="#F96A39";
+                }else{
+                    FormatRusult.format(data.message).then(function (data){
+                        GetListService.alertTip(data);
+                    })
+                } 
             }
         })
     }
@@ -200,9 +206,14 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
         });
     }
     //提交评论
+    $scope.vm = {
+        commentData:""
+    };
     $scope.sendComment = function (){
-        var data = "content="+$scope.commentData;
-        if ($scope.commentData == " "||$scope.commentData == null) {
+        var commentData = $scope.vm.commentData;
+        var data = "content="+commentData;
+        console.log(commentData);
+        if (commentData == ""||commentData == null) {
             GetListService.alertTip("评论内容不能为空！");
             return false;
         };
@@ -211,12 +222,13 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
                 profilePhotoId: $scope.inUser.profilePhotoId,
                 username: $scope.inUser.username
             },
-            content:$scope.commentData
+            content:commentData,
+            time:(new Date()).valueOf()
         }
         GetListService.userPost(subCommentApi,data).then(function (data){
             if (data.message == 0 || data.result == true) {
                 $scope.comments.unshift(jsonData);
-                $scope.commentData = [];
+                $scope.vm.commentData = "";
             }else{
                 FormatRusult.format(data.message).then(function (data){
                     GetListService.alertTip(data);
@@ -253,7 +265,6 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
         });
     }
  })
-
 //加载二级目录
 .controller('getRegionAndPayCotroller',function ($scope, GetListService, $rootScope){
     //获取二级目录

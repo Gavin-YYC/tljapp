@@ -582,7 +582,6 @@ a{
 	height: 30px;
 	border: 1px solid red;
 	border-radius: 10px;
-	margin-top: 30px;
 }
 .next-page .button-next{
 	margin: 0 auto;
@@ -593,9 +592,13 @@ a{
 	margin-top: 30px;
 }
 .tlj-post input[readonly]:not(.cloned-text-input){
-	  background-color: #fff;
+	background-color: #fff;
 }
-
+.tlj-post .sub-content .subitem textarea[readonly]:not(.cloned-text-input){
+	background-color: #fff;
+	line-height: 30px;
+	width: 100%;
+}
 
 /*选择发布页面*/
 .sub-page{

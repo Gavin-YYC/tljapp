@@ -321,8 +321,11 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
 })
 
 //发布兼职信息
-.controller("PostController",function ($scope, $ionicModal, $ionicActionSheet, $cordovaDatePicker, $ionicSlideBoxDelegate, GetListService){
+.controller("PostController",function ($scope, $ionicModal, $ionicActionSheet, Auth, $cordovaDatePicker, $ionicSlideBoxDelegate, GetListService){
     //初始化表单数据
+    var username = Auth.getUser() || "";
+    var token = Auth.getToken() || "";
+    var tokenKey = "?appToken="+token;
     $scope.job = {
         typeToPay:"日结",
         typeArea:"张店区",
@@ -330,14 +333,15 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
         moneyAndTime: "元/时",
         title:'',
         wage:"",
-        enddate:'',
+        enddate:"",
         time:"",
         place:"",
         content:"",
         require:"",
         name:"",
         phoneNumber:"",
-        QQ:""
+        QQ:"",
+        cateType:1
     };
     //选择工作区域和工作类型模态框
     $ionicModal.fromTemplateUrl('my-modal-select.html',function(modal){
@@ -361,12 +365,14 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
         $ionicSlideBoxDelegate.previous();
     }
     //选择兼职类型
+    $scope.selectType = false;
     $scope.chooseJobType = function (){
         $scope.value = "class"; //初始化modal分类
         $scope.SelectModal.show();    //显示modal
         var categoryApi = "http://120.24.218.56/api/job/cate/list";
         GetListService.getList(categoryApi).then(function (data){
             $scope.items = data.data.data.list;
+            $scope.selectType = true;
         })
     }
     //选择区域，解释同上
@@ -382,13 +388,16 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
             {name:"桓台区"},
             {name:"高青区"},
             {name:"沂源县"}
-        ]
+        ];
+        $scope.selectType = false;
     }
     //同步input表单数据
-    $scope.select = function (type,value){
+    $scope.select = function (type,value,id){
         switch (type){
             case "class":
                 $scope.job.type = value;
+                $scope.job.cateType = id;
+                console.log($scope.job.cateType);
             break;
             case "area":
                 $scope.job.typeArea = value;
@@ -400,7 +409,7 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
                 $scope.job.moneyAndTime = value;
             break;
         }
-        $scope.modal.hide();
+        $scope.ContentModal.hide();
         $scope.SelectModal.hide();
     }
     //选择结算方式
@@ -455,15 +464,27 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
             date: new Date(),
             mode: 'date', // or 'time'
             minDate: new Date() - 10000,
+            is24Hour: true,
             allowOldDates: true,
             allowFutureDates: false,
             doneButtonLabel: 'DONE',
             doneButtonColor: '#F2F3F4',
             cancelButtonLabel: 'CANCEL',
-            cancelButtonColor: '#000000'
+            cancelButtonColor: '#000000',
+            androidTheme:'THEME_DEVICE_DEFAULT_LIGHT'
         };
         $cordovaDatePicker.show(options).then(function(date){
-            $scope.job.enddate = date;
+            var year = date.getFullYear();
+            var month = date.getMonth()+1;
+            var day = date.getDate();
+            /*
+            var hours = data.getHours();
+            var minites = data.getMinutes();
+            var second = data.getSeconds();
+            var last = " "+hours+":"+minites+":"+second;
+            */
+            var first = year+"-"+month+"-"+day;
+            $scope.job.enddate = first;
         });
     }
     //选项切换
@@ -481,15 +502,19 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
         switch (value){
             case "time":
                 $scope.re.title = "工作时间";
+                $scope.re.content = $scope.job.time;
             break;
             case "place":
                 $scope.re.title = "工作地点";
+                $scope.re.content = $scope.job.place;
             break;
             case "content":
                 $scope.re.title = "工作内容";
+                $scope.re.content = $scope.job.content;
             break;
             case "require":
                 $scope.re.title = "工作要求";
+                $scope.re.content = $scope.job.require;
             break;
         }
         $scope.ContentModal.show();
@@ -503,21 +528,35 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
     }
     //发布信息按钮
     $scope.goPost = function (isValid){
-        var items = [
-            'jobTitle','jobType','jobTypeArea','jobEndDate','jobWage',
-            'jobMoneyAndTime','jobTypeToPay','jobTime','jobPlace','jobContent',
-            'jobRequire','jobName','jobPhoneNumber','jobQq'
-        ];
-        for (var i = 0; i < items.length; i++) {
-            var here = isValid[items[i]];
-            var check = here.$dirty;
-            console.log(check);
-            console.log(i);
-            if (!check && here.$error.required) {
-                $scope.hasErr = "haserr";
-            }else{
-               $scope.hasErr = "gfdgfhgf";
-            }
+        if (isValid.$valid) {
+            var api = "http://120.24.218.56/user/job/post"+tokenKey;
+            console.log(api)
+            var data = "title="+$scope.job.title+
+                       "&jobPostCategoryId="+$scope.job.cateType+
+                       "&expiredTime="+$scope.job.enddate+
+                       "&wage="+$scope.job.wage+
+                       "&salaryUnit="+$scope.job.moneyAndTime.split("/")[1]+
+                       "&timeToPay="+$scope.job.typeToPay+
+                       "&workTime="+$scope.job.time+
+                       "&workPlace="+$scope.job.place+
+                       "&jobDetail="+$scope.job.content+
+                       "&jobDescription="+$scope.job.require+
+                       "&contact="+$scope.job.name+
+                       "&contactPhone="+$scope.job.phoneNumber+
+                       "&contactQq="+$scope.job.QQ+
+                       "&region="+$scope.job.typeArea;
+            GetListService.userPost(api, data).then(function (data){
+                if(data.message == 0){
+                    GetListService.alertTip("发布成功");
+                //其他情况，输出错误提示
+                }else{
+                    FormatRusult.format(data.message).then(function (data){
+                        GetListService.alertTip(data);
+                    })
+                }
+            })
+        }else{
+            $scope.hasErrBox = true;
         }
     }
 })

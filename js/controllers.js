@@ -1,6 +1,6 @@
 /* 兼职页面控制器 */
 angular.module('starter.controllers',['my.controllers','directives.dropdown'])
-.controller('ListController',function ($scope, GetListService){
+.controller('ListController',function ($scope, GetListService, $timeout, $rootScope){
     //初始化 请求页面参数
     var pageBase = 0;
     var pageSize = 8;
@@ -41,8 +41,12 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
         var pageKey = "?pageNumber="+pageBase+"&pageSize="+pageSize;
         var api = $scope.loadMoreApi ? $scope.loadMoreApi+pageKey : listApi+pageKey;
         console.log(api);
+        $rootScope.loading = true;
         GetListService.getList(api).then(function (data){
-            $scope.items = $scope.items.concat(data.data.data.list);
+            $timeout(function(){
+                $scope.items = $scope.items.concat(data.data.data.list);
+                $rootScope.loading = false;
+            },1000);
             checkNext(data.data.data.list.length);
         })
     }
@@ -277,14 +281,15 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
         location:false,
         paytype:false
     }
+    $scope.showCateMore = {
+        location:false,
+        paytype:false,
+        class:false
+    }
     //显示二级选项菜单
     $scope.showModal = function (value){
-        if (value == "location")
-            $scope.selecting.location = !$scope.selecting.location;
-        if (value == "paytype") 
-            $scope.selecting.paytype = !$scope.selecting.paytype;
-        if (value == "class") 
-            $scope.selecting.class = !$scope.selecting.class;
+        $scope.selecting[value] = !$scope.selecting[value];
+        $scope.showCateMore[value] = !$scope.showCateMore[value];
     }
     var locations = ["张店区","周村区","淄川区","临淄区","博山区","桓台区","高青区","沂源县"];
     var paytypes = ["日结","周结","月结","完工结算"];

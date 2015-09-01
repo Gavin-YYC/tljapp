@@ -16,6 +16,9 @@
 body{
 	background: #f3f3f3;
 }
+.spinner svg{
+	margin-top: 8px;
+}
 /*去掉默认的鼠标按下效果*/
 .item.activated{
 	box-shadow:none;

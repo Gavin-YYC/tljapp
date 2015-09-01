@@ -74,7 +74,7 @@
 						    <i class="icon ion-thumbsdown"></i> {{item.dislikes}}
 					    </a>
 					</div>
-					<div class="col col-33">
+					<div class="col col-33" ng-click="toComment()">
 					    <a href="#">
 						    <i class="icon ion-chatbox"></i> {{commentsCount}}
 					    </a>	
@@ -97,13 +97,13 @@
 			</div>
 		</div>
     </ion-content>
-    <ion-footer-bar class="bar-calm" ng-if="!commentClick">
+    <ion-footer-bar style="bar-stable" ng-if="!commentClick">
     	<div class="row padding0">
     		<div class="col col-20" style="padding-top:0px">
     			<button class="button button-clear icon ion-navicon" ng-click="toComment()"></button>
     		</div>
     		<div class="col col-60" style="padding-top:0px">
-			  	<label class="item-input-wrapper">
+			  	<label class="item-input-wrapper" style="background: #fff;">
 			    	<i class="icon ion-ios-barcode-outline placeholder-icon"></i>
 			    	<input type="text" placeholder="评论" ng-model="vm.commentData" required>
 			  	</label>
@@ -113,18 +113,17 @@
     		</div>
     	</div>
 	</ion-footer-bar>
-	<ion-footer-bar class="bar-calm" ng-if="commentClick">
-		<a class="tab-item" ng-style='{"color":colColor}' ng-click="col()">
-	    	<i class="icon ion-ios-heart-outline"></i> 
-	    	收藏
-	  	</a>
-	  	<a class="tab-item" ng-click="toComment()">
-	    	<i class="icon ion-ios-chatboxes-outline"></i>
-	    	评论
-	  	</a>
-	  	<a class="tab-item" ng-click="jobDetailMore()">
-	    	<i class="icon ion-ios-keypad-outline"></i>
-	    	更多
-	  	</a>
+	<ion-footer-bar ng-if="commentClick">
+		<div class="tabs tabs-icon-top foot-icon">
+			<a class="tab-item" ng-style='{"color":colColor}' ng-click="col()">
+		    	<i class="icon ion-ios-heart-outline"></i> 收藏
+		  	</a>
+		  	<a class="tab-item" ng-click="toComment()">
+		    	<i class="icon ion-ios-chatboxes-outline"></i>评论
+		  	</a>
+		  	<a class="tab-item" ng-click="jobDetailMore()">
+		    	<i class="icon ion-ios-keypad-outline"></i>更多
+		  	</a>
+		</div>
 	</ion-footer-bar>
 </ion-view>

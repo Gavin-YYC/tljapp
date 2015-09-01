@@ -4,9 +4,9 @@
 	</ion-nav-bar>
 	<ion-content class="has-header">
 		<div class="button-bar bar-assertive shListModal" ng-controller="getIntendAndGenderCotroller">
-		  	<div class="button dropdown" ng-click='showModal("intend")'>意向</div>
-		  	<div class="button" ng-click='showModal("gender")'>性别</div>
-		  	<div class="button" ng-click='showModal("location")'>区域</div>
+		  	<div class="button dropdown" ng-click='showModal("intend")'>意向 <i class="icon" ng-class="!showCateMore.intend ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i></div>
+		  	<div class="button" ng-click='showModal("gender")'>性别 <i class="icon" ng-class="!showCateMore.gender ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i></div>
+		  	<div class="button" ng-click='showModal("location")'>区域 <i class="icon" ng-class="!showCateMore.location ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i></div>
 		  	<!--意向选项-->
 		  	<div class="selectNewModal modal" ng-if="selecting.intend" ng-controller="SearchResumeGenderCotroller">
 		  		<div class="list">

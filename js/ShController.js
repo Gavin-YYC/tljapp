@@ -70,13 +70,15 @@ angular.module('sh.controllers',['directives.dropdown'])
         newAndOld:false,
         price:false
     }
+    $scope.showCateMore = {
+        class:false,
+        NewAndOld:false,
+        price:false
+    }
+    //显示二级选项菜单
     $scope.showModal = function (value){
-        if (value == "NewAndOld")
-            $scope.selecting.newAndOld = !$scope.selecting.newAndOld;
-        if (value == "price") 
-            $scope.selecting.price = !$scope.selecting.price;
-        if (value == "class") 
-            $scope.selecting.class = !$scope.selecting.class;
+        $scope.selecting[value] = !$scope.selecting[value];
+        $scope.showCateMore[value] = !$scope.showCateMore[value];
     }
     $scope.ShCommons = ['全新','九成新','八成新','七成新','六成新'];
     $scope.goOldAndNew = function (data){

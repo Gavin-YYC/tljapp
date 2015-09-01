@@ -5,9 +5,9 @@
 	<ion-content style="background:#F4F4F4">
 		<div class="overlay" ng-show="overlay" ng-click="showList = false;overlay = false;"></div>
 		<div class="button-bar bar-balanced shListModal" ng-controller="buttonBarController">
-		  	<div class="button dropdown" ng-click='showModal("class")'>新旧</div>
-		  	<div class="button" ng-click='showModal("NewAndOld")'>新旧</div>
-		  	<div class="button" ng-click='showModal("price")'>价格</div>
+		  	<div class="button dropdown" ng-click='showModal("class")'>新旧 <i class="icon" ng-class="!showCateMore.class ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i></div>
+		  	<div class="button" ng-click='showModal("NewAndOld")'>新旧 <i class="icon" ng-class="!showCateMore.NewAndOld ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i></div>
+		  	<div class="button" ng-click='showModal("price")'>价格 <i class="icon" ng-class="!showCateMore.price ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i></div>
 		  	<!--分类选项-->
 		  	<div class="selectNewModal modal" ng-if="selecting.class" ng-controller="getShCateListCotroller">
 		  		<div class="list">
@@ -15,7 +15,7 @@
 		  		</div>
 		  	</div>
 			<!--新旧程度选项-->
-		  	<div class="selectNewModal modal" ng-if="selecting.newAndOld">
+		  	<div class="selectNewModal modal" ng-if="selecting.NewAndOld">
 		  		<div class="list">
 		  			<a class="item" ng-repeat="ShCommon in ShCommons" ng-bind="ShCommon" ng-click="goOldAndNew(ShCommon)"></a>
 		  		</div>

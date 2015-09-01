@@ -35,11 +35,11 @@ angular.module('tljApp', [
 .factory('timestampMarker', ["$rootScope","$timeout", function ($rootScope, $timeout) {
     var timestampMarker = {
         request: function (config) {
-            $rootScope.loading = true;
+            //$rootScope.loading = true;
             return config;
         },
         response: function (response) {
-            $rootScope.loading = false;
+            //$rootScope.loading = false;
             return response;
         }
     };

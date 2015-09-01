@@ -102,14 +102,15 @@ angular.module('resume.controllers',[])
         location:false,
         gender:false
     }
+    $scope.showCateMore = {
+        location:false,
+        paytype:false,
+        class:false
+    }
     //显示二级选项菜单
     $scope.showModal = function (value){
-        if (value == "location")
-            $scope.selecting.location = !$scope.selecting.location;
-        if (value == "intend") 
-            $scope.selecting.intend = !$scope.selecting.intend;
-        if (value == "gender") 
-            $scope.selecting.gender = !$scope.selecting.gender;
+        $scope.selecting[value] = !$scope.selecting[value];
+        $scope.showCateMore[value] = !$scope.showCateMore[value];
     }
     //显示所有信息
     $scope.loadAll = function (value){

@@ -5,9 +5,9 @@
 	<ion-content>
 		<div class="overlay" ng-show="overlay" ng-click="showList = false;overlay = false;"></div>
 		<div class="button-bar bar-assertive shListModal" ng-controller="getRegionAndPayCotroller">
-		  	<div class="button dropdown" ng-click='showModal("class")'>分类</div>
-		  	<div class="button" ng-click='showModal("location")'>区域</div>
-		  	<div class="button" ng-click='showModal("paytype")'>结算</div>
+		  	<div class="button dropdown" ng-click='showModal("class")'>分类 <i class="icon" ng-class="!showCateMore.class ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i></div>
+		  	<div class="button" ng-click='showModal("location")'>区域 <i class="icon" ng-class="!showCateMore.location ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i></div>
+		  	<div class="button" ng-click='showModal("paytype")'>结算 <i class="icon" ng-class="!showCateMore.paytype ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i></div>
 		  	<!--分类选项-->
 		  	<div class="selectNewModal modal" ng-if="selecting.class" ng-controller="getJobCateListCotroller">
 		  		<div class="list">
@@ -58,16 +58,8 @@
 					</div>
 				</a>
 			</ion-item>
-			<button class="button button-block" ng-if="!emptyContent" ng-click="loadMore()">加载更多</button>
+			<button class="button button-block" ng-if="!emptyContent" ng-click="loadMore()">加载更多<ion-spinner  ng-if="loading" icon="lines" style="line-height:47px;"></ion-spinner></button>
 			<p class="emptyContent" ng-if="emptyContent">Sorry,该项目下没有更多内容</p>
 		</ion-list>
-		<!--loading-->
-		<!--
-		<div class="loading-modal modal" ng-if="loading">
-		    <div class="loading">
-		        <ion-spinner icon="lines"></ion-spinner>
-		    </div>
-		</div>
-		-->
 	</ion-content>
 </ion-view>

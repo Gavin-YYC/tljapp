@@ -5,7 +5,7 @@
  * 加载评论
 */
 angular.module('sh.controllers',['directives.dropdown'])
-.controller('ShListController',function ($scope, GetListService, $state){
+.controller('ShListController',function ($scope, GetListService, $state, $rootScope, $timeout){
     $scope.test = function (id){
         window.location = "/#/shdetail/"+id;
     }
@@ -49,8 +49,12 @@ angular.module('sh.controllers',['directives.dropdown'])
         var pageKey = "?pageNumber="+pageNumber+"&pageSize="+pageSize;
         var api = $scope.loadMoreApi ? $scope.loadMoreApi+pageKey : shListApi+pageKey;
         console.log(api);
+        $rootScope.loading = true;
         GetListService.getList(api).then(function (data){
-            $scope.items = $scope.items.concat(data.data.data.list);
+            $timeout(function(){
+                $scope.items = $scope.items.concat(data.data.data.list);
+                $rootScope.loading = false;
+            },1000);
             checkNext(data.data.data.list.length);
         })
     }

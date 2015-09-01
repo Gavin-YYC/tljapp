@@ -50,7 +50,7 @@
 					</div>
 				</div>
 			</a>
-			<button class="button button-block" ng-if="!emptyContent" ng-click="loadMore()">加载更多</button>
+			<button class="button button-block" ng-if="!emptyContent" ng-click="loadMore()">加载更多<ion-spinner  ng-if="loading" icon="lines"></ion-spinner></button>
 			<p class="emptyContent" ng-if="emptyContent">Sorry,该项目下没有更多内容</p>
 		</ion-list>
 	</ion-content>

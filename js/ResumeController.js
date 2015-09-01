@@ -1,5 +1,5 @@
 angular.module('resume.controllers',[])
-.controller('ResumeListController',function ($scope, $stateParams, GetListService){
+.controller('ResumeListController',function ($scope, $stateParams, GetListService, $rootScope, $timeout){
     //初始化分页数据
     var pageBase = 0;
     var pageSize = 8;
@@ -41,8 +41,12 @@ angular.module('resume.controllers',[])
         var pageKey = "?pageNumber="+pageBase+"&pageSize="+pageSize;
         var api = $scope.loadMoreApi ? $scope.loadMoreApi+pageKey : allResumeApi+pageKey;
         console.log(api);
+        $rootScope.loading = true;
         GetListService.getList(api).then(function (data){
-            $scope.items = $scope.items.concat(data.data.data.list);
+            $timeout(function(){
+                $scope.items = $scope.items.concat(data.data.data.list);
+                $rootScope.loading = false;
+            },1000);
             checkNext(data.data.data.list.length);
         })
     }

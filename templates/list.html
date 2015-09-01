@@ -31,31 +31,31 @@
 		  	</div>
 		</div>
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功"></ion-refresher>
-		<ion-list>
-			<ion-item ng-repeat="item in items" class="padding0">
-				<a class="item no-boder" ng-href="#/detail/{{item.id}}">
-					<div class="row">
-						<div class="col col-25 padding0">
+		<ion-list class="tlj-buttons">
+			<ion-item ng-repeat="item in items">
+				<a class="item no-boder padding0" ng-href="#/detail/{{item.id}}">
+					<div class="row padding0">
+						<div class="col col-20 padding0">
 							<div class="list-type list-type-pic" style="color:{{item.category.themeColor}};border-color:{{item.category.themeColor}}">
 								<span>{{item.category.name}}</span>
 							</div>
 						</div>
-						<div class="col col-75">
-							<h2>{{item.title}}</h2>
-							<p>
-								&yen; {{item.wage}}元/{{item.salaryUnit}}
-							</p>
+						<div class="col col-80 padding0">
+							<div class="row tlj-title">
+								<h2 class="col col-67">{{item.title}}</h2>
+								<p class="col col-33">&yen; {{item.wage}}元/{{item.salaryUnit}}</p>	
+							</div>
+							<div class="row font12 padding0">
+								<div class="col col-30 tlj-left">
+									<i class="icon ion-ios-location-outline"></i> {{item.region}}
+								</div>
+								<div class="col col-50 tlj-left">
+									<i class="icon ion-android-time"></i> {{item.postTime | date:'yyyy-MM-dd'}}
+								</div>
+								<div class="col col-20 tlj-right">{{item.timeToPay}}</div>
+							</div>
 						</div>
 					</div>
-					<h4 class="row">
-						<div class="col col-30 tlj-left">
-							<i class="icon ion-ios-location-outline"></i> {{item.region}}
-						</div>
-						<div class="col col-50 tlj-left">
-							<i class="icon ion-android-time"></i> {{item.postTime | date:'yyyy-MM-dd'}}
-						</div>
-						<div class="col col-20 tlj-right">{{item.timeToPay}}</div>
-					</h4>
 				</a>
 			</ion-item>
 			<button class="button button-block" ng-if="!emptyContent" ng-click="loadMore()">加载更多</button>

@@ -33,6 +33,16 @@ a{
 .tlj-header .myspace{
 	text-align: center;
 }
+.tlj-header .address{
+	line-height: 40px;
+}
+.tlj-header .myspace .item-input-inset{
+    padding: 0;
+    padding-top: 5px;
+}
+.tlj-header .myspace .item-input-inset label{
+	border-radius: 20px;
+}
 .tlj-header .myspace i{
 	font-size: 18px;
 	font-weight: bold;
@@ -52,16 +62,48 @@ a{
 	margin-top: 13px;
 }
 .mainmenu .circle1{
-	background: #84cd5c;
+	background: #FFA200;
 }
 .mainmenu .circle2{
 	background: #44ba95;
 }
 .mainmenu .circle3{
-	background: #0ab8f0;
+	background: #f36362;
 }
 .mainmenu .circle4{
-	background: #f36362;
+	background: #84CC5C;
+}
+.mainmenu .circle3 .icon-jianlichaxun{
+    font-size: 45px;
+    padding-top: 23px;
+}
+.font12{
+	font-size: 12px;
+}
+.icon-remen{
+	color: #f96a39;
+	font-size: 20px;
+}
+.tlj-buttons .buttons a{ 
+	font-size: 14px;
+	background-color: #fff;
+}
+.tlj-buttons .buttons a.active{
+	background-color: #fa8861;
+}
+.tlj-buttons .tlj-title{
+	padding-right: 0px;
+}
+.tlj-buttons .tlj-title .col-67{
+	font-size: 14px;
+}
+.tlj-buttons .tlj-title .col-33{
+	padding-left: 0px;
+	padding-right: 0px;
+	text-align: right;
+}
+.tlj-buttons .buttons .button{
+	min-height: auto;
 }
 
 .row.tlj-about{
@@ -141,6 +183,18 @@ a{
 	color: #F36362;
 	padding-top: 8px;
 }
+.foot-icon i{
+	line-height: 32px;
+}
+.foot-icon i.icon-xinfeng{
+	font-size: 28px;
+}
+.foot-icon i.icon-jiahao1{
+	color: #f96a39;
+	height: 40px;
+	font-size: 40px;
+	line-height: 45px;
+}
 /* 首页图标定义结束 */
 .paddingBottom0{
 	padding-bottom: 0px;
@@ -165,10 +219,11 @@ a{
 	margin-bottom: 15px;
 }
 .tlj-slide .box{
-	height: 150px;
+	height: 200px;
 }
 .tlj-slide .box img{
 	width: 100%;
+	height: 200px;
 }
 .no-boder{
 	border: none;
@@ -178,9 +233,6 @@ a{
 }
 .tlj-right{
 	text-align: right;
-}
-.searchTop{
-	top: 60px;
 }
 
 /* 兼职列表页 */
@@ -200,6 +252,7 @@ a{
 .list-type-pic{
 	background: #fff;
 	border: 1px solid #ccc;
+	margin-top: 8px;
 }
 .list-center{
 	margin: 0 auto;

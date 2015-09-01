@@ -15,10 +15,28 @@
 */
 angular.module('my.controllers',['ngCordova','my_2.controllers'])
 //个人中心控制器
-.controller('IndexController',function ($scope,$ionicModal,$ionicHistory,$state,Auth,GetListService){
+.controller('IndexController',function ($scope, $ionicModal, $ionicHistory, $state, Auth, GetListService){
     //进入个人中心
     $scope.goToMy = function(){
         $state.go("my",{},{reload: true});
+    }
+    //展示发布页面
+    $scope.postPageShow = false;
+    $scope.showSubPage = function (){
+        $scope.postPageShow = true;
+    }
+    $scope.hideSubPage = function(){
+        $scope.postPageShow = false;
+    }
+    $scope.goToPost = function (value){
+        var userId = Auth.getUser() || "";
+        var token = Auth.getToken() || "";
+        if (userId == "" || token == "") {
+            GetListService.alertTip("你还没有登录！");
+        }else{
+            $state.go("post");
+            $scope.postPageShow = false;
+        }
     }
 })
 
@@ -287,9 +305,8 @@ angular.module('my.controllers',['ngCordova','my_2.controllers'])
                 fileName: fileName,
                 mimeType: "image/jpg",
                 params: {}
-            }
+            };
             var uploadApi = "http://120.24.218.56/static/upload";
-            $scope.me.success = upload+"\n"+imageURI;
             $cordovaFileTransfer.upload(uploadApi, imageURI, options)
                 .then(function(result) {
                     $scope.me.success = result;

@@ -1,20 +1,34 @@
 <ion-view title="index">
 	<ion-header-bar align-title="center" class="bar-assertive tlj-header">
 		<div class="row padding0">
+			<!--
 			<div class="col col-50"><img src="./img/logo.png" alt=""></div>
-			<div class="col col-25 myspace" ng-click="goToMy()"><i class="icon ion-person"></i><br>我的</div>
-			<div class="col col-25 myspace"><i class="icon ion-android-checkbox-outline"></i><br>发布信息</div>
+			<div class="col col-50 myspace" ng-click="goToMy()"><i class="icon ion-person"></i><br>我的</div>-->
+			<div class="col col-50 address">
+				<i class="icon iconfont icon-map"></i>
+				山大理工大学
+				<i class="icon ion-ios-arrow-down"></i>
+			</div>
+			<div class="col col-50 myspace">
+				<div class="item-input-inset">
+				  	<label class="item-input-wrapper">
+				    	<i class="icon ion-ios-search placeholder-icon"></i>
+				    	<input type="search" placeholder="搜索“张店区”">
+				  	</label>
+				</div>
+			</div>
 		</div>
 	</ion-header-bar>
 
-	<ion-content class="padding searchTop">
+	<ion-content class="padding0 searchTop">
+		<!--
 		<ion-list class="list-insert">
 		  	<label class="item item-input">
 		    	<i class="icon ion-search placeholder-icon"></i>
 		    	<input type="text" placeholder="搜索你最想要的 例：家教">
 		  	</label>
 		</ion-list>
-
+		-->
 		<ion-slide-box class="tlj-slide" auto-play="true" does-continue="true">
 			<ion-slide>
 				<div class="box blue"><img src="./img/1.jpg"></div>
@@ -45,85 +59,117 @@
 				</a>
 			</div>
 			<div class="col">
-				<a href="#/resume">
-					<div class="circle circle3">
-						<i class="icon iconfont icon-diy-index icon-508jianlikuguanli"></i>
-					</div>
-					<br>求职简历
-				</a>
+				<div class="circle circle4">
+					<i class="icon iconfont icon-diy-index icon-zhiwu"></i>
+				</div>
+				<br>桃李青藤
 			</div>
 			<div class="col">
-				<div class="circle circle4">
-					<i class="icon iconfont icon-diy-index icon-fabu"></i>
-				</div>
-				<br>发布信息
+				<a href="#/resume">
+					<div class="circle circle3">
+						<i class="icon iconfont icon-diy-index icon-jianlichaxun"></i>
+					</div>
+					<br>简历库
+				</a>
 			</div>
 		</div>
-
-		<div class="list tlj-list">
-			<a class="item padding0" href="#">
-				<div class="row paddingBottom0">
-			      	<div class="col col-25">
-				      	<div class="circle circle4">
-							<i class="icon iconfont icon-diy-index icon-jianzhi"></i>
+		<div class="item item-divider"></div>
+		<div class="list tlj-buttons" ng-controller="indexShowContent">
+			<div class="item"><i class="icon iconfont icon-remen"></i> 今日推荐</div>
+			<div class="item">
+				<div class="button-bar buttons">
+				  	<a class="button" style="border-radius: 15px 0 0 15px;" ng-class="{active: active_content=='job'}" ng-click="setActiveContent('job')">学生兼职</a>
+				  	<a class="button" ng-class="{active: active_content=='sh'}" ng-click="setActiveContent('sh')">校园二手</a>
+				  	<a class="button" style="border-radius: 0 15px 15px 0;" ng-class="{active: active_content=='qt'}" ng-click="setActiveContent('qt')">桃李青藤</a>
+				</div>
+			</div>
+			<div class="item" ng-show="active_content=='job'" ng-repeat="item in items">
+				<a class="item no-boder padding0" ng-href="#/detail/{{item.id}}">
+					<div class="row padding0">
+						<div class="col col-20 padding0">
+							<div class="list-type list-type-pic" style="color:{{item.category.themeColor}};border-color:{{item.category.themeColor}}">
+								<span>{{item.category.name}}</span>
+							</div>
 						</div>
-			      	</div>
-			      	<div class="col col-50">
-			      		<h2 class="title-jianzhi">热门兼职</h2>
-			      		<p>桃李街，靠谱，干着舒心的兼职</p>
-			      	</div>
-			      	<div class="col col-25 arrow-left"><i class="icon ion-ios-arrow-right"></i></div>
-		      	</div>
-		    </a>
-		</div>
-		<div class="list tlj-list">
-			<a class="item padding0" href="#">
-				<div class="row paddingBottom0">
-			      	<div class="col col-25">
-				      	<div class="circle circle4">
-							<i class="icon iconfont icon-diy-index icon-zixingche"></i>
+						<div class="col col-80 padding0">
+							<div class="row tlj-title">
+								<h2 class="col col-67">{{item.title}}</h2>
+								<p class="col col-33">&yen; {{item.wage}}元/{{item.salaryUnit}}</p>	
+							</div>
+							<div class="row font12 padding0">
+								<div class="col col-30 tlj-left">
+									<i class="icon ion-ios-location-outline"></i> {{item.region}}
+								</div>
+								<div class="col col-50 tlj-left">
+									<i class="icon ion-android-time"></i> {{item.postTime | date:'yyyy-MM-dd'}}
+								</div>
+								<div class="col col-20 tlj-right">{{item.timeToPay}}</div>
+							</div>
 						</div>
-			      	</div>
-			      	<div class="col col-50">
-			      		<h2 class="title-zixingche">最新二手</h2>
-			      		<p>快来这里淘宝吧，最方便实惠</p>
-			      	</div>
-			      	<div class="col col-25 arrow-left arrow-left-zixingche"><i class="icon ion-ios-arrow-right"></i></div>
-		      	</div>
-		    </a>
-		</div>
-		<div class="list tlj-list">
-			<a class="item padding0" href="#">
-				<div class="row paddingBottom0">
-			      	<div class="col col-25">
-				      	<div class="circle circle4">
-							<i class="icon iconfont icon-diy-index icon-target"></i>
-						</div>
-			      	</div>
-			      	<div class="col col-50">
-			      		<h2 class="title-target">校园焦点</h2>
-			      		<p>校园实时动态，一个也不错过</p>
-			      	</div>
-			      	<div class="col col-25 arrow-left arrow-left-target"><i class="icon ion-ios-arrow-right"></i></div>
-		      	</div>
-		    </a>
-		</div>
-		<div class="row tlj-liaojie">
-			<i class="icon ion-ios-people"></i>&nbsp;了解我们
-		</div>
-		<div class="row tlj-about">
-			<div class="col about1" ng-click="">使用指南</div>
-			<div class="col about2" ng-click="">关于我们</div>
-		</div>
-		<div class="row tlj-about">
-			<div class="col about3">联系我们</div>
-			<div class="col about4">加入我们</div>
-		</div>
-		<div class="row tlj-copyright">
-			<div class="col">Copyright@2015——山东理工大学桃李街版权所属</div>
+					</div>
+				</a>
+			</div>
+			<div class="item" ng-show="active_content=='sh'">
+				什么都没有
+			</div>
+			<div class="item" ng-show="active_content=='qt'">
+				还是什么都没有
+			</div>
 		</div>
 	</ion-content>
-
+	<ion-footer-bar>
+		<div class="tabs tabs-icon-top foot-icon">
+		  	<a class="tab-item" ng-href="/">
+		    	<i class="icon iconfont icon-shouyeweixuanzhong" style="color:#f96a39"></i>首页
+		  	</a>
+		  	<a class="tab-item">
+		    	<i class="icon iconfont icon-zhiwu"></i>青藤
+		  	</a>
+		  	<a class="tab-item" ng-click="showSubPage()">
+		    	<i class="icon iconfont icon-jiahao1"></i>
+		  	</a>
+		  	<a class="tab-item">
+		    	<i class="icon iconfont icon-xinfeng"></i>消息
+		  	</a>		  	
+		  	<a class="tab-item" ng-click="goToMy()">
+		    	<i class="icon iconfont icon-wode"></i>我的
+		  	</a>
+		</div>
+	</ion-footer-bar>
+	<div class="sub-page" ng-if="postPageShow">
+		<div class="rowadv">
+			<img src="./img/adv.png" alt="">
+		</div>
+		<div class="row">
+			<div class="col col-33 animated fadeInUp">
+				<a ng-click="goToPost('job')">
+					<div class="circle circle1">
+						<i class="icon iconfont icon-diy-index icon-jianzhi"></i>
+					</div>
+					<br>学生兼职
+				</a>
+			</div>
+			<div class="col col-33 animated_1 fadeInUp">
+				<a ng-click="goToPost('sj')">
+					<div class="circle circle2">
+						<i class="icon iconfont icon-diy-index icon-zixingche"></i>
+					</div>
+					<br>校园二手
+				</a>
+			</div>
+			<div class="col col-33 animated_2 fadeInUp">
+				<a ng-click="goToPost('qt')">
+					<div class="circle circle3">
+						<i class="icon iconfont icon-diy-index icon-zhiwu"></i>
+					</div>
+					<br>桃李青藤
+				</a>
+			</div>
+		</div>
+		<div class="rowbox">
+			<div class="close" ng-click="hideSubPage()"><i class="icon ion-android-close"></i></div>
+		</div>
+	</div>
 	<!--注册modal-->
 	<script id="modal-register.html" type="text/ng-template">
 		<ion-modal-view>

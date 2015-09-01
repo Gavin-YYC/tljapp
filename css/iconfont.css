@@ -16,16 +16,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 .icon-zhiwu:before { content: "\e618"; }
+.icon-zan:before { content: "\e61e"; }
 .icon-fanhui:before { content: "\e60d"; }
 .icon-qq:before { content: "\e601"; }
 .icon-dianhua:before { content: "\e602"; }
-.icon-target:before { content: "\e60a"; }
 .icon-circularlogin:before { content: "\e60e"; }
 .icon-shoucang:before { content: "\e603"; }
 .icon-shijian:before { content: "\e616"; }
+.icon-jianlichaxun:before { content: "\e628"; }
+.icon-jiahao:before { content: "\e626"; }
 .icon-iconfontdanxuan:before { content: "\e60f"; }
 .icon-xinfeng:before { content: "\e619"; }
 .icon-wode:before { content: "\e61a"; }
+.icon-pinglun:before { content: "\e61f"; }
 .icon-gerenshoucang:before { content: "\e610"; }
 .icon-btndanxuankuangzhengchang:before { content: "\e611"; }
 .icon-jianzhi:before { content: "\e604"; }
@@ -34,9 +37,11 @@
 .icon-map:before { content: "\e617"; }
 .icon-gonggaotongzhi:before { content: "\e613"; }
 .icon-jiaodian:before { content: "\e605"; }
+.icon-8:before { content: "\e620"; }
 .icon-zixingche:before { content: "\e61c"; }
 .icon-xiaolvdashitubiao26:before { content: "\e60b"; }
 .icon-wechat:before { content: "\e606"; }
+.icon-shoucang1:before { content: "\e621"; }
 .icon-xinfeng1:before { content: "\e607"; }
 .icon-tuichu:before { content: "\e600"; }
 .icon-508jianlikuguanli:before { content: "\e608"; }
@@ -45,3 +50,9 @@
 .icon-goumaijianli:before { content: "\e614"; }
 .icon-zhucechenggong01:before { content: "\e615"; }
 .icon-fabu:before { content: "\e609"; }
+.icon-jiahao1:before { content: "\e60a"; }
+.icon-fenxiang:before { content: "\e622"; }
+.icon-pinglun1:before { content: "\e623"; }
+.icon-nan:before { content: "\e624"; }
+.icon-nv:before { content: "\e625"; }
+.icon-remen:before { content: "\e627"; }

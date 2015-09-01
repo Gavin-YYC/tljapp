@@ -332,3 +332,18 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
         })
     }
 })
+//首页，热门推荐
+.controller("indexShowContent", function ($scope, GetListService){
+    $scope.active_content = "job";
+    var pageKey = "?pageNumber="+0+"&pageSize="+6;
+    var listApi = "http://120.24.218.56/api/job/list"+pageKey;
+    $scope.setActiveContent = function(active_content){
+        $scope.active_content = active_content;
+        var listApi = "http://120.24.218.56/api/"+active_content+"/list"+pageKey;
+    }
+    //加载兼职首页的数据
+    var recommendApi = "http://120.24.218.56/api/recommend/list?type=job";
+    GetListService.getList(listApi).then(function (data){
+        $scope.items = data.data.data.list;
+    })
+})

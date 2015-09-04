@@ -2,7 +2,6 @@
     <ion-header-bar align-title="center">
         <button class="button button-clear icon-left ion-ios-arrow-left" ng-click="myGoBack()">返回</button>
         <h1 class="title">物品详情</h1>
-        <button class="button button-clear"><i class="icon iconfont">&#xe610;</i> 收藏</button>
     </ion-header-bar>
     <ion-content>
 		<ion-slide-box delegate-handle="image-viewer">
@@ -12,7 +11,7 @@
 				</div>
 			</ion-slide>
 		</ion-slide-box>
-		<div class="list padding0">
+		<div class="list padding0 job-detail">
 			<div class="row sh_detail_title">{{details.title}}</div>
 			<div class="row sh_detail">
 				<div class="col col-67">
@@ -27,29 +26,77 @@
 			<div class="row sh_detail_line">
 				<i class="icon iconfont">&#xe617;</i>交易地点：{{details.tradePlace}}
 			</div>
-			<div class="item tabs tabs-secondary tabs-icon-left">
-			    <a class="tab-item" href="#" ng-style='{"color":zanColor}' ng-click="zan()">
-				    <i class="icon ion-thumbsup"></i> {{details.likes}}
-			    </a>
-			    <a class="tab-item" href="#">
-				    <i class="icon ion-thumbsdown"></i> {{details.dislikes}}
-			    </a>
-			    <a class="tab-item" href="#">
-				    <i class="icon ion-chatbox"></i> {{comments.length}}
-			    </a>
-			    <a class="tab-item" href="#">
-			      	<i class="icon ion-share"></i>
-			    </a>
+
+
+			<div class="item item-divider"></div>
+			<div class="item tlj-assess">
+				<h2><span class="job-common-color">用户评价</span></h2>
+				<div class="row">
+					<div class="col col-33">
+					    <a href="#" ng-style='{"color":zanColor}' ng-click="zan()">
+						    <i class="icon ion-thumbsup"></i> {{details.likes}}
+					    </a>
+					</div>
+					<div class="col col-33">
+					    <a href="#">
+						    <i class="icon ion-thumbsdown"></i> {{details.dislikes}}
+					    </a>
+					</div>
+					<div class="col col-33" ng-click="toComment()">
+					    <a href="#">
+						    <i class="icon ion-chatbox"></i> {{comments.length}}
+					    </a>	
+					</div>
+				</div>
 			</div>
-			<div class="item">
+
+			<div class="item padding0 job-comment">
 				<div class="list">
-					<a class="item item-avatar" href="#"  ng-repeat="comment in comments">
+					<a class="item item-avatar"  ng-repeat='comment in comments | orderBy:"id":true'>
 				      	<img src="http://120.24.218.56/static/images/users/{{comment.member.profilePhotoId}}">
 				      	<h2>{{comment.member.username}}</h2>
 				      	<p>{{comment.content}}</p>
+				      	<div class="stick-time">{{comment.time | timeFileter}}</div>
+				      	<div class="stick-reply" ng-click="reply(comment.member.username,comment.id)"><i class="icon ion-android-textsms"></i></div>
+<!-- 				      	<div class="stick-sub-reply">
+				      		<div class="item" ng-repeat="subcomment in subComments">
+				      		{{subcomment.content}}
+				      		</div>
+				      	</div> -->
 				    </a>
+				    <button class="button button-block" ng-if="emptyContent" ng-click="loadMoreCom()">加载更多...</button>
+				    <p class="emptyContent" ng-if="!emptyContent" style="padding-top:30px;">没有更多评论了！.</p>
 				</div>
 			</div>
 		</div>
     </ion-content>
+    <ion-footer-bar style="bar-stable" ng-if="!commentClick">
+    	<div class="row padding0">
+    		<div class="col col-20" style="padding-top:0px">
+    			<button class="button button-clear icon ion-navicon" ng-click="toComment()"></button>
+    		</div>
+    		<div class="col col-60" style="padding-top:0px">
+			  	<label class="item-input-wrapper" style="background: #fff;border: 1px solid #ccc;">
+			    	<i class="icon ion-ios-barcode-outline placeholder-icon"></i>
+			    	<input type="text" placeholder="{{vm.placeholder}}" ng-model="vm.commentData" required autofocus="autofocus">
+			  	</label>
+    		</div>
+    		<div class="col col-20" style="padding-top:0px">
+    			<button class="button" ng-click="sendComment(vm.isReplyToOne)">发布</button>
+    		</div>
+    	</div>
+	</ion-footer-bar>
+	<ion-footer-bar ng-if="commentClick">
+		<div class="tabs tabs-icon-top foot-icon">
+			<a class="tab-item" ng-style='{"color":colColor}' ng-click="col()">
+		    	<i class="icon ion-ios-heart-outline"></i> 收藏
+		  	</a>
+		  	<a class="tab-item" ng-click="toComment()">
+		    	<i class="icon ion-ios-chatboxes-outline"></i>评论
+		  	</a>
+		  	<a class="tab-item" ng-click="jobDetailMore()">
+		    	<i class="icon ion-ios-keypad-outline"></i>更多
+		  	</a>
+		</div>
+	</ion-footer-bar>
 </ion-view>

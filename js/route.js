@@ -37,7 +37,7 @@ angular.module('route',[])
             })
             .state('shDetail', {
                 url:'/shdetail/:id',
-                templateUrl:'templates/ShDetail.html',
+                templateUrl:'templates/Shdetail.html',
                 controller:'ShDetailController'
             })
             //个人中心

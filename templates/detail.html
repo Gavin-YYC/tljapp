@@ -84,12 +84,12 @@
 
 			<div class="item padding0 job-comment">
 				<div class="list">
-					<a class="item item-avatar"  ng-repeat='comment in comments | orderBy:"id":true' ng-click="showBox($index,comment.id)">
+					<a class="item item-avatar"  ng-repeat='comment in comments | orderBy:"id":true'>
 				      	<img src="http://120.24.218.56/static/images/users/{{comment.member.profilePhotoId}}">
 				      	<h2>{{comment.member.username}}</h2>
 				      	<p>{{comment.content}}</p>
 				      	<div class="stick-time">{{comment.time | timeFileter}}</div>
-				      	<div class="stick-reply"><i class="icon ion-android-textsms"></i></div>
+				      	<div class="stick-reply" ng-click="reply(comment.member.username,comment.id)"><i class="icon ion-android-textsms"></i></div>
 				    </a>
 				    <button class="button button-block" ng-if="emptyContent" ng-click="loadMoreCom()">加载更多...</button>
 				    <p class="emptyContent" ng-if="!emptyContent" style="padding-top:30px;">没有更多评论了！.</p>
@@ -103,13 +103,13 @@
     			<button class="button button-clear icon ion-navicon" ng-click="toComment()"></button>
     		</div>
     		<div class="col col-60" style="padding-top:0px">
-			  	<label class="item-input-wrapper" style="background: #fff;">
+			  	<label class="item-input-wrapper" style="background: #fff;border: 1px solid #ccc;">
 			    	<i class="icon ion-ios-barcode-outline placeholder-icon"></i>
-			    	<input type="text" placeholder="评论" ng-model="vm.commentData" required>
+			    	<input type="text" placeholder="{{vm.placeholder}}" ng-model="vm.commentData" required autofocus="autofocus">
 			  	</label>
     		</div>
     		<div class="col col-20" style="padding-top:0px">
-    			<button class="button" ng-click="sendComment()">发布</button>
+    			<button class="button" ng-click="sendComment(vm.isReplyToOne)">发布</button>
     		</div>
     	</div>
 	</ion-footer-bar>

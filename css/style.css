@@ -87,9 +87,13 @@ a{
 	color: #f96a39;
 	font-size: 20px;
 }
+.tlj-buttons .buttons{
+	height: 30px;
+}
 .tlj-buttons .buttons a{ 
 	font-size: 14px;
 	background-color: #fff;
+	line-height: 30px;
 }
 .tlj-buttons .buttons a.active{
 	background-color: #fa8861;
@@ -197,6 +201,10 @@ a{
 	height: 40px;
 	font-size: 40px;
 	line-height: 45px;
+}
+.foot-item>.foot-icon>a.tab-item{
+	color: #000;
+	opacity: 1;
 }
 /* 首页图标定义结束 */
 .paddingBottom0{
@@ -920,4 +928,29 @@ a{
 	line-height: 35px;
 	color: #c1c1c1;
 	font-size: 20px;
+}
+.job-detail .job-comment .stick-sub-reply{
+	width: 100%;
+	height: auto;
+	border-top: 1px solid #c1c1c1;
+	text-align: center;
+	margin-top: 40px;
+	text-align: left;
+}
+/*表单验证方面*/
+.tlj-post .title-input{
+	position: relative;
+}
+.tlj-post .post-right{
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	overflow: hidden;
+	top: 10px;
+	right: 0;
+	text-align: right;
+	color: #87DF6E;
+}
+.tlj-post .post-right i{
+	font-size: 40px;
 }

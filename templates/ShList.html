@@ -30,7 +30,7 @@
 		<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" refreshing-text="刷新成功">
 		</ion-refresher>
 		<ion-list>
-			<a class="item sh_item" ng-repeat="item in items" ng-click="test(item.id)">
+			<a class="item sh_item" ng-repeat="item in items" ng-href="#/shdetail/{{item.id}}">
 				<div class="row padding0">
 					<div class="col col-33 col_pic margin0 padding0">
 						<div class="list-type-sh">

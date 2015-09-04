@@ -1,9 +1,6 @@
 <ion-view title="index">
 	<ion-header-bar align-title="center" class="bar-assertive tlj-header">
 		<div class="row padding0">
-			<!--
-			<div class="col col-50"><img src="./img/logo.png" alt=""></div>
-			<div class="col col-50 myspace" ng-click="goToMy()"><i class="icon ion-person"></i><br>我的</div>-->
 			<div class="col col-50 address">
 				<i class="icon iconfont icon-map"></i>
 				山大理工大学
@@ -21,14 +18,6 @@
 	</ion-header-bar>
 
 	<ion-content class="padding0 searchTop">
-		<!--
-		<ion-list class="list-insert">
-		  	<label class="item item-input">
-		    	<i class="icon ion-search placeholder-icon"></i>
-		    	<input type="text" placeholder="搜索你最想要的 例：家教">
-		  	</label>
-		</ion-list>
-		-->
 		<ion-slide-box class="tlj-slide" auto-play="true" does-continue="true">
 			<ion-slide>
 				<div class="box blue"><img src="./img/1.jpg"></div>
@@ -117,21 +106,21 @@
 			</div>
 		</div>
 	</ion-content>
-	<ion-footer-bar>
+	<ion-footer-bar class="foot-item">
 		<div class="tabs tabs-icon-top foot-icon">
-		  	<a class="tab-item" ng-href="/">
+		  	<a class="tab-item" ui-sref="/">
 		    	<i class="icon iconfont icon-shouyeweixuanzhong" style="color:#f96a39"></i>首页
 		  	</a>
-		  	<a class="tab-item">
+		  	<a class="tab-item" style="opacity: .7">
 		    	<i class="icon iconfont icon-zhiwu"></i>青藤
 		  	</a>
 		  	<a class="tab-item" ng-click="showSubPage()">
 		    	<i class="icon iconfont icon-jiahao1"></i>
 		  	</a>
-		  	<a class="tab-item">
+		  	<a class="tab-item" style="opacity: .7">
 		    	<i class="icon iconfont icon-xinfeng"></i>消息
 		  	</a>		  	
-		  	<a class="tab-item" ng-click="goToMy()">
+		  	<a class="tab-item" ng-click="goToMy()" style="opacity: .7">
 		    	<i class="icon iconfont icon-wode"></i>我的
 		  	</a>
 		</div>

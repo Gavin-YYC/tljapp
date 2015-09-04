@@ -186,8 +186,17 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
     }
     //评论页和底部菜单切换
     $scope.commentClick = true;
+    //提交评论
+    $scope.vm = {
+        commentData:"",
+        placeholder:"输入评论内容",
+        isReplyToOne:"1"
+    };
     $scope.toComment = function (){
         $scope.commentClick = !$scope.commentClick;
+        $scope.vm.commentData = "";
+        $scope.vm.placeholder = "输入评论内容";
+        $scope.vm.isReplyToOne = "replyToPost";
     }
     //显示更多
     $scope.jobDetailMore = function (){
@@ -209,18 +218,22 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
              }
         });
     }
-    //提交评论
-    $scope.vm = {
-        commentData:""
-    };
-    $scope.sendComment = function (){
+    $scope.sendComment = function (isReplyToOne){
         var commentData = $scope.vm.commentData;
         var data = "content="+commentData;
-        console.log(commentData);
+        if (isReplyToOne == "replyToOne") {
+            api = "http://120.24.218.56/api/review/u/reply"+tokenKey;
+            data = "repliedReviewId="+$scope.commentId+"&memberId="+userId+"&content="+commentData;
+        }else{
+            api = subCommentApi;
+            data = data;
+        }
+        console.log(data)
         if (commentData == ""||commentData == null) {
             GetListService.alertTip("评论内容不能为空！");
             return false;
         };
+        //模仿一个数据进行更新
         var jsonData = {
             member: {
                 profilePhotoId: $scope.inUser.profilePhotoId,
@@ -229,7 +242,9 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
             content:commentData,
             time:(new Date()).valueOf()
         }
-        GetListService.userPost(subCommentApi,data).then(function (data){
+        //提交评论
+        GetListService.userPost(api,data).then(function (data){
+            console.log(data);
             if (data.message == 0 || data.result == true) {
                 $scope.comments.unshift(jsonData);
                 $scope.vm.commentData = "";
@@ -240,11 +255,22 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
             }
         })
     }
+    //点击评论某条评论
+    $scope.reply = function (toUsername,commentId){
+        if ($scope.commentClick) {
+            $scope.commentClick = !$scope.commentClick;
+        }
+        $scope.vm.commentData = "";
+        $scope.vm.placeholder="回复："+toUsername;
+        $scope.vm.isReplyToOne = "replyToOne";
+        $scope.commentId = commentId;
+    }
     //显示删除盒子
     $scope.showBox = function(delList,commentId){
         var hideSheet = $ionicActionSheet.show({
              buttons: [
-               { text: '删除' }
+               { text: '删除' },
+               { text: '回复' }
              ],
              titleText: '选择操作',
              cancelText: '取消',
@@ -252,18 +278,24 @@ angular.module('starter.controllers',['my.controllers','directives.dropdown'])
                   // add cancel code..
                 },
              buttonClicked: function(index) {
-                //执行删除操作
-                var delApi = "http://120.24.218.56/user/job/"+userId+"/review/delete/"+commentId+tokenKey;
-                GetListService.userPost(delApi,{}).then(function (data){
-                    console.log(data)
-                    if (data.message == 0) {
-                        $scope.comments.splice(delList,1);
-                    }else{
-                        FormatRusult.format(data.message).then(function (data){
-                            GetListService.alertTip(data);
-                        })
-                    }
-                })
+                if (index==0) {
+                    //执行删除操作
+                    var delApi = "http://120.24.218.56/user/job/"+userId+"/review/delete/"+commentId+tokenKey;
+                    GetListService.userPost(delApi,{}).then(function (data){
+                        console.log(data)
+                        if (data.message == 0) {
+                            $scope.comments.splice(delList,1);
+                        }else{
+                            FormatRusult.format(data.message).then(function (data){
+                                GetListService.alertTip(data);
+                            })
+                        }
+                    })
+                }
+                if (index==1) {
+                    var replyApi = "http://120.24.218.56/api/review/u/reply";
+                    var data = "repliedReviewId="+commentId+""
+                }
                 return true;
              }
         });

@@ -82,6 +82,10 @@ angular.module('sh.controllers',['directives.dropdown'])
     //显示二级选项菜单
     $scope.showModal = function (value){
         $scope.selecting[value] = !$scope.selecting[value];
+        for (var i = 0; i < $scope.selecting.length; i++) {
+            console.log($scope.selecting[i]);
+            console.log("dsa")
+        };
         $scope.showCateMore[value] = !$scope.showCateMore[value];
     }
     $scope.ShCommons = ['全新','九成新','八成新','七成新','六成新'];
@@ -138,7 +142,7 @@ angular.module('sh.controllers',['directives.dropdown'])
 })
 
 //获取二手物品单个信息详情
-.controller('ShDetailController',function ($scope, $ionicSlideBoxDelegate, $ionicHistory, $stateParams, GetListService, Auth, FormatRusult){
+.controller('ShDetailController',function ($scope, $ionicSlideBoxDelegate, $ionicActionSheet, $ionicHistory, $stateParams, GetListService, Auth, FormatRusult){
     //用户后退
     $scope.myGoBack = function (){
         $ionicHistory.goBack();
@@ -147,29 +151,50 @@ angular.module('sh.controllers',['directives.dropdown'])
     var user = Auth.getUser() || "";
     var token = Auth.getToken() || "";
     var tokenKey = "?appToken="+token;
+    var baseUrl = "http://120.24.218.56";
     //二手列表以及评论API
-    var shApi = "http://120.24.218.56/api/sh/"+$stateParams.id;
-    var commentApi = "http://120.24.218.56/api/review/sh/"+$stateParams.id;
-    var zanApi = "http://120.24.218.56/user/sh/"+$stateParams.id+"/checklike"+tokenKey;
+    var shApi = baseUrl+"/api/sh/"+$stateParams.id;
+    var commentApi = baseUrl+"/api/review/sh/"+$stateParams.id;
+    var zanApi = baseUrl+"/user/sh/"+$stateParams.id+"/checklike"+tokenKey;
+    var subCommentApi = baseUrl+"/user/sh/"+$stateParams.id+"/review/post"+tokenKey;
+    var colApi = "http://120.24.218.56/api/u/sh/fav/"+user+tokenKey;
     //执行是否登录以及赞过检查
     if (user == "" || token == "") {
         $scope.zanColor = "";
+        $scope.inUser = {
+            profilePhotoId: "",
+            username: ""
+        };
     }else{
+        //获取用户信息
+        var userApi = baseUrl+"/api/user/"+user+tokenKey;
+        GetListService.getList(userApi).then(function(data){
+            console.log(data)
+            $scope.inUser = data.data.data;
+        })
+        //用户是否点赞
         GetListService.getList(zanApi).then(function (data){
             if (data.data.message=="true") {
                 $scope.zanColor="#F96A39";
             }else{
                 $scope.zanColor = "";
             };
-            //data.data.result ? $scope.zanColor="#F96A39" : $scope.zanColor = "";
+        })
+        //用户时候收藏
+        GetListService.getList(colApi).then(function (data){
+            if (data.data.data==true) {
+                $scope.colColor="#F96A39";
+            }else{
+                $scope.colColor = "";
+            };
         })
     };
     //用户点赞
     $scope.zan = function (){
-        var api = "http://120.24.218.56/user/sh/"+$stateParams.id+"/like"+tokenKey;
+        var api = baseUrl+"/user/sh/"+$stateParams.id+"/like"+tokenKey;
         GetListService.userPost(api).then(function (data){
             if (data.message == 16) {
-                var api = "http://120.24.218.56/user/sh/"+$stateParams.id+"/unlike"+tokenKey;
+                var api = baseUrl+"/user/sh/"+$stateParams.id+"/unlike"+tokenKey;
                 GetListService.userPost(api).then(function (data){
                     if(data.message == 0){
                         $scope.zanColor="";
@@ -186,6 +211,47 @@ angular.module('sh.controllers',['directives.dropdown'])
             }
         })
     }
+    //用户收藏
+    $scope.col = function (){
+        var api = baseUrl+"/user/job/fav/"+user+tokenKey;
+        GetListService.userPost(api).then(function (data){
+            console.log(data);
+            if (data.hasOwnProperty("parm")) {
+                if (data.parm.status == 1) $scope.colColor="";
+                if (data.parm.status == 0) $scope.colColor="#F96A39";
+            }else{
+                if (data.message == 16) {
+                    $scope.colColor="";
+                }else if(data.message == 0){
+                    $scope.colColor="#F96A39";
+                }else{
+                    FormatRusult.format(data.message).then(function (data){
+                        GetListService.alertTip(data);
+                    })
+                } 
+            }
+        })
+    }
+    //显示更多
+    $scope.jobDetailMore = function (){
+        $ionicActionSheet.show({
+             buttons: [
+               { text: '举报' },
+               { text: '合作热线' },
+               { text: '意见反馈' }
+             ],
+             titleText: '请选择',
+             cancelText: '取消',
+             cancel: function() {
+                  // add cancel code..
+                },
+             buttonClicked: function(index) {
+                //执行删除操作
+                
+                return true;
+             }
+        });
+    }
     //加载二手详情
     GetListService.getDetail(shApi).then(function (data){
         var picturePath = data.data.data.picturePath.split(";");
@@ -197,6 +263,91 @@ angular.module('sh.controllers',['directives.dropdown'])
     //加载评论
     GetListService.getComment(commentApi).then(function (data){
         $scope.comments = data.data.data.list;
-        console.log(commentApi);
+        //加载对应的回复评论
+        // for (var i = 0; i < $scope.comments.length; i++) {
+        //     var api = baseUrl +　"/api/review/reply?reviewId="+$scope.comments[i].id;
+        //     GetListService.getList(api).then(function (data){
+        //         $scope.subComments = data.data.data.list
+        //     })
+        // }
+        $scope.commentsCount = data.data.data.resultCount;
+        if ($scope.commentsCount >= 8) {
+            $scope.emptyContent = true;
+        }
     })
+    //加载更多评论
+    $scope.loadMoreCom = function (){
+        pageNumber++;
+        var pageKey = "?pageNumber="+pageNumber+"&pageSize="+pageSize;
+        var api = baseUrl+"/api/review/sh/"+userId+pageKey;
+        GetListService.getList(api).then(function (data){
+            if (data.data.data.list.length == 8) {
+                $scope.comments = $scope.comments.concat(data.data.data.list);
+            }else{
+                $scope.comments = $scope.comments.concat(data.data.data.list);
+                $scope.emptyContent = false;
+            }
+        })
+    }
+    //评论页和底部菜单切换
+    $scope.commentClick = true;
+    //提交评论
+    $scope.vm = {
+        commentData:"",
+        placeholder:"输入评论内容",
+        isReplyToOne:"1"
+    };
+    //切换到普通评论
+    $scope.toComment = function (){
+        $scope.commentClick = !$scope.commentClick;
+        $scope.vm.commentData = "";
+        $scope.vm.placeholder = "输入评论内容";
+        $scope.vm.isReplyToOne = "replyToPost";
+    }
+    //点击评论某条评论
+    $scope.reply = function (toUsername,commentId){
+        if ($scope.commentClick) {
+            $scope.commentClick = !$scope.commentClick;
+        }
+        $scope.vm.commentData = "";
+        $scope.vm.placeholder="回复："+toUsername;
+        $scope.vm.isReplyToOne = "replyToOne";
+        $scope.commentId = commentId;
+    }
+    $scope.sendComment = function (isReplyToOne){
+        var commentData = $scope.vm.commentData;
+        var data = "content="+commentData;
+        if (isReplyToOne == "replyToOne") {
+            api = baseUrl+"/api/review/u/reply"+tokenKey;
+            data = "repliedReviewId="+$scope.commentId+"&memberId="+user+"&content="+commentData;
+        }else{
+            api = subCommentApi;
+            data = data;
+        }
+        if (commentData == ""||commentData == null) {
+            GetListService.alertTip("评论内容不能为空！");
+            return false;
+        };
+        //模仿一个数据进行更新
+        var jsonData = {
+            member: {
+                profilePhotoId: $scope.inUser.profilePhotoId,
+                username: $scope.inUser.username
+            },
+            content:commentData,
+            time:(new Date()).valueOf()
+        }
+        //提交评论
+        GetListService.userPost(api,data).then(function (data){
+            console.log(data);
+            if (data.message == 0 || data.result == true) {
+                $scope.comments.unshift(jsonData);
+                $scope.vm.commentData = "";
+            }else{
+                FormatRusult.format(data.message).then(function (data){
+                    GetListService.alertTip(data);
+                })
+            }
+        })
+    }
 })
